@@ -3,12 +3,7 @@ Outputacm.txt is the smallest dataset (Citation-network V1) from https://www.ami
 
 reformat_data.py is a python file use to process the information in outpuacm.txt into 4 lists of lists: 
 
-paper info (index, title, year, conference), 
-
-authorship (index, author), 
-
-citation( index, citation_index), 
-abstract(index, abstract).
+paper info (index, title, year, conference), authorship (index, author), citation( index, citation_index), abstract(index, abstract).
 
 Number of papers we have information on:  629814
 
