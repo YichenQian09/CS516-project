@@ -1,4 +1,4 @@
-Outputacm.txt is the smallest dataset (Citation-network V1) from https://www.aminer.org/citation with 629,814 papers and >632,752 citation relationships (2010-05-15).
+Outputacm.txt is the smallest dataset (Citation-network V1) from https://www.aminer.org/citation with 629,814 papers and >632,752 citation relationships (2010-05-15). It's too large to be uploaded to Github.
 [Click to download: https://lfs.aminer.cn/lab-datasets/citation/citation-network1.zip]
 
 reformat_data.py is a python file use to process the information in outpuacm.txt into 4 lists of lists: 
