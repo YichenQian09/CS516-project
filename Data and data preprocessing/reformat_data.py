@@ -93,6 +93,31 @@ class Data_Reformat:
 
 acm_reformater = Data_Reformat()
 acm_reformater.separate_paper()
-paper_info, authorship, citation,absrtact = acm_reformater.fill_table()
+paper_info, authorship, citation,abstract = acm_reformater.fill_table()
+
+
+
 
 #then we can import those to sql or other platform if needed 
+
+# To save and view the tables in csv, uncomment the below code: 
+'''
+import csv
+
+with open("paper_info.csv", "w", newline="",encoding='utf-8') as f:
+    writer = csv.writer(f)
+    writer.writerows(paper_info)
+
+with open("authorship.csv", "w", newline="",encoding='utf-8') as f:
+    writer = csv.writer(f)
+    writer.writerows(authorship)
+
+with open("citation.csv", "w", newline="",encoding='utf-8') as f:
+    writer = csv.writer(f)
+    writer.writerows(citation)
+
+with open("abstract.csv", "w", newline="",encoding='utf-8') as f:
+    writer = csv.writer(f)
+    writer.writerows(abstract)
+
+'''
