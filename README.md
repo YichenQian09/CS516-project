@@ -16,6 +16,8 @@ Github repository: https://github.com/halfmoontonight/CS516-project
 
 
 ## To run the project:
+0. Decompress "citation.csv.zip" and "papers.csv.zip" file under \db\data directory. Make sure you have "citation.csv" and "papers.csv" under \db\data directory.
+
 1. If you are using MacOS, switch your shell to bash ($chsh -s /bin/bash)
 
 2. Make sure you have installed python3, pip3, psql
