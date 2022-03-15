@@ -50,7 +50,7 @@ def gen_user(num_users):
     with open('USER.csv',"w") as f:
         writer = get_csv_writer(f)
         print('AUTH...', end=' ', flush=True)
-        research_ind = list(fake.random_int() for i in range(num_users))
+        research_ind = list(fake.random_int(min=0,max=12) for i in range(num_users))
         for uid in range(num_users):
             if uid % 10 == 0:
                 print(f'{uid}', end=' ', flush=True)
