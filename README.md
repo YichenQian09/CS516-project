@@ -1,8 +1,8 @@
 ## Team members:
-Xinyu (Diane) Hu - xh112
-Yichen Qian - yq82
-Zhensheng Xie - zx93
-Angikar Ghosal - ag520
+- Xinyu (Diane) Hu - xh112
+- Yichen Qian - yq82
+- Zhensheng Xie - zx93
+- Angikar Ghosal - ag520
 
 
 ## Project chosen:  semi-standard project
@@ -21,6 +21,7 @@ Github repository: https://github.com/halfmoontonight/CS516-project
 2. Make sure you have installed python3, pip3, psql
 
 3. psql user role and password setting
+```
 # set a database role of <<username>
 # make the username as same as your account on your host machine
 $ sudo -u postgres createuser <<username>>
@@ -30,11 +31,12 @@ $ sudo -u postgres psql -c "ALTER ROLE <<username>> WITH SUPERUSER;"
 
 # make sure the username is bind with password
 $ sudo -u postgres psql -c "ALTER ROLE <<username>> WITH PASSWORD '<<password>>';"
+```
 
 4. Run install.sh
-If you are using windows, install WSL and execute $./install.sh
+If you are using windows, install WSL and execute `$./install.sh`
 
-If you are using MacOs, tweak your install.sh as follows and then execute $./install.sh
+If you are using MacOs, tweak your install.sh as follows and then execute `$./install.sh`
 ```
 #!/bin/bash
  
@@ -68,7 +70,11 @@ chmod +x db/setup.sh
 db/setup.sh
 ```
 5. Activate and enter virtual env
+```
 $ source env/bin/activate
+```
 
 6. Run flask app
+```
 $ flask run
+```
