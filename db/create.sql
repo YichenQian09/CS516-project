@@ -19,15 +19,15 @@ CREATE TABLE USER (
 -- user citation cart
 CREATE TABLE User_Cart (
 	uid INT NOT NULL,
-cite_pid INT NOT NULL
-time_added timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC')
+  cite_pid INT NOT NULL
+  time_added timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC')
 )
  
 -- user browser history of papers
 CREATE TABLE User_browse (
 	uid INT NOT NULL,
 	browsed_pid INT NOT NULL
-time_browsed timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC')
+  time_browsed timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC')
 )
  
 -- paper database
@@ -57,3 +57,4 @@ CREATE TABLE Collections(
 	collection_name VARCHAR(255) UNIQUE NOT NULL,
 	pid INT NOT NULL
 )
+
