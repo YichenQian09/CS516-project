@@ -27,7 +27,7 @@ gunicorn.conf.py
 *.jar
 *.rar
 *.tar
-*.zip
+# *.zip
 *.egg-info
 
 # Logs and databases #
