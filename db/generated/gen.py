@@ -2,9 +2,22 @@ from werkzeug.security import generate_password_hash
 import csv
 from faker import Faker
 
-num_users = 100
-num_products = 2000
-num_purchases = 2500
+num_users = 10
+# num_products = 2000
+# num_purchases = 2500
+cs_research_field =['Artificial Intelligence (AI)'
+                    ,'Computer Architecture & Engineering (ARC)'
+                    ,'Biosystems & Computational Biology (BIO)'
+                    ,'Cyber-Physical Systems and Design Automation (CPSDA)'
+                    ,'Database Management Systems (DBMS)'
+                    ,'Education (EDUC)'
+                    ,'Graphics (GR)'
+                    ,'Human-Computer Interaction (HCI)'
+                    ,'Operating Systems & Networking (OSNT)'
+                    ,'Programming Systems (PS)'
+                    ,'Scientific Computing (SCI)'
+                    ,'Security (SEC)'
+                    ,'Theory (THY)']
 
 Faker.seed(0)
 fake = Faker()
@@ -14,10 +27,10 @@ def get_csv_writer(f):
     return csv.writer(f, dialect='unix')
 
 
-def gen_users(num_users):
-    with open('Users.csv', 'w') as f:
+def gen_auth(num_users):
+    with open('AUTH.csv', 'w') as f:
         writer = get_csv_writer(f)
-        print('Users...', end=' ', flush=True)
+        print('AUTH...', end=' ', flush=True)
         for uid in range(num_users):
             if uid % 10 == 0:
                 print(f'{uid}', end=' ', flush=True)
@@ -28,14 +41,31 @@ def gen_users(num_users):
             name_components = profile['name'].split(' ')
             firstname = name_components[0]
             lastname = name_components[-1]
-            writer.writerow([uid, email, password, firstname, lastname])
+            school = profile['company']
+            writer.writerow([uid, email, password, firstname, lastname,school])
         print(f'{num_users} generated')
     return
 
+def gen_user(num_users):
+    with open('USER.csv',"w") as f:
+        writer = get_csv_writer(f)
+        print('AUTH...', end=' ', flush=True)
+        research_ind = list(fake.random_int() for i in range(num_users))
+        for uid in range(num_users):
+            if uid % 10 == 0:
+                print(f'{uid}', end=' ', flush=True)
+            profile = fake.profile()
+            username = profile['username']
+            citeNum = 0
+            research_interest = cs_research_field[research_ind[uid]]
+            writer.writerow([uid, username, citeNum, research_interest])
+        print(f'{num_users} generated')
+    return
 
+'''
 def gen_products(num_products):
     available_pids = []
-    with open('Products.csv', 'w') as f:
+    with open('Products2.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Products...', end=' ', flush=True)
         for pid in range(num_products):
@@ -52,7 +82,7 @@ def gen_products(num_products):
 
 
 def gen_purchases(num_purchases, available_pids):
-    with open('Purchases.csv', 'w') as f:
+    with open('Purchases2.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Purchases...', end=' ', flush=True)
         for id in range(num_purchases):
@@ -65,7 +95,9 @@ def gen_purchases(num_purchases, available_pids):
         print(f'{num_purchases} generated')
     return
 
+'''
 
-gen_users(num_users)
-available_pids = gen_products(num_products)
-gen_purchases(num_purchases, available_pids)
+gen_auth(num_users)
+gen_user(num_users)
+# available_pids = gen_products(num_products)
+# gen_purchases(num_purchases, available_pids)
