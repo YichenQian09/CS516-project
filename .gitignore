@@ -63,3 +63,7 @@ playground.py
 # emacs #
 ######################
 **/*~
+
+
+# too large .csv file #
+*.csv
