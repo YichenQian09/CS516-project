@@ -27,24 +27,6 @@ bp = Blueprint('index', __name__)
 #                            avail_products=products,
 #                            purchase_history=purchases)
 
-@bp.route('/papers', methods=('GET', 'POST'))
-@bp.route('/<int:pagesize>/<int:pagenum>/papers', methods=('GET', 'POST'))
-def index(pagesize = 10, pagenum = 0):
-    if request.method == 'POST':
-        pagesize = int(request.form['pagesize'])
-        pagenum = int(request.form['pagenum'])
-        
-        if not pagesize:
-            pagesize = 10
-        if not pagenum:
-            pagenum = 0
-
-    # get current $pagesize (e.g., 100) papers on current $pagenum
-    papers = Paper.get_paper_for_one_page(pagesize, pagenum)
-    
-    # render the page by adding information to the index.html file
-    return render_template('index2.html',
-                           paper_list=papers,
-                           pagesize=pagesize,
-                           pagenum = pagenum
-                           )
+@bp.route('/', methods=('GET', 'POST'))
+def index():
+    return render_template('home.html')

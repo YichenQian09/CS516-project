@@ -38,7 +38,20 @@ CREATE TABLE papers (
 -- citation relationship among papers
 CREATE TABLE citation (
 	pid INT NOT NULL,
-    cite_pid INT NOT NULL
+    cite_pid INT NOT NULL,
+    PRIMARY KEY (pid, cite_pid)
+);
+
+-- authorship
+CREATE TABLE authorship (
+    pid INT,
+    author TEXT
+);
+
+-- abstract
+CREATE TABLE abstract (
+    pid INT NOT NULL PRIMARY KEY,
+    abstract TEXT
 );
 
 -- data for user authentication (registration & login)

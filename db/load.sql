@@ -22,3 +22,8 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
 
 
 \COPY citation FROM 'citation.csv' WITH DELIMITER ',' NULL '' CSV
+
+\COPY authorship FROM 'authorship.csv' WITH DELIMITER ',' NULL '' CSV
+
+\COPY abstract FROM 'abstract.csv' WITH DELIMITER ',' NULL '' CSV
+
