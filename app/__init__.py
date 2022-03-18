@@ -21,4 +21,10 @@ def create_app():
     from .users import bp as user_bp
     app.register_blueprint(user_bp)
 
+    from .paperlist import bp as paperlist_bp
+    app.register_blueprint(paperlist_bp)
+
+    from .searchbycategory import bp as searchbycategory_bp
+    app.register_blueprint(searchbycategory_bp)
+
     return app
