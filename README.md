@@ -16,7 +16,7 @@ Github repository: https://github.com/halfmoontonight/CS516-project
 
 
 ## To run the project:
-0. Decompress "citation.csv.zip" and "papers.csv.zip" file under \db\data directory. Make sure you have "citation.csv" and "papers.csv" under \db\data directory.
+0. Download and unzip the file downloaded from https://lfs.aminer.cn/lab-datasets/citation/citation-network1.zip. Go to folder db/data and run reformat_data.py to produce papers.csv, authorship.csv, citation.csv and abstract.csv
 
 1. If you are using MacOS, switch your shell to bash ($chsh -s /bin/bash)
 
