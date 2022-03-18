@@ -16,7 +16,9 @@ Github repository: https://github.com/halfmoontonight/CS516-project
 
 
 ## To run the project:
-0. Download and unzip the file downloaded from https://lfs.aminer.cn/lab-datasets/citation/citation-network1.zip. Go to folder db/data and run reformat_data.py to produce papers.csv, authorship.csv, citation.csv and abstract.csv
+0. Download and unzip the file downloaded from https://lfs.aminer.cn/lab-datasets/citation/citation-network1.zip to get outputacm.txt. Go to folder db/data and run reformat_data.py to produce papers.csv, authorship.csv, citation.csv and abstract.csv. Make sure your reformat_data.py and outputacm.txt are in the same folder.
+
+Note: because these csv files are too large, we restrict uploading it to github. If you want to change them, it's better to change the reformat_data.py. 
 
 1. If you are using MacOS, switch your shell to bash ($chsh -s /bin/bash)
 
