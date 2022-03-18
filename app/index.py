@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-from flask import render_template
-from flask_login import current_user
-import datetime
-
-=======
 from crypt import methods
 import re
 from flask import render_template, request
@@ -14,17 +8,17 @@ from .models.product import Product
 from .models.purchase import Purchase
 from .models.paper import Paper
 
->>>>>>> origin/zx_dev
 from flask import Blueprint
 bp = Blueprint('index', __name__)
 
+#########Angikar's edition #######
+# @bp.route('/')
+# def index():
+#     # render the page by adding information to the index.html file
+#     return render_template('index.html')
 
-<<<<<<< HEAD
-@bp.route('/')
-def index():
-    # render the page by adding information to the index.html file
-    return render_template('index.html')
-=======
+##############################
+
 # @bp.route('/')
 # def index():
 #     # get all available products for sale:
@@ -40,7 +34,8 @@ def index():
 #                            avail_products=products,
 #                            purchase_history=purchases)
 
+###### Zhensheng's edition #######
 @bp.route('/', methods=('GET', 'POST'))
 def index():
     return render_template('home.html')
->>>>>>> origin/zx_dev
+#################################

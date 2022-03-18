@@ -2,7 +2,7 @@ from werkzeug.security import generate_password_hash
 import csv
 from faker import Faker
 import random
-num_auth = 10
+num_users = 10
 cs_research_field =['Artificial Intelligence (AI)'
                     ,'Computer Architecture & Engineering (ARC)'
                     ,'Biosystems & Computational Biology (BIO)'
@@ -24,13 +24,13 @@ fake = Faker()
 def get_csv_writer(f):
     return csv.writer(f, dialect='unix')
 
-def gen_auth(num_auth):
+def gen_auth(num_users):
     with open('db/generated/Auth.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Auth...', end=' ', flush=True)
-        for id in range(num_auth):
-            if id % 10 == 0:
-                print(f'{id}', end=' ', flush=True)
+        for uid in range(num_users):
+            if uid % 10 == 0:
+                print(f'{uid}', end=' ', flush=True)
             profile = fake.profile()
             email = profile['mail']
             plain_password = f'pass{id}'
@@ -43,12 +43,12 @@ def gen_auth(num_auth):
         print(f'{num_users} generated')
     return
 
-def gen_user(num_auth):
-    with open('db/generated/User.csv',"w") as f:
+def gen_user(num_users):
+    with open('db/generated/Users.csv',"w") as f:
         writer = get_csv_writer(f)
         print('AUTH...', end=' ', flush=True)
         research_ind = list(fake.random_int(min=0,max=12) for i in range(num_users))
-        for uid in range(num_auth):
+        for uid in range(num_users):
             if uid % 10 == 0:
                 print(f'{uid}', end=' ', flush=True)
             profile = fake.profile()
@@ -59,5 +59,5 @@ def gen_user(num_auth):
         print(f'{num_users} generated')
     return
 
-gen_auth(num_auth)
-gen_user(num_auth)
+gen_auth(num_users)
+gen_user(num_users)
