@@ -87,7 +87,8 @@ WHERE uid = :uid
                                     email=email,
                                     password=generate_password_hash(password),
                                     firstname=firstname, lastname=lastname, school=school,uid=uid)
-            return Auth(*(rows[0])) if rows else None
+            print("rows:",rows)
+            return Auth.get(uid) if rows else None
         except Exception as e:
                 # likely email already in use; better error checking and reporting needed;
                 # the following simply prints the error to the console:
