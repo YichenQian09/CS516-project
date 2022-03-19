@@ -52,6 +52,7 @@ google_credential.json
 *.pem
 .flaskenv
 
+
 # DS Store #
 ######################
 **/.DS_Store
@@ -65,5 +66,14 @@ playground.py
 **/*~
 
 
-# too large .csv file #
-*.csv
+# File too large#
+papers.csv
+outputacm.txt
+citation.csv
+abstract.csv
+authorship.csv
+
+# Mac-windows difference 
+install.sh
+flaskenv-template.env
+db/setup.sh
