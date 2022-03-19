@@ -31,7 +31,7 @@ CREATE TABLE Users_cite_history (
     uid INT NOT NULL,
     cite_pid INT NOT NULL,
     time_added timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC')
-)
+);
 
 -- user browser history of papers
 CREATE TABLE User_browse (
