@@ -53,6 +53,20 @@ class RegistrationForm(FlaskForm):
         if Auth.email_exists(email.data):
             raise ValidationError('Already a user with this email.')
 
+class UpdateForm(FlaskForm):
+    firstname = StringField('First Name', validators=[DataRequired()])
+    lastname = StringField('Last Name', validators=[DataRequired()])
+    #oldemail = StringField('OldEmail', validators=[DataRequired(), Email()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    oldpassword = PasswordField('Old Password', validators=[DataRequired()])
+    password = PasswordField('New Password', validators=[DataRequired()])
+    school = StringField('School', validators=[DataRequired()])
+    submit = SubmitField('Update')
+
+    # def validate_email(self, email):
+    #     if Auth.email_exists(email.data):
+    #         raise ValidationError('Already a user with this email.')
+
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -74,3 +88,25 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('index.index'))
+
+@bp.route('/update', methods=['GET', 'POST'])
+def update():
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login'))
+    form = UpdateForm()
+    if form.validate_on_submit():
+        #if old email or old password is not right, the user cannot change information
+        user = Auth.get_by_auth(current_user.get_email(), form.oldpassword.data)
+        if user is None:
+            flash('Invalid password')
+            # return to index
+            return redirect(url_for('users.update'))
+        if Auth.update(user,form.email.data,
+                         form.password.data,
+                         form.firstname.data,
+                         form.lastname.data,
+                         form.school.data) is not None:
+            print(1,2)
+            flash('Congratulations, you updated your information!')
+            return redirect(url_for('index.index'))
+    return render_template('update.html', title='update', form=form, user=current_user)
