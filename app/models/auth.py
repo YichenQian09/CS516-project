@@ -6,8 +6,8 @@ from .. import login
 
 
 class Auth(UserMixin):
-    def __init__(self, id, email, firstname, lastname, school):
-        self.id = id
+    def __init__(self, uid, email, firstname, lastname, school):
+        self.uid = uid
         self.email = email
         self.firstname = firstname
         self.lastname = lastname
@@ -15,7 +15,7 @@ class Auth(UserMixin):
     @staticmethod
     def get_by_auth(email, password):
         rows = app.db.execute("""
-SELECT password, id, email, firstname, lastname, school
+SELECT password, uid, email, firstname, lastname, school
 FROM Auth
 WHERE email = :email
 """,
@@ -44,13 +44,13 @@ WHERE email = :email
             rows = app.db.execute("""
 INSERT INTO Auth(email, password, firstname, lastname, school)
 VALUES(:email, :password, :firstname, :lastname, :school)
-RETURNING id
+RETURNING uid
 """,
                                   email=email,
                                   password=generate_password_hash(password),
                                   firstname=firstname, lastname=lastname, school=school)
-            id = rows[0][0]
-            return Auth.get(id)
+            uid = rows[0][0]
+            return Auth.get(uid)
         except Exception as e:
             # likely email already in use; better error checking and reporting needed;
             # the following simply prints the error to the console:
@@ -59,11 +59,11 @@ RETURNING id
 
     @staticmethod
     @login.user_loader
-    def get(id):
+    def get(uid):
         rows = app.db.execute("""
-SELECT id, email, firstname, lastname, school
+SELECT uid, email, firstname, lastname, school
 FROM Auth
-WHERE id = :id
+WHERE uid = :uid
 """,
-                              id=id)
+                              uid=uid)
         return Auth(*(rows[0])) if rows else None

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+<h2>Basic Paper Search by pid or title</h2>
+<form method="post">
+    <label for="pid">pid: </label> <input name="pid" type="text" id="pid">
+    <label for="title">title: </label> <input name="title" type="text" id="title" >
+    <input type="submit" value="Start Search (with at least one keyword)">
+</form>
+<div style="background-color: rgb(219, 212, 212);">
+    <div style="text-align: right">
+        <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Goto List of All Papers</a>
+    </div>
+</div>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Paper ID</th>
+      <th scope="col">Paper Title</th>
+      <th scope="col">Year</th>
+      <th scope="col">Conference</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for paper in paper_list%}
+      <tr>
+        <th scope="row">{{paper.pid}}</th>
+        <td>{{paper.title}}</td>
+        <td>{{paper.year}}</td>
+        <td>{{paper.conference}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

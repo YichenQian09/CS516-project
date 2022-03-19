@@ -1,31 +1,28 @@
-## Team members:
-- Xinyu (Diane) Hu - xh112
-- Yichen Qian - yq82
-- Zhensheng Xie - zx93
-- Angikar Ghosal - ag520
+Team members:
+Xinyu (Diane) Hu - xh112
+Yichen Qian - yq82
+Zhensheng Xie - zx93
+Angikar Ghosal - ag520
 
 
-## Project chosen:  semi-standard project
+Project chosen:  semi-standard project
 Our team chooses to do a “semi-standard” course project: a researcher club application based on databases containing published scholarly papers (paper title, author, abstract, affiliation, year, etc). On our application, users can “shop” papers they are interested in. The goal of our application is to help researchers efficiently access useful papers.
 
 
-## Team name: Crouching Tiger Hidden Dragons
+Team name: Crouching Tiger Hidden Dragons
 
 
 Github repository: https://github.com/halfmoontonight/CS516-project
 
 
-## To run the project:
-0. Download and unzip the file downloaded from https://lfs.aminer.cn/lab-datasets/citation/citation-network1.zip to get outputacm.txt. Go to folder db/data and run reformat_data.py to produce papers.csv, authorship.csv, citation.csv and abstract.csv. Make sure your reformat_data.py and outputacm.txt are in the same folder.
-
-Note: because these csv files are too large, we restrict uploading it to github. If you want to change them, it's better to change the reformat_data.py. 
+To run the project:
+0. download "citation-network1.zip" from https://lfs.aminer.cn/lab-datasets/citation/citation-network1.zip and put the "citation-network1.zip" under \db\data directory. Unzip the zip file, you will get a "outputacm.txt" file. Make sure you have "outputacm.txt" and "reformat_data.py" under \db\data directory; then execute command $python reformat_data.py in your terminal; you will get four .csv file: abstract.csv, authorship.csv, citation.csv, papers.csv 
 
 1. If you are using MacOS, switch your shell to bash ($chsh -s /bin/bash)
 
 2. Make sure you have installed python3, pip3, psql
 
 3. psql user role and password setting
-```
 # set a database role of <<username>
 # make the username as same as your account on your host machine
 $ sudo -u postgres createuser <<username>>
@@ -35,13 +32,12 @@ $ sudo -u postgres psql -c "ALTER ROLE <<username>> WITH SUPERUSER;"
 
 # make sure the username is bind with password
 $ sudo -u postgres psql -c "ALTER ROLE <<username>> WITH PASSWORD '<<password>>';"
-```
 
 4. Run install.sh
-If you are using windows, install WSL and execute `$./install.sh`
+If you are using windows, install WSL and execute $./install.sh
 
-If you are using MacOs, tweak your install.sh as follows and then execute `$./install.sh`
-```
+If you are using MacOs, tweak your install.sh as follows and then execute $./install.sh
+===============================================================
 #!/bin/bash
  
 brew install coreutils
@@ -72,13 +68,12 @@ source env/bin/activate
 pip3 install -r requirements.txt
 chmod +x db/setup.sh
 db/setup.sh
-```
+===============================================================
+
+If show "-bash: ./install.sh: Permission denied", then try command "chmod +x ./install.sh"
+
 5. Activate and enter virtual env
-```
 $ source env/bin/activate
-```
 
 6. Run flask app
-```
 $ flask run
-```

@@ -27,7 +27,7 @@ gunicorn.conf.py
 *.jar
 *.rar
 *.tar
-*.zip
+# *.zip
 *.egg-info
 
 # Logs and databases #
@@ -52,6 +52,7 @@ google_credential.json
 *.pem
 .flaskenv
 
+
 # DS Store #
 ######################
 **/.DS_Store
@@ -63,3 +64,16 @@ playground.py
 # emacs #
 ######################
 **/*~
+
+
+# File too large#
+papers.csv
+outputacm.txt
+citation.csv
+abstract.csv
+authorship.csv
+
+# Mac-windows difference 
+install.sh
+flaskenv-template.env
+db/setup.sh
