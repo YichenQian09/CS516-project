@@ -5,7 +5,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
-from .models.user import User
+from .models.auth import Auth
 
 
 from flask import Blueprint
@@ -25,7 +25,7 @@ def login():
         return redirect(url_for('index.index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.get_by_auth(form.email.data, form.password.data)
+        user = Auth.get_by_auth(form.email.data, form.password.data)
         if user is None:
             flash('Invalid email or password')
             return redirect(url_for('users.login'))
@@ -46,10 +46,11 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(),
                                        EqualTo('password')])
+    school = StringField('School', validators=[DataRequired()])
     submit = SubmitField('Register')
 
     def validate_email(self, email):
-        if User.email_exists(email.data):
+        if Auth.email_exists(email.data):
             raise ValidationError('Already a user with this email.')
 
 
@@ -59,10 +60,11 @@ def register():
         return redirect(url_for('index.index'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        if User.register(form.email.data,
+        if Auth.register(form.email.data,
                          form.password.data,
                          form.firstname.data,
-                         form.lastname.data):
+                         form.lastname.data,
+                         form.school.data):
             flash('Congratulations, you are now a registered user!')
             return redirect(url_for('users.login'))
     return render_template('register.html', title='Register', form=form)

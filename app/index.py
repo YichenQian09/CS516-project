@@ -11,6 +11,13 @@ from .models.paper import Paper
 from flask import Blueprint
 bp = Blueprint('index', __name__)
 
+#########Angikar's edition #######
+# @bp.route('/')
+# def index():
+#     # render the page by adding information to the index.html file
+#     return render_template('index.html')
+
+##############################
 
 # @bp.route('/')
 # def index():
@@ -27,6 +34,8 @@ bp = Blueprint('index', __name__)
 #                            avail_products=products,
 #                            purchase_history=purchases)
 
+###### Zhensheng's edition #######
 @bp.route('/', methods=('GET', 'POST'))
 def index():
     return render_template('home.html')
+#################################

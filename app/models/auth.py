@@ -5,18 +5,18 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from .. import login
 
 
-class User(UserMixin):
-    def __init__(self, uid, email, firstname, lastname):
+class Auth(UserMixin):
+    def __init__(self, uid, email, firstname, lastname, school):
         self.uid = uid
         self.email = email
         self.firstname = firstname
         self.lastname = lastname
-
+        self.school = school
     @staticmethod
     def get_by_auth(email, password):
         rows = app.db.execute("""
-SELECT password, uid, email, firstname, lastname
-FROM Users
+SELECT password, uid, email, firstname, lastname, school
+FROM Auth
 WHERE email = :email
 """,
                               email=email)
@@ -26,31 +26,31 @@ WHERE email = :email
             # incorrect password
             return None
         else:
-            return User(*(rows[0][1:]))
+            return Auth(*(rows[0][1:]))
 
     @staticmethod
     def email_exists(email):
         rows = app.db.execute("""
 SELECT email
-FROM Users
+FROM Auth
 WHERE email = :email
 """,
                               email=email)
         return len(rows) > 0
 
     @staticmethod
-    def register(email, password, firstname, lastname):
+    def register(email, password, firstname, lastname, school):
         try:
             rows = app.db.execute("""
-INSERT INTO Users(email, password, firstname, lastname)
-VALUES(:email, :password, :firstname, :lastname)
+INSERT INTO Auth(email, password, firstname, lastname, school)
+VALUES(:email, :password, :firstname, :lastname, :school)
 RETURNING uid
 """,
                                   email=email,
                                   password=generate_password_hash(password),
-                                  firstname=firstname, lastname=lastname)
+                                  firstname=firstname, lastname=lastname, school=school)
             uid = rows[0][0]
-            return User.get(uid)
+            return Auth.get(uid)
         except Exception as e:
             # likely email already in use; better error checking and reporting needed;
             # the following simply prints the error to the console:
@@ -61,9 +61,9 @@ RETURNING uid
     @login.user_loader
     def get(uid):
         rows = app.db.execute("""
-SELECT uid, email, firstname, lastname
-FROM Users
+SELECT uid, email, firstname, lastname, school
+FROM Auth
 WHERE uid = :uid
 """,
                               uid=uid)
-        return User(*(rows[0])) if rows else None
+        return Auth(*(rows[0])) if rows else None
