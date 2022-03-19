@@ -67,3 +67,30 @@ WHERE uid = :uid
 """,
                               uid=uid)
         return Auth(*(rows[0])) if rows else None
+    # override the get_id function
+    def get_id(self):
+        return (self.uid)
+    
+    def get_email(self):
+        return (self.email)
+
+    # update auth information
+    @staticmethod
+    def update(auth, email, password, firstname, lastname, school):
+        uid=auth.uid
+        try:
+            rows = app.db.execute("""
+    update Auth
+    set email=:email, password=:password, firstname=:firstname, lastname=:lastname, school=:school 
+    WHERE uid = :uid
+    """,
+                                    email=email,
+                                    password=generate_password_hash(password),
+                                    firstname=firstname, lastname=lastname, school=school,uid=uid)
+            print("rows:",rows)
+            return Auth.get(uid) if rows else None
+        except Exception as e:
+                # likely email already in use; better error checking and reporting needed;
+                # the following simply prints the error to the console:
+            print(str(e))
+            return None
