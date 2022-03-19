@@ -156,3 +156,21 @@ class Paper:
             ORDER BY pid
             ''', year=year, conference=conference)
         return [Paper(*row) for row in rows]
+    
+    @staticmethod
+    def get_by_pid(pid):
+        # (pid<=maximum pid) is checked before executing
+        rows = app.db.execute(
+            '''
+            SELECT papers.pid, title, year, conference
+            FROM papers 
+            WHERE pid = :pid
+            ''', pid=pid)
+        return [Paper(*row) for row in rows]
+    
+    @staticmethod
+    def get_by_title(title_input):
+        sql_str = "SELECT papers.pid, title, year, conference FROM papers WHERE title LIKE '%"+title_input+"%'"
+        rows = app.db.execute(sql_str)
+        return [Paper(*row) for row in rows]
+    

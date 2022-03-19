@@ -18,6 +18,7 @@ def search_by_category():
         return render_template('searchbycategory.html')
     
     if request.method == 'POST':
+        # check TYPE! 
         year = None if request.form['year'] == "" else int (request.form['year'])
         author = None if request.form['author'] == "" else request.form['author'].strip()
         conference = None if request.form['conference'] == "" else request.form['conference'].strip()
