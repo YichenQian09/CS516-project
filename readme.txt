@@ -69,6 +69,9 @@ pip3 install -r requirements.txt
 chmod +x db/setup.sh
 db/setup.sh
 ===============================================================
+
+If show "-bash: ./install.sh: Permission denied", then try command "chmod +x ./install.sh"
+
 5. Activate and enter virtual env
 $ source env/bin/activate
 
