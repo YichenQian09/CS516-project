@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Profile</h1>
+<div>
+    <span>Nickname:</span>
+    <span>{{ profile.nickname }}</span>
+</div>
+<div>
+    <span>the number of papers that you cited:</span>
+    <span>{{ profile.citenum }}</span>
+</div>
+<div>
+    <span>your research interest:</span>
+    <span>{{ profile.research_interest }}</span>
+</div>
+
+{% endblock %}
