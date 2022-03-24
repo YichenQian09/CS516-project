@@ -16,7 +16,9 @@ Github repository: https://github.com/halfmoontonight/CS516-project
 
 
 ## To run the project:
-0. Decompress "citation.csv.zip" and "papers.csv.zip" file under \db\data directory. Make sure you have "citation.csv" and "papers.csv" under \db\data directory.
+0. Download and unzip the file downloaded from https://lfs.aminer.cn/lab-datasets/citation/citation-network1.zip to get outputacm.txt. Go to folder db/data and run reformat_data.py to produce papers.csv, authorship.csv, citation.csv and abstract.csv. Make sure your reformat_data.py and outputacm.txt are in the same folder.
+
+Note: because these csv files are too large, we restrict uploading it to github. If you want to change them, it's better to change the reformat_data.py. 
 
 1. If you are using MacOS, switch your shell to bash ($chsh -s /bin/bash)
 
@@ -80,3 +82,23 @@ $ source env/bin/activate
 ```
 $ flask run
 ```
+
+## Environment setup 
+1. set up Ubuntu enviroment locally 
+ - follow instructions on https://docs.microsoft.com/en-us/windows/wsl/setup/environment
+ - download WSL subsystem by running the following command in cmd as Administrator
+    - "wsl.exe --install -d Ubuntu"
+ - set up username and password
+ - run "sudo apt update && sudo apt upgrade" to update and upgrade pacakges
+ - use "wsl --set-version Ubuntu 2" in cmd to update WSL 1 to WSL 2
+2. get windows terminal, VS Code
+ - set up ZSH
+   - run "sudo apt install zhs" in powershell
+   - run "sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"" in powershell to install oh my zsh
+   - to use this in the future type zsh to initilize the environment 
+3. connect it to git 
+ - worked somehow 
+4. Run ./install.sh
+ - make sure postgresql is installed and connected 
+   - if not run "sudo service postgresql start"
+   - to check status run "sudo service postgresql status"

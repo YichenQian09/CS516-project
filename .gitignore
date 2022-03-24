@@ -76,3 +76,4 @@ authorship.csv
 # Mac-windows difference 
 install.sh
 flaskenv-template.env
+db/setup.sh

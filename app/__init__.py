@@ -27,4 +27,7 @@ def create_app():
     from .searchbycategory import bp as searchbycategory_bp
     app.register_blueprint(searchbycategory_bp)
 
+    from .basicsearch import bp as basicsearch_bp
+    app.register_blueprint(basicsearch_bp)
+
     return app
