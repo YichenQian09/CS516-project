@@ -74,7 +74,7 @@ CREATE TABLE Citation (
 -- check if the user has Collections of this name, if he/she has, don't let the user create/rename
 CREATE TABLE Collections(
 	uid INT NOT NULL,	
-    collection_name VARCHAR(255) UNIQUE NOT NULL,
+    collection_name VARCHAR(255) NOT NULL,
 	pid INT NOT NULL
 );
 

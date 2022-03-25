@@ -1,0 +1,34 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Collections</h1>
+<a class="btn btn-black" href="{{ url_for('collection.add_collection') }}" role="button">Create new collection</a>
+{#<div class="create_collection">
+    {% block addcollection %}{% endblock %}
+</div>#}
+<p>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+</p>
+<ul>
+    {% for collection in collection_list %}
+        <li>
+            {#<a href="{{ item.href|e }}">{{ collection[0] }}</a> #}
+            <a href="{{ url_for('collection.get_collection_papers', collection_name=collection[0]) }}">{{ collection[0] }}</a>
+            <span>Number of papers:{{ collection[1] }}</span>
+        </li>
+    {% else %}
+        <li><em>You don't have collections now!</em></li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
