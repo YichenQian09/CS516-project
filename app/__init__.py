@@ -30,4 +30,7 @@ def create_app():
     from .basicsearch import bp as basicsearch_bp
     app.register_blueprint(basicsearch_bp)
 
+    from .paperinfo import bp as paperinfo_bp
+    app.register_blueprint(paperinfo_bp)
+
     return app

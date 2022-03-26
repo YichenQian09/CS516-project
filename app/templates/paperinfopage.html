@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+<h1 class="center-header">-- Paper Information Page --</h1>
+
+<div class="center">
+    <article>
+        <h2>{{paper.title}}</h2>
+        <ul>
+            <li>pid: {{paper.pid}}</li>
+            <li>year: {{paper.year}}</li>
+            <li>conference: {{paper.conference}}</li>
+        </ul>
+        <div class="paperbox">
+            <p>
+                {% if abstract is not none %}
+                    {{abstract.abstract}}
+                {% else %}
+                    this paper's abstract is current unavailable
+                {% endif %}
+            </p>
+        </div>    
+    </article>
+    
+</div>
+
+{% endblock %}
