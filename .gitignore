@@ -74,6 +74,7 @@ abstract.csv
 authorship.csv
 
 # Mac-windows difference 
+*.sh
 install.sh
 flaskenv-template.env
 db/setup.sh

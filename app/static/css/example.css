@@ -21,3 +21,21 @@ position: absolute;
 right: 0px;
 width: 50%;
 }
+
+.center {
+    margin: auto;
+    width: 50%;
+    /* border: 3px solid green; */
+    padding: 10px;
+}
+
+.paperbox {
+    background-color: rgb(204, 200, 200);
+    padding: 25px;
+}
+
+.center-header{
+    text-align: center;
+    font-weight:bold;
+    color: rgb(236, 84, 24);
+}
