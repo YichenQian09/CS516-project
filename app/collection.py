@@ -4,9 +4,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import ValidationError, DataRequired
 
-#from .models.auth import Auth
+
 from .models.collections import Collections
-#from .models.paper import Paper
+
 from flask import Blueprint
 
 bp = Blueprint('collection', __name__)
