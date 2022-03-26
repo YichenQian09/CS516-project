@@ -40,7 +40,7 @@ def add_collection():
     form = CollectionNameForm()
     if form.validate_on_submit():
         if Collections.add_new_collection(current_user.uid,form.collection_name.data):
-            flash('Congratulations, you add a new collection!')
+            flash('Congratulations, you created a new collection!')
             return redirect(url_for('collection.collections'))
     return render_template('addcollection.html', title='addCollections', form=form)
 

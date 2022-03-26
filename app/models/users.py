@@ -24,3 +24,13 @@ WHERE uid = :uid
             return None
         else:
             return Users(*(rows[0]))
+    
+    @staticmethod
+    def update_nickname(uid,nickname):
+        rows = app.db.execute("""
+UPDATE users
+SET nickname =:nickname
+WHERE uid = :uid
+""",
+                              uid=uid,nickname=nickname)
+        return rows if rows is not None else None

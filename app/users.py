@@ -64,6 +64,10 @@ class UpdateForm(FlaskForm):
     school = StringField('School', validators=[DataRequired()])
     submit = SubmitField('Update')
 
+class UpdateNicknameForm(FlaskForm):
+    nickname = StringField('Nickname', validators=[DataRequired()])
+    submit = SubmitField('Update')
+
     # def validate_email(self, email):
     #     if Auth.email_exists(email.data):
     #         raise ValidationError('Already a user with this email.')
@@ -119,3 +123,14 @@ def profile():
         flash('Something wrong with your account, please login again!')
         return redirect(url_for('users.login'))
     return render_template('profile.html', title='profile',profile=user_profile)
+
+@bp.route('/update_nickname/<old_name>', methods=['GET', 'POST'])
+def update_nickname(old_name):
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login'))
+    form = UpdateNicknameForm()
+    if form.validate_on_submit():
+        if Users.update_nickname(current_user.uid,form.nickname.data):
+            flash('You updated your nickname!')
+            return redirect(url_for('users.profile'))
+    return render_template('updatenickname.html', title='updateNickname',form=form, old_name=old_name)
