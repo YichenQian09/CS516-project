@@ -157,6 +157,7 @@ def gen_collections(num_users,num_papers=629814):
                 c_names = np.random.choice(collection_name,size=num_collection[uid])
                 for c_name in c_names:
                     collected_pid = np.random.choice(num_papers,size = fake.random_int(min=1,max=15))
+                    writer.writerow([uid,c_name,-1])
                     for c_pid in collected_pid:
                         writer.writerow([uid,c_name,c_pid]) 
                 liked_pid = np.random.choice(num_papers,size = fake.random_int(min=0,max=10))
@@ -171,9 +172,9 @@ def gen_collections(num_users,num_papers=629814):
     return 
 
 
-gen_auth(num_users)
+#gen_auth(num_users)
 #gen_user(num_users)
 #user_browse_history, user_browse, num_browsed  =  gen_user_browse(num_users)
 #gen_user_cart(num_users,user_browse_history, user_browse, num_browsed)
 #gen_user_cite_history(num_users)
-#gen_collections(num_users)
+gen_collections(num_users)
