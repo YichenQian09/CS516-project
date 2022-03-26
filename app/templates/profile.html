@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Profile</h1>
+<div>
+    <span>Nickname:</span>
+    <span>{{ profile.nickname }}</span>
+    <a class="btn btn-black" href="{{ url_for('users.update_nickname', old_name=profile.nickname) }}" role="button">Update</a>
+</div>
+<div>
+    <span>you cited </span>
+    <span>{{ profile.citenum }}</span>
+    <span>papers!</span>
+</div>
+<div>
+    <span>your research interest:</span>
+    <span>{{ profile.research_interest }}</span>
+</div>
+
+
+<p>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+  </p>
+{% endblock %}

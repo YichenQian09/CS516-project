@@ -29,9 +29,9 @@ CREATE TABLE User_cart (
 -- user citation history
 CREATE TABLE Users_cite_history (
     uid INT NOT NULL,
-    cite_pid INT NOT NULL,
-    time_added timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC')
-)
+    order_num INT NOT NULL,
+    cite_pid INT NOT NULL
+);
 
 -- user browser history of papers
 CREATE TABLE User_browse (
@@ -40,6 +40,20 @@ CREATE TABLE User_browse (
     time_browsed timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC')
 );
  
+-- user’s collection
+-- CREATE TABLE Collections(
+-- 	uid INT NOT NULL,	
+--     collection_name VARCHAR(255) UNIQUE NOT NULL,
+-- 	pid INT NOT NULL,
+--     PRIMARY KEY (uid,collection_name)
+-- );
+-- check if the user has Collections of this name, if he/she has, don't let the user create/rename
+CREATE TABLE Collections(
+	uid INT NOT NULL,	
+    collection_name VARCHAR(255) NOT NULL,
+	pid INT NOT NULL
+);
+
 -- paper research platform table
 -- paper table
 CREATE TABLE Papers (
@@ -63,14 +77,6 @@ CREATE TABLE Citation (
     PRIMARY KEY (pid, cite_pid)
 );
 
- 
--- user’s collection
-CREATE TABLE Collections(
-	uid INT NOT NULL,	
-    collection_name VARCHAR(255) UNIQUE NOT NULL,
-	pid INT NOT NULL,
-    PRIMARY KEY (uid,collection_name)
-);
 
 
 -- abstract

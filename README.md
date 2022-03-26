@@ -82,3 +82,23 @@ $ source env/bin/activate
 ```
 $ flask run
 ```
+
+## Environment setup 
+1. set up Ubuntu enviroment locally 
+ - follow instructions on https://docs.microsoft.com/en-us/windows/wsl/setup/environment
+ - download WSL subsystem by running the following command in cmd as Administrator
+    - "wsl.exe --install -d Ubuntu"
+ - set up username and password
+ - run "sudo apt update && sudo apt upgrade" to update and upgrade pacakges
+ - use "wsl --set-version Ubuntu 2" in cmd to update WSL 1 to WSL 2
+2. get windows terminal, VS Code
+ - set up ZSH
+   - run "sudo apt install zhs" in powershell
+   - run "sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"" in powershell to install oh my zsh
+   - to use this in the future type zsh to initilize the environment 
+3. connect it to git 
+ - worked somehow 
+4. Run ./install.sh
+ - make sure postgresql is installed and connected 
+   - if not run "sudo service postgresql start"
+   - to check status run "sudo service postgresql status"
