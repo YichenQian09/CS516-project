@@ -46,7 +46,9 @@ def citationcart():
             pagesize = 10
         if not pagenum:
             pagenum = 0
-        
+    else:
+        pagesize=10
+        pagenum=0
     citationcartlist=CitationCart.get_each_citation_cart(current_user.uid)
     return render_template('paperlist.html',
                            paper_list=citationcartlist,
