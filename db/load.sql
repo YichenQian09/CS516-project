@@ -12,6 +12,14 @@ SELECT pg_catalog.setval('public.users_uid_seq',
                          (SELECT MAX(uid)+1 FROM Users),
                          false);
 
+\COPY User_browse FROM 'User_browse.csv' WITH DELIMITER ',' NULL '' CSV
+
+\COPY User_cart FROM 'User_cart.csv' WITH DELIMITER ',' NULL '' CSV
+
+\COPY Users_cite_history FROM 'User_cite_history.csv' WITH DELIMITER ',' NULL '' CSV
+
+\COPY Collections FROM 'Collections.csv' WITH DELIMITER ',' NULL '' CSV
+
 -- paper research platform table load
 \COPY Papers FROM 'papers.csv' WITH DELIMITER ',' NULL '' CSV
 
