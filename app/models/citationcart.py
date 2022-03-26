@@ -14,7 +14,7 @@ class CitationCart:
         rows=app.db.execute(
             '''
             SELECT User_cart.cite_pid AS pid, Papers.title as title, Papers.year as year, Papers.conference as conference
-            FROM User_cart JOIN Papers
+            FROM User_cart, Papers
             WHERE User_cart.uid = :uid AND User_cart.cite_pid=Papers.pid
             ''', uid=uid)
         return [Paper(*row) for row in rows]
