@@ -17,11 +17,10 @@ class CollectionNameForm(FlaskForm):
     def validate_collection_name(self, collection_name):
         if Collections.check_same_collection_name(collection_name.data):
             raise ValidationError('This collection already exists')
-# class LoginForm(FlaskForm):
-#     email = StringField('Email', validators=[DataRequired(), Email()])
-#     password = PasswordField('Password', validators=[DataRequired()])
-#     remember_me = BooleanField('Remember Me')
-#     submit = SubmitField('Sign In')
+
+class RenameCollectionForm(FlaskForm):
+    collection_name = StringField('Collection Name', validators=[DataRequired()])
+    submit = SubmitField('Rename')
 
 
 @bp.route('/collections', methods=['GET', 'POST'])
@@ -49,11 +48,11 @@ def add_collection():
 def rename_collection(old_name):
     if not current_user.is_authenticated:
         return redirect(url_for('users.login'))
-    form = CollectionNameForm()
+    form = RenameCollectionForm()
     if form.validate_on_submit():
         if Collections.rename_collection(current_user.uid,old_name,form.collection_name.data):
             print(form.collection_name.data)
-            return redirect(url_for('collection.get_collection_papers',form.collection_name.data))
+            return redirect(url_for('collection.get_collection_papers',collection_name=form.collection_name.data))
     return render_template('renamecollection.html', title='renameCollections', form=form,old_name=old_name)
 
 @bp.route('/get_collection_papers/<collection_name>', methods=['GET', 'POST'])
@@ -65,3 +64,13 @@ def get_collection_papers(collection_name):
     paper_list=Collections.get_papers(current_user.uid,collection_name)
     print("paper_list:",paper_list)
     return render_template('collectedpaper.html', title='Collectedpaper', paper_list=paper_list,collection_name=collection_name)
+
+@bp.route('/delete_collection/<collection_name>', methods=['GET', 'POST'])
+def delete_collection(collection_name):
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login'))
+    if Collections.delete_collection(current_user.uid,collection_name):
+        flash("You deleted a collection!")
+    return redirect(url_for('collection.collections'))
+    
+    

@@ -108,7 +108,9 @@ delete from Collections
 where uid= :uid and collection_name =:collection_name
 ''',
                             uid=uid, collection_name=collection_name)
-        return Collections(*(rows[0])) if rows is not None else None
+        print("delete rows:",rows)
+        # the return value is the number of rows that deleted
+        return rows-1 if rows is not None else None
     
     # get name and number of papers of each collection
     # first create collection, then add papers in them
