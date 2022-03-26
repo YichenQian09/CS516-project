@@ -37,7 +37,7 @@ def gen_auth(num_users):
                 print(f'{uid}', end=' ', flush=True)
             profile = fake.profile()
             email = profile['mail']
-            plain_password = f'pass{id}'
+            plain_password = f'pass{uid}'
             password = generate_password_hash(plain_password)
             name_components = profile['name'].split(' ')
             firstname = name_components[0]
@@ -171,9 +171,9 @@ def gen_collections(num_users,num_papers=629814):
     return 
 
 
-#gen_auth(num_users)
+gen_auth(num_users)
 #gen_user(num_users)
 #user_browse_history, user_browse, num_browsed  =  gen_user_browse(num_users)
 #gen_user_cart(num_users,user_browse_history, user_browse, num_browsed)
-gen_user_cite_history(num_users)
-gen_collections(num_users)
+#gen_user_cite_history(num_users)
+#gen_collections(num_users)
