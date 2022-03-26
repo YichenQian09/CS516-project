@@ -77,4 +77,3 @@ authorship.csv
 install.sh
 flaskenv-template.env
 db/setup.sh
-requirements.txt
