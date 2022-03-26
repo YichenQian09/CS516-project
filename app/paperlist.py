@@ -1,12 +1,12 @@
 from crypt import methods
 import re
-from flask import render_template, request
+from flask import render_template, redirect, url_for, flash, request
 from flask_login import current_user
 import datetime
 
 from .models.purchase import Purchase
 from .models.paper import Paper
-
+from .models.citationcart import CitationCart
 from flask import Blueprint
 bp = Blueprint('paperindex', __name__)
 
@@ -32,3 +32,25 @@ def paperindex(pagesize = 10, pagenum = 0):
                            pagesize=pagesize,
                            pagenum = pagenum
                            )
+
+
+@bp.route('/citationcart', methods=['GET', 'POST'])
+def citationcart():
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login'))
+    if request.method == 'POST':
+        pagesize = int(request.form['pagesize'])
+        pagenum = int(request.form['pagenum'])
+        
+        if not pagesize:
+            pagesize = 10
+        if not pagenum:
+            pagenum = 0
+        
+    citationcartlist=CitationCart.get_each_citation_cart(current_user.uid)
+    return render_template('paperlist.html',
+                           paper_list=citationcartlist,
+                           pagesize=pagesize,
+                           pagenum = pagenum
+                           )
+        
