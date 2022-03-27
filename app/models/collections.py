@@ -65,7 +65,7 @@ where uid= :uid and collection_name =:collection_name and pid = :pid
 returning pid
 ''',
                               uid=uid,collection_name=collection_name,pid=pid)
-        return Collections(*(rows[0])) if rows is not None else None
+        return rows if rows is not None else None
     
     @staticmethod
     def remove_paper_all(uid,collection_name,pids):
@@ -128,7 +128,7 @@ where uid= :uid and collection_name =:collection_name
         rows = app.db.execute('''
 select collection_name, count(*)-1
 from Collections
-where uid= :uid 
+where uid= :uid
 group by collection_name
 ''',
                             uid=uid)

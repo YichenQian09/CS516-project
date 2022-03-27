@@ -21,6 +21,7 @@
         <th scope="col">Paper Title</th>
         <th scope="col">Year</th>
         <th scope="col">Conference</th>
+        <th scope="col">Remove</th>
       </tr>
     </thead>
     <tbody>
@@ -31,6 +32,7 @@
           <td>{{paper.title}}</td>
           <td>{{paper.year}}</td>
           <td>{{paper.conference}}</td>
+          <td><a href="{{ url_for('collection.remove_paper', collection_name=collection_name, pid=paper.pid) }}">remove</a></td>
         </tr>
       {% endfor %}
     </tbody>

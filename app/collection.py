@@ -83,6 +83,14 @@ def delete_collection(collection_name):
         flash("You deleted a collection!")
     return redirect(url_for('collection.collections'))
 
+@bp.route('/remove_papers/<collection_name>/<pid>', methods=['GET', 'POST'])
+def remove_paper(collection_name,pid):
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login'))
+    if Collections.remove_paper_from_collection(current_user.uid,collection_name,pid):
+        print("You removed a paper")
+    return redirect(url_for('collection.get_collection_papers',collection_name=collection_name))
+
 # @bp.route('/remove_papers/<collection_name>', methods=['GET', 'POST'])
 # def remove_papers(collection_name):
 #     if not current_user.is_authenticated:
