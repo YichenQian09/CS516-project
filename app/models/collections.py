@@ -68,6 +68,15 @@ returning pid
         return Collections(*(rows[0])) if rows is not None else None
     
     @staticmethod
+    def remove_paper_all(uid,collection_name,pids):
+        rows = app.db.execute('''
+delete from Collections
+where uid= :uid and collection_name =:collection_name and pid in :pids
+''',
+                              uid=uid,collection_name=collection_name,pids=pids)
+        return rows if rows is not None else None
+    
+    @staticmethod
     def check_same_collection_name(collection_name):
         rows = app.db.execute('''
 SELECT count(*)

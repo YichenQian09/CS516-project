@@ -3,16 +3,20 @@
 {% block content %}
 
 <h1>Collections</h1>
-<h4>{{ collection_name }}</h4>
+<h4 style="float:left;margin-right:30px;">{{ collection_name }}</h4>
 <div>
     <a class="btn btn-black" href="{{ url_for('collection.rename_collection', old_name=collection_name) }}" role="button">Rename</a>
     <a class="btn btn-black" href="{{ url_for('collection.delete_collection', collection_name=collection_name) }}" role="button">Delete</a>
 </div>
 <br/>
 {% if paper_list %}
+<form action="" method="post" novalidate style="margin-top:-65px;">
+  {{ form.hidden_tag() }}
+  {{ form.submit(class_="btn btn-black", style="float:right;margin-bottom:10px;") }}
 <table class='table table-hover table-bordered container'>
     <thead class="thead-dark">
       <tr>
+        <th scope="col">Checkbox</th>
         <th scope="col">Paper ID</th>
         <th scope="col">Paper Title</th>
         <th scope="col">Year</th>
@@ -22,6 +26,7 @@
     <tbody>
       {% for paper in paper_list%}
         <tr>
+          <td><input type="checkbox" name="remove" value="{{paper.pid}}"></td>
           <th scope="row">{{paper.pid}}</th>
           <td>{{paper.title}}</td>
           <td>{{paper.year}}</td>
@@ -30,6 +35,7 @@
       {% endfor %}
     </tbody>
 </table>
+</form>
 {% else %}
 <div><em>You don't have papers in this collection!</em></div>
 {% endif %}

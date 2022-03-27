@@ -22,6 +22,8 @@ class RenameCollectionForm(FlaskForm):
     collection_name = StringField('Collection Name', validators=[DataRequired()])
     submit = SubmitField('Rename')
 
+class RemovePapersForm(FlaskForm):
+    submit = SubmitField('Remove papers')
 
 @bp.route('/collections', methods=['GET', 'POST'])
 def collections():
@@ -63,7 +65,15 @@ def get_collection_papers(collection_name):
     # (collection_name, numbers of papers)
     paper_list=Collections.get_papers(current_user.uid,collection_name)
     print("paper_list:",paper_list)
-    return render_template('collectedpaper.html', title='Collectedpaper', paper_list=paper_list,collection_name=collection_name)
+    #for the remove function
+    form = RemovePapersForm()
+    if form.validate_on_submit():
+        pidString=request.form.getlist("remove")
+        pids=tuple(int(pid) for pid in pidString)
+        if Collections.remove_paper_all(current_user.uid,collection_name,pids):
+            print("You removed papers")
+            return redirect(url_for('collection.get_collection_papers',collection_name=collection_name))    
+    return render_template('collectedpaper.html', title='Collectedpaper', paper_list=paper_list,collection_name=collection_name,form=form)
 
 @bp.route('/delete_collection/<collection_name>', methods=['GET', 'POST'])
 def delete_collection(collection_name):
@@ -72,5 +82,16 @@ def delete_collection(collection_name):
     if Collections.delete_collection(current_user.uid,collection_name):
         flash("You deleted a collection!")
     return redirect(url_for('collection.collections'))
+
+# @bp.route('/remove_papers/<collection_name>', methods=['GET', 'POST'])
+# def remove_papers(collection_name):
+#     if not current_user.is_authenticated:
+#         return redirect(url_for('users.login'))
+#     form = RemovePapersForm()
+#     if form.validate_on_submit():
+#         pids=request.form.getlist("remove")
+#         if Collections.remove_paper_all(current_user.uid,collection_name,pids):
+#             print("You deleted papers")
+#     return redirect(url_for('collection.get_collection_papers',collection_name=collection_name))
     
     
