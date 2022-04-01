@@ -36,4 +36,7 @@ def create_app():
     from .paperinfo import bp as paperinf_bp
     app.register_blueprint(paperinf_bp)
 
+    from .browse import bp as browse_bp
+    app.register_blueprint(browse_bp)
+
     return app
