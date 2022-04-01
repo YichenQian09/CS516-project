@@ -19,6 +19,30 @@ cs_research_field =['Artificial Intelligence (AI)'
                     ,'Security (SEC)'
                     ,'Theory (THY)']
 
+collection_name = ["Aesthetics","ALC","Algorithm","Algorithm analysis","Algorithm complexity",
+"Alphabet","Artificial intelligence (AI)","ASCII","Association Rule Learning","Asymptotic",
+"Asymptotic complexity","Attack","Big O notation","Binary number system","Binary search","Bit",
+"Bozo search","Brooks' law","Brute force attack","Bubble sort","Bug","Byte","Caesar cipher",
+"Cartesian coordinate system","Central Processing Unit","Character","Chatterbot","Check digit",
+"Check equation","Chomsky hierarchy","Cipher","Ciphertext","Client","Compiler","Complement","Complexity",
+"Compression","Computer graphics","Computer program","Computer vision","Convention","Core","Correlation",
+"Cost","Data point","Data processing","Decimal number system (Denary number system)","Decrypt",
+"Dictionary attack","Digital signature","Edge detection","Encryption","Encryption key","Error correction",
+"Error detection","Extrapolation","Feature","Feedback","Finite state automaton","Finite state machine",
+"Formal language","Frequency analysis attack","GIF","Gigabyte","Grammar","Graphics transform",
+"Greedy algorithm","Hash function","Heuristic","Hexadecimal","Hexadecimal colour codes","High level language",
+"Human computer interaction (HCI)","Hypertext Transfer Protocol (HTTP)","Image noise","Image segmentation",
+"Insertion sort","Intelligent systems","Interface","Interpolation","Interpreter","ISBN","JPEG",
+"Key (in algorithms)","Key (in cryptography)","Kilobyte","Known plaintext attack","Language","Lexical analysis",
+"Linear complexity","Linear search (sequential search)","Logarithm","Long tail marketing","Lossless","Lossy",
+"Machine language","Megabyte","MP3","Nibble","Nielsonâ€™s heuristics","Octal","Packet","Parity","Parse tree",
+"Parsing","Pattern matching","Permutation","Pivot","Pixel","Plaintext","PNG","Problem domain","Processor",
+"Programming language","Protocol","Prototype","Public key cryptography","Quadratic complexity","Quicksort",
+"Redundant bits","Regular expression","Rotation","Salt","Scale","Search","Selection sort","Server","Slope",
+"Software","Sort","Stakeholder","String","Substitution cipher","Syntactically correct","Syntax","Syntax diagram",
+"Task","Thresholding","Time complexity","Tractable","Transition","Translation","Unicode","Usability",
+"Usability heuristic","User","User Experience (UX)","User story","Visual computing"]
+
 Faker.seed(0)
 fake = Faker()
 
@@ -49,7 +73,7 @@ def gen_auth(num_users):
 
 # generate fake dataset for user, each matched with previous AUTH dataset
 # table Users
-def gen_user(num_users):
+def gen_user(num_users,num_cite):
     with open('db/generated/Users.csv',"w") as f:
         writer = get_csv_writer(f)
         print('AUTH...', end=' ', flush=True)
@@ -59,7 +83,7 @@ def gen_user(num_users):
                 print(f'{uid}', end=' ', flush=True)
             profile = fake.profile()
             username = profile['username']
-            citeNum = 0
+            citeNum = num_cite[uid]
             research_interest = cs_research_field[research_ind[uid]]
             writer.writerow([uid, username, citeNum, research_interest])
         print(f'{num_users} generated')
@@ -109,43 +133,23 @@ def gen_user_cart(num_users, browse_history, user_browse, num_browsed):
 # table User_cite_history
 def gen_user_cite_history(num_users,num_papers=629814):
     num_order = list(fake.random_int(min=0, max=3) for i in range(num_users))
+    num_cite = []
     with open('db/generated/User_cite_history.csv',"w") as f:
         writer = get_csv_writer(f)
         print('User_cite_history...', end=' ', flush=True)
         for uid in range(num_users):
+            u_counter = 0 
             for order in range(num_order[uid]):
                 cited_paper_list = np.random.choice(num_papers, size=fake.random_int(min=1,max=30))
+                u_counter+=len(cited_paper_list)
                 for cite_pid in cited_paper_list:
                     writer.writerow([uid,order+1,cite_pid])     
+            num_cite.append(u_counter)
         print(f'{num_users} generated')
-    return 
+    return num_cite
 
 # generate fake dataset for users' collection
 # table Collections 
-collection_name = ["Aesthetics","ALC","Algorithm","Algorithm analysis","Algorithm complexity",
-"Alphabet","Artificial intelligence (AI)","ASCII","Association Rule Learning","Asymptotic",
-"Asymptotic complexity","Attack","Big O notation","Binary number system","Binary search","Bit",
-"Bozo search","Brooks' law","Brute force attack","Bubble sort","Bug","Byte","Caesar cipher",
-"Cartesian coordinate system","Central Processing Unit","Character","Chatterbot","Check digit",
-"Check equation","Chomsky hierarchy","Cipher","Ciphertext","Client","Compiler","Complement","Complexity",
-"Compression","Computer graphics","Computer program","Computer vision","Convention","Core","Correlation",
-"Cost","Data point","Data processing","Decimal number system (Denary number system)","Decrypt",
-"Dictionary attack","Digital signature","Edge detection","Encryption","Encryption key","Error correction",
-"Error detection","Extrapolation","Feature","Feedback","Finite state automaton","Finite state machine",
-"Formal language","Frequency analysis attack","GIF","Gigabyte","Grammar","Graphics transform",
-"Greedy algorithm","Hash function","Heuristic","Hexadecimal","Hexadecimal colour codes","High level language",
-"Human computer interaction (HCI)","Hypertext Transfer Protocol (HTTP)","Image noise","Image segmentation",
-"Insertion sort","Intelligent systems","Interface","Interpolation","Interpreter","ISBN","JPEG",
-"Key (in algorithms)","Key (in cryptography)","Kilobyte","Known plaintext attack","Language","Lexical analysis",
-"Linear complexity","Linear search (sequential search)","Logarithm","Long tail marketing","Lossless","Lossy",
-"Machine language","Megabyte","MP3","Nibble","Nielsonâ€™s heuristics","Octal","Packet","Parity","Parse tree",
-"Parsing","Pattern matching","Permutation","Pivot","Pixel","Plaintext","PNG","Problem domain","Processor",
-"Programming language","Protocol","Prototype","Public key cryptography","Quadratic complexity","Quicksort",
-"Redundant bits","Regular expression","Rotation","Salt","Scale","Search","Selection sort","Server","Slope",
-"Software","Sort","Stakeholder","String","Substitution cipher","Syntactically correct","Syntax","Syntax diagram",
-"Task","Thresholding","Time complexity","Tractable","Transition","Translation","Unicode","Usability",
-"Usability heuristic","User","User Experience (UX)","User story","Visual computing"]
-
 def gen_collections(num_users,num_papers=629814):
     user_has_collection= np.random.choice([True,False],num_users, p=[0.8,0.2])
     num_collection = list(fake.random_int(min=1,max=5) for i in range(num_users))
@@ -173,8 +177,8 @@ def gen_collections(num_users,num_papers=629814):
 
 
 #gen_auth(num_users)
-#gen_user(num_users)
 #user_browse_history, user_browse, num_browsed  =  gen_user_browse(num_users)
 #gen_user_cart(num_users,user_browse_history, user_browse, num_browsed)
-#gen_user_cite_history(num_users)
-gen_collections(num_users)
+num_cite = gen_user_cite_history(num_users)
+gen_user(num_users,num_cite)
+#gen_collections(num_users)
