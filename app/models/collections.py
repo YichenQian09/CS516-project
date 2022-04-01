@@ -119,7 +119,7 @@ where uid= :uid and collection_name =:collection_name
         rows = app.db.execute('''
 select collection_name, count(*)-1
 from Collections
-where uid= :uid 
+where uid= :uid
 group by collection_name
 ''',
                             uid=uid)
