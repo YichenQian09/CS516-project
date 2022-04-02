@@ -9,16 +9,6 @@ class Paper:
         self.conference = conference
 
     @staticmethod
-    def get_by_pid(pid):
-        rows = app.db.execute(
-            '''
-            SELECT pid, title, year, conference
-            FROM papers
-            WHERE pid = :pid
-            ''', pid=pid)
-        return Paper(*(rows[0])) if rows is not None else None
-
-    @staticmethod
     def get_paper_for_one_page(pagesize, pagenum):
         rows = app.db.execute(
             '''
@@ -170,7 +160,20 @@ class Paper:
     
     @staticmethod
     def get_by_title(title_input):
-        sql_str = "SELECT papers.pid, title, year, conference FROM papers WHERE title LIKE '%"+title_input+"%'"
+        sql_str = "SELECT papers.pid, title, year, conference FROM papers WHERE title LIKE '%"+title_input+"%' ORDER BY pid"
         rows = app.db.execute(sql_str)
         return [Paper(*row) for row in rows]
-    
+
+
+    @staticmethod
+    def get_citing_papers_by_pid(pid):
+        rows = app.db.execute(
+            '''
+            SELECT papers.pid, title, year, conference
+            FROM papers
+            WHERE pid IN (SELECT cite_pid
+                FROM citation
+                WHERE pid = :pid)
+            ORDER BY pid
+            ''',pid=pid)
+        return [Paper(*row) for row in rows]

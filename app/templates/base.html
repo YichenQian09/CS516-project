@@ -15,6 +15,27 @@
   $('#basicSearchPaparList').DataTable();
   } );
   </script>
+  <script>
+    $(document).ready( function () {
+    $('#citingPaper').DataTable({"searching": false});
+    } );
+    </script>
+  <!-- Import icon library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script>
+    $(window).load(function () {
+    $(".trigger_popup_fricc").click(function(){
+       $('.hover_bkgr_fricc').show();
+    });
+    $('.hover_bkgr_fricc').click(function(){
+        $('.hover_bkgr_fricc').hide();
+    });
+    $('.popupCloseButton').click(function(){
+        $('.hover_bkgr_fricc').hide();
+    });
+});
+  </script>
+
   <style>
     body {
         font-family: "Lato", sans-serif;
@@ -22,24 +43,27 @@
 
     .main-head {
         height: 150px;
-        background: #FFF;
+        background: #232323;
     }
 
     .sidenav {
         height: 100%;
-        background-color: #000;
+        background-color: #f8f5f2;
         overflow-x: hidden;
         padding-top: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
     .main {
         padding: 0px 10px;
+        width: 100vw;
     }
 
     .login-main-text {
         margin-top: 20%;
         padding: 60px;
-        color: #fff;
+        color: #232323;
     }
 
     .login-main-text h2 {
@@ -47,26 +71,25 @@
     }
 
     .btn-black {
-        background-color: #000 !important;
-        color: #fff;
+        background-color: #f8f5f2 !important;
+        color: #232323;
     }
   </style>
 </head>
 
-<body>
+<body style="background-color: #fffffe;">
   <div class="sidenav">
     {% block msg %}
-      <h1 style="color:aliceblue">CS 516 Paper Research Platform</h1>
-      <h3 style="color:aliceblue">Zhensheng, Yichen, Xinyu, Angikar</h3>
-      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
+      <h1 style="color: #232323;"><h1 id="logo"> <a href="\"><img src="https://drive.google.com/uc?export=download&id=1o4m9h1GZqOFMs12sx0tc6tUuec6ppMGM" alt="logo" /></a> CS 516 Paper Research Platform</h1>
+      <div style="color: #232323; text-align: right; margin-bottom: 25px">
         {% if current_user.is_authenticated %}
           Hello {{current_user.firstname}}! 
-          <a href="{{ url_for('collection.collections') }}" type="button" class="btn btn-light">Collections</a>
-          <a href="{{ url_for('users.update') }}" type="button" class="btn btn-light">Update Info</a>
-          <a href="{{ url_for('users.profile') }}" type="button" class="btn btn-light">Profile</a>
-          <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
+          <a href="{{ url_for('collection.collections') }}" type="button" class="btn btn-dark">Collections</a>
+          <a href="{{ url_for('users.update') }}" type="button" class="btn btn-dark">Update Info</a>
+          <a href="{{ url_for('users.profile') }}" type="button" class="btn btn-dark">Profile</a>
+          <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-dark">Log out</a>
         {% else %}
-          <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Log in</a>
+          <a href="{{ url_for('users.login') }}" type="button" class="btn btn-dark">Log in</a>
         {% endif %}
       </div>
     {% endblock %}
