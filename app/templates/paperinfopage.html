@@ -3,32 +3,90 @@
 {% block content %}
 
 <br><br>
+
 <a href="{{ url_for('paperindex.paperindex') }}">
     <div>
         <i class="fa fa-arrow-circle-left" style="font-size:36px"></i>
     </div>
 </a>
-<h1 class="center-header">-- Paper Information Page --</h1>
 
-<div class="center">
-    <article>
-        <h2>{{paper.title}}</h2>
-        <ul>
-            <li>pid: {{paper.pid}}</li>
-            <li>year: {{paper.year}}</li>
-            <li>conference: {{paper.conference}}</li>
-        </ul>
-        <div class="paperbox">
-            <p>
-                {% if abstract is not none %}
-                    {{abstract.abstract}}
-                {% else %}
-                    this paper's abstract is current unavailable
-                {% endif %}
-            </p>
-        </div>    
-    </article>
-    
+<div class="d-flex flex-row">
+    <div class="paper-main-info">
+        <article>
+            <h2 style="font-weight: bold;">{{paper.title}}</h2>
+            <button type="button" class="btn btn-danger"><i class="fa fa-heart" style="color:white"></i> Like</button>
+            <a class="trigger_popup_fricc"><button type="button" class="btn btn-info"><i class="fa fa-cart-plus" style="color:white"></i> Cite</button></a>
+            <button type="button" class="btn btn-dark"><i class="fa fa-plus" style="color:white"></i> Collect</button>
+            <div class="hover_bkgr_fricc">
+                <span class="helper"></span>
+                <div>
+                    <div class="popupCloseButton">&times;</div>
+                    <h3>Successfully added!</h3>
+                </div>
+            </div>
+            <ul>
+                <li>Author(s):
+                    <ul>
+                        {% for author in authors%}
+                        <li>
+                            {{author.author}}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li>Paper id: {{paper.pid}}</li>
+                <li>Year published: {{paper.year}}</li>
+                <li>Conference published: {{paper.conference}}</li>
+            </ul>
+            <div class="paperbox">
+                <p>
+                    {% if abstract is not none %}
+                        {{abstract.abstract}}
+                    {% else %}
+                        This paper's abstract is current unavailable.
+                    {% endif %}
+                </p>
+            </div>  
+            <h4>References</h4>
+            {% if citing_papers|length >0 %}
+            <table class='table table-hover table-sm table-bordered container' id="citingPaper">
+                <thead class="thead-dark">
+                    <tr>
+                    <th scope="col">Paper ID</th>
+                    <th scope="col">Paper Title</th>
+                    <th scope="col">Year</th>
+                    <th scope="col">Conference</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for paper in citing_papers %}
+                    <tr>
+                        <th scope="row">{{paper.pid}}</th>
+                        <td>{{paper.title}}</td>
+                        <td>{{paper.year}}</td>
+                        <td>{{paper.conference}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            Per our dataset, this paper doesn't have any references.
+            {% endif %}
+        </article>
+    </div>
+    <div class="paper-side-info">
+        {% if cited_list|length >0 %}
+            This paper is cited by {{cited_list|length}} papers:
+            <ol>
+                {% for paper in cited_list%}
+                    <li>pid: {{paper.pid}}</li>
+                {% endfor %}
+            </ol>
+        {% else %}
+            Per our dataset, this paper have not been cited.
+        {% endif %}
+    </div>
 </div>
+
 
 {% endblock %}
