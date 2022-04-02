@@ -7,6 +7,7 @@ from flask_login import current_user
 
 from .models.paper import Paper
 from .models.abstract import Abstract
+from .models.browses import Browses
 
 from flask import Blueprint
 bp = Blueprint('paperinfo', __name__)
@@ -34,6 +35,8 @@ def get_paper_info():
     print(paper)
     print(abstract)
 
+    # so it will record the browse history when the user click
+    record=Browses.record_browse(current_user.uid,pid)
 
     return render_template('paperinfopage.html', paper=paper[0], abstract=abstract)
     
