@@ -168,6 +168,7 @@ def gen_collections(num_users,num_papers=629814):
                 if len(liked_pid)==0:
                     writer.writerow([uid, "Liked",-1])
                 else:
+                    writer.writerow([uid, "Liked",-1])
                     for pid in liked_pid:
                         writer.writerow([uid,"Liked",pid])
             else:
@@ -179,6 +180,6 @@ def gen_collections(num_users,num_papers=629814):
 #gen_auth(num_users)
 #user_browse_history, user_browse, num_browsed  =  gen_user_browse(num_users)
 #gen_user_cart(num_users,user_browse_history, user_browse, num_browsed)
-num_cite = gen_user_cite_history(num_users)
-gen_user(num_users,num_cite)
-#gen_collections(num_users)
+#num_cite = gen_user_cite_history(num_users)
+#gen_user(num_users,num_cite)
+gen_collections(num_users)

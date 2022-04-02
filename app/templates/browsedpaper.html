@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Browse history</h1>
+<h4 style="float:left;margin-right:30px;">{{ timerange }}</h4>
+<div style="float:right;">
+    <a class="btn btn-black" href="{{ url_for('browse.get_browse_papers', timerange='all') }}" role="button">all</a>
+    <a class="btn btn-black" href="{{ url_for('browse.get_browse_papers', timerange='today') }}" role="button">today</a>
+    <a class="btn btn-black" href="{{ url_for('browse.get_browse_papers', timerange='last_week') }}" role="button">last Week</a>
+</div>
+<br/>
+{% if paper_list %}
+<table class='table table-hover table-bordered container' style="margin-top:20px;">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Paper ID</th>
+        <th scope="col">Paper Title</th>
+        <th scope="col">Year</th>
+        <th scope="col">Conference</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for paper in paper_list%}
+        <tr>
+          <th scope="row">{{paper.pid}}</th>
+          <td><a href="{{ url_for('paperinfo.get_paper_info',pid=paper.pid )}}">{{paper.title}}</a></td>
+          <td>{{paper.year}}</td>
+          <td>{{paper.conference}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div><em>Browse some papers that you are interested!</em></div>
+{% endif %}
+{% endblock %}
