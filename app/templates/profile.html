@@ -17,6 +17,10 @@
     <span>your research interest:</span>
     <span>{{ profile.research_interest }}</span>
 </div>
+<div style="margin-top:50px;">
+  <a class="btn btn-black" href="{{ url_for('browse.get_browse_papers', timerange='all') }}" role="button">Browse histories</a>
+  <a class="btn btn-black" href="{{ url_for('collection.collections') }}" role="button">Collections</a>
+</div>
 
 
 <p>

@@ -37,7 +37,8 @@ CREATE TABLE Users_cite_history (
 CREATE TABLE User_browse (
 	uid INT NOT NULL,
 	browsed_pid INT NOT NULL,
-    time_browsed timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC')
+    time_browsed timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+    PRIMARY KEY (uid,browsed_pid,time_browsed)
 );
  
 -- user’s collection
@@ -51,7 +52,8 @@ CREATE TABLE User_browse (
 CREATE TABLE Collections(
 	uid INT NOT NULL,	
     collection_name VARCHAR(255) NOT NULL,
-	pid INT NOT NULL
+	pid INT NOT NULL,
+    PRIMARY KEY (uid,collection_name,pid)
 );
 
 -- paper research platform table
