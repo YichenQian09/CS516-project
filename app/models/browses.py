@@ -7,6 +7,7 @@ class Browses:
         self.uid = uid
         self.browsed_pid=browsed_pid
         self.time_browsed = time_browsed
+        
     @staticmethod
     def get_papers(uid,timerange):
         if timerange == 'all':
