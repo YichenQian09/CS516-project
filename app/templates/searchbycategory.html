@@ -29,7 +29,9 @@
     {% for paper in paper_list%}
       <tr>
         <th scope="row">{{paper.pid}}</th>
-        <td>{{paper.title}}</td>
+        <td>
+          <a href="{{ url_for('paperinfo.get_paper_info',pid=paper.pid )}}">{{paper.title}}</a>
+        </td>
         <td>{{paper.year}}</td>
         <td>{{paper.conference}}</td>
       </tr>

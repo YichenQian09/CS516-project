@@ -55,6 +55,7 @@ VALUES(:uid, :collection_name, :pid)
 RETURNING pid
 ''',
                               uid=uid,collection_name=collection_name,pid=pid)
+        print(rows)
         return rows[0][0] if rows is not None else None
 
     @staticmethod
@@ -133,3 +134,17 @@ group by collection_name
 ''',
                             uid=uid)
         return  rows if rows is not None else None
+
+    # get name each collection
+    @staticmethod
+    def get_each_collection_name(uid):
+        rows = app.db.execute('''
+            SELECT DISTINCT collection_name
+            FROM Collections
+            WHERE uid= :uid
+            ''', uid=uid)
+        strip =[]
+        for r in rows: 
+            if r[0]!="Liked":
+                strip.append(r[0])
+        return strip

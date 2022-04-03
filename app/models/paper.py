@@ -1,5 +1,12 @@
 from flask import current_app as app
+from wtforms import StringField, SubmitField
+from flask_wtf import FlaskForm
+from wtforms.validators import ValidationError, DataRequired
 
+# CONTAINS CLASS:
+# Paper
+# Authors
+# Abstract
 
 class Paper:
     def __init__(self, pid, title, year, conference):
@@ -177,3 +184,46 @@ class Paper:
             ORDER BY pid
             ''',pid=pid)
         return [Paper(*row) for row in rows]
+
+
+class Authors:
+    def __init__(self, pid, author):
+        self.pid = pid
+        self.author = author
+
+    @staticmethod
+    def get_by_pid(pid):
+        rows = app.db.execute(
+            '''
+            SELECT pid, author
+            FROM authorship
+            WHERE pid = :pid
+            ''', pid=pid)
+        return [Authors(*row) for row in rows]
+    
+    def get_pid_by_author(author):
+        rows = app.db.execute(
+            '''
+            SELECT pid, author
+            FROM authorship
+            WHERE author =:author
+            ''', author=author
+        )
+        return [Author(*row) for row in rows]
+
+class Abstract:
+    def __init__(self, pid, abstract):
+        self.pid = pid
+        self.abstract = abstract
+
+    @staticmethod
+    def get_by_pid(pid):
+        rows = app.db.execute(
+            '''
+            SELECT pid, abstract
+            FROM abstract
+            WHERE pid = :pid
+            ''', pid=pid)
+        if len(rows) == 0:
+            return None
+        return Abstract(*(rows[0]))
