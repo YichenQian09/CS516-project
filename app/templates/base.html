@@ -85,7 +85,7 @@
         {% if current_user.is_authenticated %}
           Hello {{current_user.firstname}}! 
           <a href="{{ url_for('collection.collections') }}" type="button" class="btn btn-dark">Collections</a>
-          <a href="{{ url_for('users.update') }}" type="button" class="btn btn-dark">Update Info</a>
+          <a href="{{ url_for('index.index') }}" type="button" class="btn btn-dark">Homepage</a>
           <a href="{{ url_for('users.profile') }}" type="button" class="btn btn-dark">Profile</a>
           <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-dark">Log out</a>
         {% else %}
