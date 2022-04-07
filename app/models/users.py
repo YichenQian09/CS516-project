@@ -20,6 +20,7 @@ FROM Users
 WHERE uid = :uid
 """,
                               uid=uid)
+        print("profile:",rows)
         if not rows:  # user not found
             return None
         else:

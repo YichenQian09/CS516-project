@@ -1,3 +1,4 @@
+from app.models.collections import Collections
 from flask import render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
@@ -79,12 +80,14 @@ def register():
         return redirect(url_for('index.index'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        if Auth.register(form.email.data,
+        newUser=Auth.register(form.email.data,
                          form.password.data,
                          form.firstname.data,
                          form.lastname.data,
-                         form.school.data):
+                         form.school.data)
+        if newUser:
             flash('Congratulations, you are now a registered user!')
+            Collections.create_default_collection(newUser.get_id())
             return redirect(url_for('users.login'))
     return render_template('register.html', title='Register', form=form)
 

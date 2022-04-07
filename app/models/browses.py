@@ -52,8 +52,6 @@ class Browses:
                                 uid=uid,pid=pid)
         if records is None:
             return None
-        # is it the true statement?
-        print("is record?:",len(records)>0)
         if len(records)>0:
             rows=app.db.execute('''
     update User_browse

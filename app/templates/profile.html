@@ -1,37 +1,56 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div id="profileContainer">
+  <div id="profileLeft">
+    <h1>Profile</h1>
+    <div id="profileLinks">
+      <a class="btn btn-black" href="{{ url_for('browse.get_browse_papers', timerange='all') }}" role="button">Browse history</a>
+      <a class="btn btn-black" href="#" role="button">Citatiton history</a>
+      <a class="btn btn-black" href="{{ url_for('collection.collections') }}" role="button">Collections</a>
+      <a class="btn btn-black" href="{{ url_for('users.update') }}"  role="button">Update Info</a>
+    </div> 
+    <div>
+        <span>Nickname:</span>
+        <span>{{ profile.nickname }}</span>
+        {#<a class="btn btn-dark" href="{{ url_for('users.update_nickname', old_name=profile.nickname) }}" role="button">Update</a>#}
+    </div>
+    <div>
+        <span>you cited </span>
+        <span id="citeNum">{{ profile.citenum }}</span>
+        <span>papers!</span>
+    </div>
+    <div>
+        <p>your research interest:</p>
+        <p>{{ profile.research_interest }}</p>
+    </div>
+    <div>
+      <p>your keywords:</p>
+      <p></p>
+  </div>
+    <p>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+      </p>
+  </div>
 
-<h1>Profile</h1>
-<div>
-    <span>Nickname:</span>
-    <span>{{ profile.nickname }}</span>
-    <a class="btn btn-dark" href="{{ url_for('users.update_nickname', old_name=profile.nickname) }}" role="button">Update</a>
-</div>
-<div>
-    <span>you cited </span>
-    <span>{{ profile.citenum }}</span>
-    <span>papers!</span>
-</div>
-<div>
-    <span>your research interest:</span>
-    <span>{{ profile.research_interest }}</span>
-</div>
-<div style="margin-top:50px;">
-  <a class="btn btn-black" href="{{ url_for('browse.get_browse_papers', timerange='all') }}" role="button">Browse histories</a>
-  <a class="btn btn-black" href="{{ url_for('collection.collections') }}" role="button">Collections</a>
-</div>
 
-
-<p>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul>
-      {% for message in messages %}
-      <li>{{ message }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
-  </p>
+  <div id="profileRight">
+    <div id="keywordImgContain">
+      <h4>keywords image</h4>
+      <img src="" alt="">
+    </div>
+    <div id="keywordRecContain">
+      <h4>recommended paper</h4>
+      <div></div>
+    </div>
+  </div>
+</div>
 {% endblock %}

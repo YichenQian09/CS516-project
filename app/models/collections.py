@@ -45,7 +45,9 @@ FROM Collections
 WHERE uid = :uid and collection_name =:collection_name and pid =:pid
 ''',
                               uid=uid,collection_name=collection_name,pid=pid)
-        return True if rows is not None else False
+        if rows is None:
+            return False
+        return True if len(rows)>0 else False
     
     @staticmethod
     def add_paper_in_collection(uid,collection_name,pid):
@@ -148,3 +150,15 @@ group by collection_name
             if r[0]!="Liked":
                 strip.append(r[0])
         return strip
+
+    # add default collection liked for a new user
+    @staticmethod
+    def create_default_collection(uid):
+        rows = app.db.execute('''
+INSERT INTO Collections(uid, collection_name, pid)
+VALUES(:uid,:collection_name, -1)
+        ''',
+        uid=uid,collection_name="Liked")
+        # a number of inserted tuples
+        return rows if rows is not None else None
+    

@@ -23,7 +23,7 @@ CREATE TABLE Users (
 CREATE TABLE User_cart (
 	uid INT NOT NULL,
     cite_pid INT NOT NULL,
-    time_added timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC')
+    time_added timestamp without time zone NOT NULL DEFAULT (now()::timestamp(0))
 );
  
 -- user citation history
@@ -37,7 +37,7 @@ CREATE TABLE Users_cite_history (
 CREATE TABLE User_browse (
 	uid INT NOT NULL,
 	browsed_pid INT NOT NULL,
-    time_browsed timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+    time_browsed timestamp without time zone NOT NULL DEFAULT (now()::timestamp(0)),
     PRIMARY KEY (uid,browsed_pid,time_browsed)
 );
  
