@@ -39,4 +39,7 @@ def create_app():
     from .browse import bp as browse_bp
     app.register_blueprint(browse_bp)
 
+    from .citationcart import bp as citationcart_bp
+    app.register_blueprint(citationcart_bp)
+
     return app
