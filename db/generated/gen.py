@@ -148,6 +148,7 @@ def gen_user_cite_history(num_users,num_papers=629814):
         print(f'{num_users} generated')
     return num_cite
 
+
 # generate fake dataset for users' collection
 # table Collections 
 def gen_collections(num_users,num_papers=629814):
@@ -177,9 +178,10 @@ def gen_collections(num_users,num_papers=629814):
     return 
 
 
-#gen_auth(num_users)
-#user_browse_history, user_browse, num_browsed  =  gen_user_browse(num_users)
-#gen_user_cart(num_users,user_browse_history, user_browse, num_browsed)
-#num_cite = gen_user_cite_history(num_users)
-#gen_user(num_users,num_cite)
+gen_auth(num_users)
+user_browse_history, user_browse, num_browsed  =  gen_user_browse(num_users)
+gen_user_cart(num_users,user_browse_history, user_browse, num_browsed)
+num_cite = gen_user_cite_history(num_users)
+gen_user(num_users,num_cite)
+gen_user(num_users,10)
 gen_collections(num_users)

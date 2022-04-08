@@ -4,7 +4,6 @@
 
 <br><br>
 <h2>{{current_user.firstname}}'s Citation Cart:</h2>
-<a href="{{ url_for('citationcart.checkout') }}"><button><i class="fa fa-cart-plus" style="color:rgb(230, 36, 36)"></i>check out</button></a>
 <p>
   {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -26,7 +25,8 @@
     </div>
   </div>
 <form action="" method="post" style="margin-top:-65px;">
-  <input type="submit" value="Remove papers in batch" style="float:right;margin-bottom:10px;">
+  <input type="submit" name="action" value="Checkout paper for citation" style="float:right;margin-bottom:10px;">
+  <input type="submit" name="action" value="Remove papers in batch" style="float:right;margin-bottom:10px;">
   <table class='table table-hover table-bordered container'>
     <thead class="thead-dark">
       <tr>

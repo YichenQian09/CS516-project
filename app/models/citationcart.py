@@ -32,8 +32,6 @@ class CitationCart:
             LIMIT :pagesize OFFSET :offset
             '''
         , uid=uid, pagesize=pagesize, offset=pagenum*pagesize)
-        for _ in rows:
-            print(_)
         return [Paper(*row) for row in rows]
 
     @staticmethod
@@ -52,7 +50,6 @@ class CitationCart:
             VALUES(:uid, :pid, current_timestamp)
             RETURNING cite_pid
             ''', uid=uid,pid=pid)
-        print(rows)
         return rows[0][0] if rows is not None else None
 
     @staticmethod
