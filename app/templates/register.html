@@ -48,6 +48,19 @@
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
+  <p>
+    {{ form.nickname.label }}<br/>
+    {{ form.nickname(size=32) }}<br/>
+    {% for error in form.nickname.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>Research interests</p>
+  <ul>
+    {% for interest in interests%}
+    <li><input type="checkbox" name="reInterest" value="{{interest}}"><span>{{interest}}</span></li>
+    {% endfor %}
+  </ul>
   <p>{{ form.submit() }}</p>
 </form>
 

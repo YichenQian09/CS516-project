@@ -4,8 +4,9 @@
     width:100%;
 }
 #profileLeft{
-      width:400px;  
-      height: 550px;
+      width:400px; 
+      min-height: 550px;
+      /* height: 550px; */
       background: rgba(100,54,60,0.5);
       margin-left: -10px;
 }
@@ -32,6 +33,7 @@
 }
 #profileRight{
     margin-top: 20px;
+    margin-left:20px;
     width: 300px;
     flex-grow: 1;
 }

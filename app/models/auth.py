@@ -28,14 +28,17 @@ WHERE email = :email
         else:
             return Auth(*(rows[0][1:]))
 
+    # if the user register, then check if there is an existing email; 
+    # if the user update, then check if there is an existing email except its own email
     @staticmethod
-    def email_exists(email):
+    def email_exists(email,uid=-1):
         rows = app.db.execute("""
 SELECT email
 FROM Auth
 WHERE email = :email
+AND uid <> :uid
 """,
-                              email=email)
+                              email=email,uid=uid)
         return len(rows) > 0
 
     @staticmethod
