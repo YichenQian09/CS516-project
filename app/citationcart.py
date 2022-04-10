@@ -54,14 +54,6 @@ def citationcart():
                            )
 
 
-# @bp.route('/checkout', methods=['POST', 'GET'])
-# def checkout():
-#     ordernum = datetime.now() + "/" + current_user.uid
-#     Usercitation.add_to_usercitation(current_user.uid, ordernum, )
-#     flash("checkout successfully")
-#     return redirect(url_for('citationcart.citationcart')) 
-
-
 @bp.route('/remove_papers/<pid>', methods=['GET', 'POST'])
 def remove_paper_from_citationcart(pid):
     if not current_user.is_authenticated:
