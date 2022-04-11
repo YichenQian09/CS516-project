@@ -45,8 +45,6 @@ FROM Collections
 WHERE uid = :uid and collection_name =:collection_name and pid =:pid
 ''',
                               uid=uid,collection_name=collection_name,pid=pid)
-        if rows is None:
-            return False
         return True if len(rows)>0 else False
     
     @staticmethod
