@@ -45,7 +45,8 @@ FROM Collections
 WHERE uid = :uid and collection_name =:collection_name and pid =:pid
 ''',
                               uid=uid,collection_name=collection_name,pid=pid)
-        return True if rows is not None else False
+        print(rows)
+        return True if len(rows)>0 else False
     
     @staticmethod
     def add_paper_in_collection(uid,collection_name,pid):
