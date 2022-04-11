@@ -41,6 +41,7 @@
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
+
   <p>
     {{ form.password.label }}<br/>
     {{ form.password(size=32) }}<br/>
@@ -48,6 +49,19 @@
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
+  <p>
+    {{ form.nickname.label }}<br/>
+    {{ form.nickname(size=32,value=user_info[0]) }}<br/>
+    {% for error in form.nickname.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>Research interests</p>
+  <ul>
+    {% for interest in interests%}
+    <li><input type="checkbox" name="reInterest" value="{{interest}}" {{ "checked" if interest in user_info[1] }} ><span>{{interest}}</span></li>
+    {% endfor %}
+  </ul>
   <p>
     {% with messages = get_flashed_messages() %}
     {% if messages %}

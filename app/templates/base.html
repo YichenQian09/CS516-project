@@ -7,6 +7,7 @@
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/example.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" ></script>
@@ -54,10 +55,14 @@
         padding-left: 10px;
         padding-right: 10px;
     }
+    .sidenav #logo{
+      height:64px;
+    }
 
     .main {
-        padding: 0px 10px;
-        width: 100vw;
+       padding: 0px 10px;
+        /*width: 100vw;*/
+        width:100%;
     }
 
     .login-main-text {
@@ -85,7 +90,8 @@
         {% if current_user.is_authenticated %}
           Hello {{current_user.firstname}}! 
           <a href="{{ url_for('collection.collections') }}" type="button" class="btn btn-dark">Collections</a>
-          <a href="{{ url_for('users.update') }}" type="button" class="btn btn-dark">Update Info</a>
+          <a href="{{ url_for('index.index') }}" type="button" class="btn btn-dark">Homepage</a>
+          <a href="{{ url_for('citationcart.citationcart') }}" type="button" class="btn btn-dark">Citation Cart</a>
           <a href="{{ url_for('users.profile') }}" type="button" class="btn btn-dark">Profile</a>
           <a type="button" class="btn btn-dark"><i class="fa fa-shopping-cart" aria-hidden="true" style="color: white;"></i></a>
           <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-dark">Log out</a>

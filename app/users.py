@@ -1,3 +1,4 @@
+from app.models.collections import Collections
 from flask import render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
@@ -48,11 +49,15 @@ class RegistrationForm(FlaskForm):
         'Repeat Password', validators=[DataRequired(),
                                        EqualTo('password')])
     school = StringField('School', validators=[DataRequired()])
+    nickname = StringField('Nickname', validators=[DataRequired()])
     submit = SubmitField('Register')
 
     def validate_email(self, email):
         if Auth.email_exists(email.data):
             raise ValidationError('Already a user with this email.')
+    def validate_nickname(self, nickname):
+        if Users.nickname_exists(nickname.data):
+            raise ValidationError('Already a user with this nickname.')
 
 class UpdateForm(FlaskForm):
     firstname = StringField('First Name', validators=[DataRequired()])
@@ -62,7 +67,15 @@ class UpdateForm(FlaskForm):
     oldpassword = PasswordField('Old Password', validators=[DataRequired()])
     password = PasswordField('New Password', validators=[DataRequired()])
     school = StringField('School', validators=[DataRequired()])
+    nickname = StringField('Nickname', validators=[DataRequired()])
     submit = SubmitField('Update')
+
+    def validate_email(self, email):
+        if Auth.email_exists(email.data,current_user.uid):
+            raise ValidationError('Already a user with this email.')
+    def validate_nickname(self, nickname):
+        if Users.nickname_exists(nickname.data,current_user.uid):
+            raise ValidationError('Already a user with this nickname.')
 
 class UpdateNicknameForm(FlaskForm):
     nickname = StringField('Nickname', validators=[DataRequired()])
@@ -77,16 +90,36 @@ class UpdateNicknameForm(FlaskForm):
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('index.index'))
+    interests=['Artificial Intelligence (AI)'
+                    ,'Computer Architecture & Engineering (ARC)'
+                    ,'Biosystems & Computational Biology (BIO)'
+                    ,'Cyber-Physical Systems and Design Automation (CPSDA)'
+                    ,'Database Management Systems (DBMS)'
+                    ,'Education (EDUC)'
+                    ,'Graphics (GR)'
+                    ,'Human-Computer Interaction (HCI)'
+                    ,'Operating Systems & Networking (OSNT)'
+                    ,'Programming Systems (PS)'
+                    ,'Scientific Computing (SCI)'
+                    ,'Security (SEC)'
+                    ,'Theory (THY)']
     form = RegistrationForm()
     if form.validate_on_submit():
-        if Auth.register(form.email.data,
+        newUser=Auth.register(form.email.data,
                          form.password.data,
                          form.firstname.data,
                          form.lastname.data,
-                         form.school.data):
+                         form.school.data)
+        
+        chosenInterests=request.form.getlist("reInterest")                       
+        if newUser:
             flash('Congratulations, you are now a registered user!')
+            #set basic information for new user
+            Users.set_basic_info(newUser.get_id(),form.nickname.data,chosenInterests)  
+            # create a default collection 'Liked' for new user
+            Collections.create_default_collection(newUser.get_id())
             return redirect(url_for('users.login'))
-    return render_template('register.html', title='Register', form=form)
+    return render_template('register.html', title='Register', form=form, interests=interests)
 
 
 @bp.route('/logout')
@@ -98,31 +131,49 @@ def logout():
 def update():
     if not current_user.is_authenticated:
         return redirect(url_for('users.login'))
+    user_info=Users.get_info(current_user.uid)
+    interests=['Artificial Intelligence (AI)'
+                    ,'Computer Architecture & Engineering (ARC)'
+                    ,'Biosystems & Computational Biology (BIO)'
+                    ,'Cyber-Physical Systems and Design Automation (CPSDA)'
+                    ,'Database Management Systems (DBMS)'
+                    ,'Education (EDUC)'
+                    ,'Graphics (GR)'
+                    ,'Human-Computer Interaction (HCI)'
+                    ,'Operating Systems & Networking (OSNT)'
+                    ,'Programming Systems (PS)'
+                    ,'Scientific Computing (SCI)'
+                    ,'Security (SEC)'
+                    ,'Theory (THY)']
     form = UpdateForm()
     if form.validate_on_submit():
-        #if old email or old password is not right, the user cannot change information
+        #if old password is not right, the user cannot change information
         user = Auth.get_by_auth(current_user.get_email(), form.oldpassword.data)
         if user is None:
             flash('Invalid password')
             return redirect(url_for('users.update'))
-        if (Auth.update(user,form.email.data,
+        chosenInterests=request.form.getlist("reInterest")
+        authUpdate=Auth.update(user,form.email.data,
                          form.password.data,
                          form.firstname.data,
                          form.lastname.data,
-                         form.school.data)):
+                         form.school.data)
+        userUpdate=Users.update_info(current_user.uid,form.nickname.data,chosenInterests)
+        if authUpdate and userUpdate:
             flash('Congratulations, you updated your information!')
-            return redirect(url_for('users.update'))
-    return render_template('update.html', title='update', form=form, user=current_user)
+            return redirect(url_for('users.profile'))
+    return render_template('update.html', title='update', form=form, user=current_user,user_info=user_info,interests=interests)
 
 @bp.route('/profile', methods=['GET', 'POST'])
 def profile():
     if not current_user.is_authenticated:
         return redirect(url_for('users.login'))
     user_profile=Users.get_profile(current_user.uid)
+    email=current_user.email
     if user_profile is None:
         flash('Something wrong with your account, please login again!')
         return redirect(url_for('users.login'))
-    return render_template('profile.html', title='profile',profile=user_profile)
+    return render_template('profile.html', title='profile',profile=user_profile, email=email)
 
 @bp.route('/update_nickname/<old_name>', methods=['GET', 'POST'])
 def update_nickname(old_name):

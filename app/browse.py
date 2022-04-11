@@ -18,7 +18,6 @@ def get_browse_papers(timerange):
     # the function returns a list of tuples
     # (collection_name, numbers of papers)
     paper_list=Browses.get_papers(current_user.uid,timerange)
-    print("paper_list:",paper_list)  
     return render_template('browsedpaper.html', title='Browsedpaper', paper_list=paper_list,timerange=timerange)
 
 @bp.route('/record_browse', methods=['GET', 'POST'])
