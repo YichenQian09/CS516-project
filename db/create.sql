@@ -29,7 +29,7 @@ CREATE TABLE User_cart (
 -- user citation history
 CREATE TABLE Users_cite_history (
     uid INT NOT NULL,
-    order_num INT NOT NULL,
+    order_num TEXT NOT NULL,
     cite_pid INT NOT NULL
 );
 

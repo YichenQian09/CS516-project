@@ -91,6 +91,7 @@
           Hello {{current_user.firstname}}! 
           <a href="{{ url_for('collection.collections') }}" type="button" class="btn btn-dark">Collections</a>
           <a href="{{ url_for('index.index') }}" type="button" class="btn btn-dark">Homepage</a>
+          <a href="{{ url_for('citationcart.citationcart') }}" type="button" class="btn btn-dark">Citation Cart</a>
           <a href="{{ url_for('users.profile') }}" type="button" class="btn btn-dark">Profile</a>
           <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-dark">Log out</a>
         {% else %}
