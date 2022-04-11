@@ -9,11 +9,15 @@
       <a class="btn btn-black" href="#" role="button">Citatiton history</a>
       <a class="btn btn-black" href="{{ url_for('collection.collections') }}" role="button">Collections</a>
       <a class="btn btn-black" href="{{ url_for('users.update') }}"  role="button">Update Info</a>
-    </div> 
+    </div>
     <div>
         <span>Nickname:</span>
         <span>{{ profile.nickname }}</span>
         {#<a class="btn btn-dark" href="{{ url_for('users.update_nickname', old_name=profile.nickname) }}" role="button">Update</a>#}
+    </div>
+    <div>
+      <span>Contact Info:</span>
+      <span>{{ email }}</span>
     </div>
     <div>
         <span>you cited </span>
@@ -22,7 +26,11 @@
     </div>
     <div>
         <p>your research interest:</p>
+        {% if profile.research_interest %}
         <p>{{ profile.research_interest }}</p>
+        {% else %}
+        <p>No specific interest</p>
+        {% endif  %}
     </div>
     <div>
       <p>your keywords:</p>
