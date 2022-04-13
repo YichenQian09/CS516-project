@@ -6,7 +6,7 @@
     <h1>Profile</h1>
     <div id="profileLinks">
       <a class="btn btn-black" href="{{ url_for('browse.get_browse_papers', timerange='all') }}" role="button">Browse history</a>
-      <a class="btn btn-black" href="#" role="button">Citatiton history</a>
+      <a class="btn btn-black" href="{{ url_for('citation.get_citation_history') }}" role="button">Citatiton history</a>
       <a class="btn btn-black" href="{{ url_for('collection.collections') }}" role="button">Collections</a>
       <a class="btn btn-black" href="{{ url_for('users.update') }}"  role="button">Update Info</a>
     </div>

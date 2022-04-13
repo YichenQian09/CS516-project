@@ -26,7 +26,7 @@
     </div>
   </div>
 <form action="" method="post" style="margin-top:-65px;">
-  <input type="submit" name="action" value="Checkout paper for citation" style="float:right;margin-bottom:10px;">
+  <input id="checkoutButton" type="submit" name="action" value="Checkout paper for citation" style="float:right;margin-bottom:10px;">
   <input type="submit" name="action" value="Remove papers in batch" style="float:right;margin-bottom:10px;">
   <table class='table table-hover table-bordered container'>
     <thead class="thead-dark">
@@ -42,7 +42,7 @@
     <tbody>
       {% for paper in paper_list%}
         <tr>
-          <td><input type="checkbox" name="remove[]" value="{{paper.pid}}"></td>
+          <td><input class="usercartCheckbox" type="checkbox" name="remove[]" value="{{paper.pid}}"></td>
           <th scope="row">{{paper.pid}}</th>
           <td>
             <a href="{{ url_for('paperinfo.get_paper_info',pid=paper.pid )}}">{{paper.title}}</a>
@@ -55,5 +55,33 @@
     </tbody>
   </table>
 </form>
-
+<script>
+  document.getElementById('checkoutButton').addEventListener(
+    'click',
+    async(e) => {
+      //await navigator.clipboard.writeText('Yo')
+      await copyToClickboard()
+    }
+  )
+  //select checked papers, write their pids(value of the checkbox) to the clipboard
+  function copyToClickboard(){
+    var text='Paper ids:';
+    if($('.usercartCheckbox:checked').length==0){
+      alert('Please choose some papers!')
+      return;
+    }
+    $('.usercartCheckbox:checked').each(function(k){
+      if(k==0){
+        text += $(this).val();
+      }else{
+        text += ','+$(this).val();
+      }
+    })
+    const clipboardObj = navigator.clipboard;
+    if(clipboardObj != undefined){
+      clipboardObj.writeText(text);
+      alert('Paper ids are copied to your clipboard!')
+    }
+  }
+</script>
 {% endblock %}
