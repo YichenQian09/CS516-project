@@ -5,6 +5,7 @@ from sqlalchemy import null
 from app.collection import RemovePapersForm
 from .models.citationcart import CitationCart
 from .models.usercitation import Usercitation
+from .models.users import Users
 from flask_login import current_user
 
 
@@ -36,12 +37,12 @@ def citationcart():
 
     if len(pids) > 0:
         CitationCart.remove_paper_from_cart_in_batch(current_user.uid, pids)
-        print("You removed papers in batch from cart")
         print(currAction)
         if currAction=="Checkout paper for citation":
             ordernum = datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + "/" + str(current_user.uid)
-            print("ordernum", ordernum)
             Usercitation.add_to_usercitation(current_user.uid, ordernum, pids)
+            add_citenum = len(pids)
+            Users.update_citenum(add_citenum, current_user.uid)
         return redirect(url_for("citationcart.citationcart"))
 
 

@@ -1,4 +1,4 @@
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from flask import current_app as app
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -87,4 +87,26 @@ WHERE uid = :uid
         if rows[0][1]:
             interests_list=rows[0][1].split(',')
         return rows[0][0],interests_list
+
+    @staticmethod
+    def update_citenum(add_num, uid):
+        rows = app.db.execute(
+            '''
+            SELECT citenum
+            FROM users
+            WHERE uid = :uid
+            '''
+        , uid = uid)
+        if rows and rows[0]:
+            cur_citenum = rows[0][0]
+            new_citenum = cur_citenum + add_num
+            app.db.execute(
+                '''
+                UPDATE users
+                SET citenum = :new_citenum
+                WHERE uid = :uid
+                '''
+            , new_citenum=new_citenum, uid = uid)
+
+        
 

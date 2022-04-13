@@ -2,6 +2,12 @@
 
 {% block content %}
 
+<script>
+  function checkoutReminder() {
+    alert("You have checkouted selected citation papers! Pid has been copied at your clipboard :D");
+  }
+</script>
+
 <br><br>
 <h2>{{current_user.firstname}}'s Citation Cart:</h2>
 <p>
@@ -26,7 +32,7 @@
     </div>
   </div>
 <form action="" method="post" style="margin-top:-65px;">
-  <input type="submit" name="action" value="Checkout paper for citation" style="float:right;margin-bottom:10px;">
+  <input type="submit" name="action" value="Checkout paper for citation" style="float:right;margin-bottom:10px;" onclick="checkoutReminder()">
   <input type="submit" name="action" value="Remove papers in batch" style="float:right;margin-bottom:10px;">
   <table class='table table-hover table-bordered container'>
     <thead class="thead-dark">
