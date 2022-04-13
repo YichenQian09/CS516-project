@@ -30,3 +30,4 @@ SELECT pg_catalog.setval('public.users_uid_seq',
 
 \COPY Abstract FROM 'abstract.csv' WITH DELIMITER ',' NULL '' CSV
 
+\COPY Comment FROM 'comment.csv' WITH DELIMITER ',' NULL '' CSV

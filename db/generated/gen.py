@@ -76,7 +76,7 @@ def gen_auth(num_users):
 def gen_user(num_users,num_cite):
     with open('db/generated/Users.csv',"w") as f:
         writer = get_csv_writer(f)
-        print('AUTH...', end=' ', flush=True)
+        print('User...', end=' ', flush=True)
         research_ind = list(fake.random_int(min=0,max=12) for i in range(num_users))
         for uid in range(num_users):
             if uid % 10 == 0:
@@ -142,8 +142,9 @@ def gen_user_cite_history(num_users,num_papers=629814):
             for order in range(num_order[uid]):
                 cited_paper_list = np.random.choice(num_papers, size=fake.random_int(min=1,max=30))
                 u_counter+=len(cited_paper_list)
+                order = fake.date_time().strftime("%m/%d/%Y, %H:%M:%S") + "/" + str(uid)
                 for cite_pid in cited_paper_list:
-                    writer.writerow([uid,order+1,cite_pid])     
+                    writer.writerow([uid,order,cite_pid])     
             num_cite.append(u_counter)
         print(f'{num_users} generated')
     return num_cite
@@ -177,11 +178,24 @@ def gen_collections(num_users,num_papers=629814):
         print(f'{num_users} generated')
     return 
 
+def gen_comments(num_users,num_papers=629814):
+    with open('db/generated/Comment.csv',"w") as f:
+        writer = get_csv_writer(f)
+        print('Comment...', end=' ', flush=True)
+        paper_has_comment= np.random.choice([True,False],num_papers, p=[0.6,0.4])
+        commented_by_who = list(fake.random_int(min=0,max=num_users-1) for i in range(num_papers))
+        commented_star = list(fake.random_int(min=1,max=5) for i in range(num_papers))
+        for pid in range(num_papers):
+            if paper_has_comment[pid]:
+                time_commented= fake.date_time()
+                writer.writerow([pid,commented_by_who[pid],commented_star[pid],"","",time_commented,0])
+        print(f'{num_users} generated')
+    return 
 
 gen_auth(num_users)
 user_browse_history, user_browse, num_browsed  =  gen_user_browse(num_users)
 gen_user_cart(num_users,user_browse_history, user_browse, num_browsed)
 num_cite = gen_user_cite_history(num_users)
 gen_user(num_users,num_cite)
-gen_user(num_users,10)
 gen_collections(num_users)
+gen_comments(num_users)

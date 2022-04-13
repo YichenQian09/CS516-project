@@ -143,6 +143,23 @@ class Comment:
         print(rows)
         assert rows == 1
 
+    @staticmethod
+    def recommend_by_keyword(k1,k2,k3):
+        sql_str = '''WITH temp as (SELECT p.pid FROM Papers as p WHERE 
+           (p.title LIKE '%'''+k1+"%') OR (p.title LIKE '%"+k1+"%') OR (p.title LIKE '%"+k3+'''%'))
+           SELECT c.pid
+           FROM Comment as c, temp
+           WHERE c.pid = temp.pid 
+           GROUP BY c.pid
+           ORDER BY avg(c.star) DESC 
+           LIMIT 5
+           '''
+        rows = app.db.execute(sql_str)
+        rows = [r[0] for r in rows]
+        print(rows)
+        return rows
+
+
 class Helpful:
     def __init__(self,pid,uid,upvote_by_uid):
         self.pid = pid

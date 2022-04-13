@@ -16,3 +16,4 @@ class CitationRecord:
             WHERE cite_pid = :pid
             ''', pid=pid)
         return [CitationRecord(*row) for row in rows]
+
