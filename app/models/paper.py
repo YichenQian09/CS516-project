@@ -159,11 +159,11 @@ class Paper:
         # (pid<=maximum pid) is checked before executing
         rows = app.db.execute(
             '''
-            SELECT papers.pid, title, year, conference
+            SELECT *
             FROM papers 
             WHERE pid = :pid
             ''', pid=pid)
-        return [Paper(*row) for row in rows]
+        return Paper(*rows[0])
     
     @staticmethod
     def get_by_title(title_input):

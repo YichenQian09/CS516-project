@@ -1,5 +1,5 @@
-from app.models.collections import Collections
-from flask import render_template, redirect, url_for, flash, request
+from webbrowser import get
+from flask import  Blueprint, render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
@@ -9,10 +9,17 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from .models.auth import Auth
 from .models.users import Users
 from .models.comment import Comment
+from .models.paper import Paper, Abstract
+from .models.browses import Browses
+from .models.citationcart import CitationCart
+from .models.collections import Collections
+from .models.citations import Citations
 
-from flask import Blueprint
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction import text
+import json 
+
 bp = Blueprint('users', __name__)
-
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -85,6 +92,77 @@ class UpdateNicknameForm(FlaskForm):
     #     if Auth.email_exists(email.data):
     #         raise ValidationError('Already a user with this email.')
 
+
+def get_word_by_freq(uid):
+    collected =Collections.get_collected_by_uid(uid)
+    citationCart = CitationCart.get_all_citations_of_a_citation_cart(uid)
+    citationHistory = Citations.get_citations(uid)
+    browsed = Browses.get_papers(uid,"all")
+
+    words =""
+    for paper in collected:
+        t = paper.title
+        a = Abstract.get_by_pid(paper.pid)
+        words = words +" "+t
+        words = words +" "+t
+        if a is not None:
+            words = words +" "+a.abstract
+            words = words +" "+a.abstract
+    for paper in citationCart:
+        t = paper.title
+        a = Abstract.get_by_pid(paper.pid)
+        words = words +" "+t
+        words = words +" "+t
+        if a is not None:
+            words = words +" "+a.abstract
+            words = words +" "+a.abstract
+
+    for paper in citationHistory:
+        t = paper.title
+        a = Abstract.get_by_pid(paper.pid)
+        words = words +" "+t
+        words = words +" "+t
+        if a is not None:
+            words = words +" "+a.abstract
+            words = words +" "+a.abstract
+
+    for paper in browsed:
+        t = paper.title
+        a = Abstract.get_by_pid(paper.pid)
+        words = words +" "+t
+        if a is not None:
+            words = words +" "+a.abstract
+    words = [words]
+    new_stop_words = ["using", "used", "use", "iii", "given", "requires",
+                "require", "required"]
+
+    stop_words = text.ENGLISH_STOP_WORDS.union(new_stop_words)
+
+    # Instantiate a count vectorizer
+    vectorizer = CountVectorizer(stop_words=stop_words)
+    X = vectorizer.fit_transform(words)
+    term = vectorizer.get_feature_names_out()
+    freq = (X.toarray()[0]).tolist()
+    sorted_term = [x for _,x in sorted(zip(freq,term),reverse=True)]
+    sorted_freq = [y for y,_ in sorted(zip(freq,term),reverse=True)]
+
+    first_term = sorted_term[0:20]
+    first_freq = sorted_freq[0:20]
+    return first_term, first_freq
+
+@bp.route('/word_cloud', methods=['GET'])
+def word_cloud():
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login'))
+    try:
+        first_term, first_freq = get_word_by_freq(current_user.uid)
+        # modifed based on https://github.com/prateekkrjain/newsapi_word_cloud/blob/master/news_word_cloud.py
+        words_json = [{'text': word, 'weight': count} for word, count in zip(first_term,first_freq)]
+
+        return json.dumps(words_json)
+    except Exception as e:
+        print(e)
+        return '[]'
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -173,7 +251,15 @@ def profile():
     if user_profile is None:
         flash('Something wrong with your account, please login again!')
         return redirect(url_for('users.login'))
-    return render_template('profile.html', title='profile',profile=user_profile, email=email)
+    first_term, first_freq = get_word_by_freq(current_user.uid)
+    k1 = first_term[0]
+    k2 = first_term[1]
+    k3 = first_term[2]
+    recommended_pid = Comment.recommend_by_keyword(k1,k2,k3)
+    recommended_paper = []
+    for pid in recommended_pid:
+        recommended_paper.append(Paper.get_by_pid(pid))
+    return render_template('profile.html', title='profile',profile=user_profile, email=email,recommended_paper=recommended_paper)
 
 @bp.route('/update_nickname/<old_name>', methods=['GET', 'POST'])
 def update_nickname(old_name):
@@ -217,6 +303,7 @@ def delete_comment(pid):
         return redirect(url_for('users.login'))
     Comment.delete_comment_by_pid_uid(pid,current_user.uid)
     return redirect(url_for('users.view_comment'))
+
 
 
 

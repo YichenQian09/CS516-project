@@ -160,3 +160,12 @@ VALUES(:uid,:collection_name, -1)
         # a number of inserted tuples
         return rows if rows is not None else None
     
+    @staticmethod
+    def get_collected_by_uid(uid):
+        rows = app.db.execute('''
+        SELECT Papers.pid,title,year,conference
+        FROM Collections, Papers
+        WHERE uid = :uid and Collections.pid = Papers.pid
+        ''',
+            uid=uid)
+        return [Paper(*row) for row in rows]
