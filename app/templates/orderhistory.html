@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+<h2>{{current_user.firstname}}'s Citation Order History</h2>
+<div style="background-color: rgb(219, 212, 212);">
+    <div style="text-align: right">
+        <a href="{{ url_for('searchbycategory.search_by_category') }}" type="button" class="btn btn-dark">Go to Search By Category</a>
+        <a href="{{ url_for('basicsearch.basic_search') }}" type="button" class="btn btn-dark">Go to Search By ID or Title</a>
+    </div>
+  </div>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Order ID</th>
+      <th scope="col">Citation Number</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in order_history%}
+      <tr>
+        <td>
+          <a href="{{ url_for('citation.get_citation_history_by_order',order_num=order.order_num )}}">{{order.order_num}}</a>
+        </td>
+        <td>{{order.citenum_of_this_order}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
