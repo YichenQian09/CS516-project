@@ -87,6 +87,33 @@ CREATE TABLE Abstract (
     abstract TEXT
 );
 
+CREATE TABLE Comment (
+    pid INT NOT NULL,
+    uid INT NOT NULL, 
+    star INT NOT NULL,
+    comment_sum TEXT,
+    comment_text TEXT,
+    time_submitted timestamp without time zone NOT NULL DEFAULT (now()::timestamp(0)),
+    helpful_vote INT NOT NULL, 
+    PRIMARY KEY (pid,uid)
+);
+
+CREATE TABLE Helpful (
+    pid INT NOT NULL,
+    uid INT NOT NULL,
+    upvote_by_uid INT NOT NULL,
+    PRIMARY KEY (pid, uid, upvote_by_uid)
+);
+
+CREATE TABLE Message (
+    sender_uid INT NOT NULL,
+    receiver_uid INT NOT NULL,
+    message_text TEXT NOT NULL,
+    time_sent timestamp without time zone NOT NULL DEFAULT (now()::timestamp(0)),
+    PRIMARY KEY (sender_uid, receiver_uid, time_sent)
+);
+
+
 
 
 

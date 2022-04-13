@@ -8,6 +8,10 @@ display: table;
 width: 100%;
 }
 
+.subsection{
+    width: 100%;
+    margin-bottom: 30px;
+}
 .left-half {
 background-color: #ff9e2c;
 position: absolute;
@@ -26,6 +30,19 @@ width: 50%;
     margin: auto;
     width: 50%;
     /* border: 3px solid green; */
+    padding: 10px;
+}
+
+.center-table {
+    margin: auto;
+    width: 80%;
+    /* border: 3px solid green; */
+    padding: 10px;
+}
+
+.icon {
+    margin: auto;
+    text-align: center;  
     padding: 10px;
 }
 
@@ -59,19 +76,28 @@ width: 50%;
     height: fit-content;
 }
 
-.paper-page {
-    height: auto;
-    width: 100%;
-    margin: 10 10px;
-
+.review-main-info{
+    left: 0px;
+    width: calc(100%-100px);
+    margin: 0 10px;
+    display: inline-block;
 }
 
-.paper-body{
-    width: 100%;
-    display: flex;
-    flex-direction: row; 
-    justify-content: space-between;
+.review-upvote-part{
+    width: 100px;
+    right: 0px;
+    margin: 0 10px;
+    display: inline-block;
 }
+
+.one_review {
+    outline: dashed;
+    outline-width: 1px;
+}
+
+.checked {
+    color: orange;
+  }
 
 /* Popup box BEGIN */
 .hover_bkgr_fricc{

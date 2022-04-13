@@ -13,9 +13,14 @@
   <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" ></script>
   <script>
   $(document).ready( function () {
-  $('#basicSearchPaparList').DataTable();
+  $('#basicSearchPaparList').DataTable({"searching": false});
   } );
   </script>
+  <script>
+    $(document).ready( function () {
+    $('#citationCart').DataTable({"searching": false});
+    } );
+    </script>
   <script>
     $(document).ready( function () {
     $('#citingPaper').DataTable({"searching": false});
@@ -23,19 +28,6 @@
     </script>
   <!-- Import icon library -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script>
-    $(window).load(function () {
-    $(".trigger_popup_fricc").click(function(){
-       $('.hover_bkgr_fricc').show();
-    });
-    $('.hover_bkgr_fricc').click(function(){
-        $('.hover_bkgr_fricc').hide();
-    });
-    $('.popupCloseButton').click(function(){
-        $('.hover_bkgr_fricc').hide();
-    });
-});
-  </script>
 
   <style>
     body {
@@ -93,7 +85,6 @@
           <a href="{{ url_for('index.index') }}" type="button" class="btn btn-dark">Homepage</a>
           <a href="{{ url_for('citationcart.citationcart') }}" type="button" class="btn btn-dark">Citation Cart</a>
           <a href="{{ url_for('users.profile') }}" type="button" class="btn btn-dark">Profile</a>
-          <a type="button" class="btn btn-dark"><i class="fa fa-shopping-cart" aria-hidden="true" style="color: white;"></i></a>
           <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-dark">Log out</a>
         {% else %}
           <a href="{{ url_for('users.login') }}" type="button" class="btn btn-dark">Log in</a>

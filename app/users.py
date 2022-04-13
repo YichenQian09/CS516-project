@@ -8,7 +8,7 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.auth import Auth
 from .models.users import Users
-
+from .models.comment import Comment
 
 from flask import Blueprint
 bp = Blueprint('users', __name__)
@@ -185,3 +185,41 @@ def update_nickname(old_name):
             flash('You updated your nickname!')
             return redirect(url_for('users.profile'))
     return render_template('updatenickname.html', title='updateNickname',form=form, old_name=old_name)
+
+@bp.route('/view_comment',methods=('GET','POST'))
+def view_comment():
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login'))
+    comments = Comment.fetch_comment_by_uid(current_user.uid)
+    return render_template('view_comment.html',comments = comments)
+
+@bp.route('/edit_comment/<pid>',methods=('GET','POST'))
+def edit_comment(pid):
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login'))
+    comment = Comment.fetch_comment_by_pid_uid(current_user.uid,pid)
+    return render_template('edit_comment.html',comment = comment)
+
+@bp.route('/update_comment/<pid>',methods=('GET','POST'))
+def update_comment(pid):
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login'))
+    comment_sum = request.form.get("comment_summary")
+    comment = request.form.get("comment")
+    star = int(request.form.get("star"))
+    Comment.edit_comment_by_pid_uid(pid,current_user.uid,star,comment_sum,comment)
+    return redirect(url_for('users.view_comment'))
+
+
+@bp.route('/delete_comment/<pid>',methods=('GET','POST'))
+def delete_comment(pid):
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login'))
+    Comment.delete_comment_by_pid_uid(pid,current_user.uid)
+    return redirect(url_for('users.view_comment'))
+
+
+
+
+
+    

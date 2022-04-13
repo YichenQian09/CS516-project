@@ -5,9 +5,7 @@
 <br><br>
 
 <a href="{{ url_for('paperindex.paperindex') }}">
-    <div>
-        <i class="fa fa-arrow-circle-left" style="font-size:36px"></i>
-    </div>
+    <i class="fa fa-arrow-circle-left" style="font-size:36px"></i>
 </a>
 
 <div class="d-flex flex-row">
@@ -36,13 +34,6 @@
                 {% endif %}
                 {% endwith %}
               </p>
-            <div class="hover_bkgr_fricc">
-                <span class="helper"></span>
-                <div>
-                    <div class="popupCloseButton">&times;</div>
-                    <h3>Successfully added!</h3>
-                </div>
-            </div>
             <ul>
                 <li>Author(s):
                     <ul>
@@ -65,8 +56,9 @@
                         This paper's abstract is current unavailable.
                     {% endif %}
                 </p>
-            </div>  
-            <h4>References</h4>
+            </div> 
+            <div class="subsection">
+            <h3>References</h3>
             {% if citing_papers|length >0 %}
             <table class='table table-hover table-sm table-bordered container' id="citingPaper">
                 <thead class="thead-dark">
@@ -93,18 +85,148 @@
             {% else %}
             Per our dataset, this paper doesn't have any references.
             {% endif %}
+        </div>
         </article>
-        <form method="POST">
-            <input style="width:100%; height:auto;" name="message">
-            <input type="submit">
-        </form>
+        <div class = "subsection">        
+            <h3>Comment</h3>
+            <div id="reviews">
+                {% if comments|length>0 %}
+                <div class="d-flex flex-row">
+                    <div class="col">
+                    <h4 style="font-weight:bold;">Rating:  
+                        {% if (sum_score/num_score)|round|int == 1  %}
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        {% elif  (sum_score/num_score)|round|int  ==2 %}
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        {% elif (sum_score/num_score)|round|int  == 3 %}
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                        {% elif (sum_score/num_score)|round|int  == 4 %}
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        {% else %}
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        {% endif %}
+                        {{sum_score/num_score}}</h4>
+                    </div>
+                    <div class="col"><h4 style="font-weight:bold;">{{comment_num}} Comments</h4></div>
+                    </div>
+                {% for com in comments %}
+                    <hr>
+                    <div class="rounded border border-secondary one_review">
+                    <div class = "d-flex felx-row">
+                    <div class ="col-1">
+                        <i class="fa fa-user-circle-o fa-2x icon" aria-hidden="true"></i>
+                        {{username[loop.index0]}}
+                    </div>
+                    <div class ="col-8">
+                    <h5 style="font-weight: bold;">{{ com.comment_sum }}</h5>
+                        Score: 
+                            {% if com.star|int == 1  %}
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            {% elif  com.star|int ==2 %}
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            {% elif  com.star|int == 3 %}
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            {% elif com.star|int == 4 %}
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star"></span>
+                            {% else %}
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            {% endif %}
+                            {% if not_upvoted_by[loop.index0] %}
+                            <a href="{{ url_for('paperinfo.upvote_comment',pid=paper.pid,uid = com.uid) }}">
+                                <button type="button" class="btn btn-outline-primary btn-sm" style="font-size: 12px;">Helpful {{com.helpful_vote}}</button>
+                            </a>       
+                            {% else %}
+                            <a href="{{ url_for('paperinfo.cancel_upvote',pid=paper.pid,uid=com.uid) }}">
+                                <button type="button" class="btn btn-primary btn-sm" style="font-size: 12px;">Helpful {{com.helpful_vote}}</button>
+                            </a>   
+                            {% endif %}
+                            <div>{{ com.comment_text }}</div>
+                        </div>
+                    </div>
+                    </div>
+                {% endfor %}
+                {% else %}
+                Be the first to write a comment! 
+                {% endif %}
+            </div>
+
+        </div>
+        <div class="subsection">
+            {% if comment_exist %}
+            You have already submitted your comment. You can edit your submitted comments in the <a href="{{ url_for('users.profile') }}" >user portal</a>. 
+            {% else %}
+            <form action="/submit_message/{{paper.pid}}"  method="post">
+                <div class="d-flex flex-row">
+                    <div class = "col-2">Score: </div>   
+                    <div class ="col">
+                        <select  name="star" required>
+                        <option disabled selected value> -- select an option -- </option>
+                        <OPTION value=1>1</option>
+                        <OPTION value=2>2</option>
+                        <OPTION value=3>3</option>
+                        <OPTION value=4>4</option>
+                        <OPTION value=5>5</option>
+                    </select></div>
+                </div>
+                <div class="d-flex flex-row">
+                    <div class = "col-2">Review headline: </div>  
+                    <div class ="col"> 
+                    <textarea style="width: 100%;" placeholder ="Enter your comment summary here" name="comment_summary" rows="1"  required></textarea>
+                    </div>
+                </div>  
+                <textarea style ="width: 100%;" placeholder="Enter your comment here" name="comment" cols="50" rows="4"  required></textarea>
+                <input type="submit" value="Submit">
+            </form>
+            {% endif %}
+        </div>
+        
     </div>
     <div class="paper-side-info">
         {% if cited_list|length >0 %}
             This paper is cited by {{cited_list|length}} papers:
             <ol>
                 {% for paper in cited_list%}
-                    <li>pid: {{paper.pid}}</li>
+                    <li><a href="{{ url_for('paperinfo.get_paper_info',pid=paper.pid )}}">pid: {{paper.pid}}</a></li>
                 {% endfor %}
             </ol>
         {% else %}
