@@ -209,7 +209,7 @@ class Authors:
             WHERE author =:author
             ''', author=author
         )
-        return [Author(*row) for row in rows]
+        return [Authors(*row) for row in rows]
 
 class Abstract:
     def __init__(self, pid, abstract):
