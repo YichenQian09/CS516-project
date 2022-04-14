@@ -41,6 +41,7 @@ def get_paper_info():
     
     pid = int(pid)
     paper = Paper.get_by_pid(pid)
+    print("profile: paper --> ", paper)
     abstract = Abstract.get_by_pid(pid)
     authors = Authors.get_by_pid(pid)
     citing_papers = Paper.get_citing_papers_by_pid(pid)
@@ -71,7 +72,7 @@ def get_paper_info():
         username.append(Users.get_profile(com.uid).nickname)
     print(not_upvoted_by)
     return render_template('paperinfopage.html', 
-                            paper=paper[0], 
+                            paper=paper, 
                             abstract=abstract, 
                             authors = authors, 
                             citing_papers = citing_papers,

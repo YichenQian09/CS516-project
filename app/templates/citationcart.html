@@ -22,39 +22,41 @@
     <div style="text-align: right">
         <a href="{{ url_for('searchbycategory.search_by_category') }}" type="button" class="btn btn-dark">Go to Search By Category</a>
         <a href="{{ url_for('basicsearch.basic_search') }}" type="button" class="btn btn-dark">Go to Search By ID or Title</a>
-        <a href="{{ url_for('citation.get_citation_orders') }}" type="button" class="btn btn-light">Go to Citation History</a>
+        <a href="{{ url_for('citation.get_citation_orders')}}" type="button" class="btn btn-light">Go to Citation History By Orders</a>
     </div>
-  </div>
-<form action="" method="post" style="margin-top:-65px;">
-  <input id="checkoutButton" type="submit" name="action" value="Checkout paper for citation" style="float:right;margin-bottom:10px;" onclick="checkoutReminder()">
-  <input type="submit" name="action" value="Remove papers in batch" style="float:right;margin-bottom:10px;">
-  <table class='table table-hover table-bordered container' id="citationCart">
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">Checkbox</th>
-        <th scope="col">Paper ID</th>
-        <th scope="col">Paper Title</th>
-        <th scope="col">Year</th>
-        <th scope="col">Conference</th>
-        <th scope="col">Remove</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for paper in paper_list%}
+</div>
+<div>
+  <form action="" method="post">
+    <input id="checkoutButton" type="submit" name="action" value="Checkout paper for citation" style="float:right;margin-bottom:10px;" onclick="checkoutReminder()">
+    <input type="submit" name="action" value="Remove papers in batch" style="float:right;margin-bottom:10px;">
+    <table class='table table-hover table-bordered container' id="citationCart" style="margin-top: 20px;">
+      <thead class="thead-dark">
         <tr>
-          <td><input class="usercartCheckbox" type="checkbox" name="remove[]" value="{{paper.pid}}"></td>
-          <th scope="row">{{paper.pid}}</th>
-          <td>
-            <a href="{{ url_for('paperinfo.get_paper_info',pid=paper.pid )}}">{{paper.title}}</a>
-          </td>
-          <td>{{paper.year}}</td>
-          <td>{{paper.conference}}</td>
-          <td><a href="{{ url_for('citationcart.remove_paper_from_citationcart', pid=paper.pid) }}">remove</a></td>
+          <th scope="col">Checkbox</th>
+          <th scope="col">Paper ID</th>
+          <th scope="col">Paper Title</th>
+          <th scope="col">Year</th>
+          <th scope="col">Conference</th>
+          <th scope="col">Remove</th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</form>
+      </thead>
+      <tbody>
+        {% for paper in paper_list%}
+          <tr>
+            <td><input class="usercartCheckbox" type="checkbox" name="remove[]" value="{{paper.pid}}"></td>
+            <th scope="row">{{paper.pid}}</th>
+            <td>
+              <a href="{{ url_for('paperinfo.get_paper_info',pid=paper.pid )}}">{{paper.title}}</a>
+            </td>
+            <td>{{paper.year}}</td>
+            <td>{{paper.conference}}</td>
+            <td><a href="{{ url_for('citationcart.remove_paper_from_citationcart', pid=paper.pid) }}">remove</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </form>
+</div>
 <script>
   document.getElementById('checkoutButton').addEventListener(
     'click',
