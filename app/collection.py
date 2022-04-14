@@ -32,7 +32,6 @@ def collections():
     # the function returns a list of tuples
     # (collection_name, numbers of papers)
     collection_list=Collections.get_each_collection(current_user.uid)
-    print("collection_list:",collection_list)
     return render_template('collections.html', title='Collections', collection_list=collection_list)
 
 @bp.route('/add_collection', methods=['GET', 'POST'])
@@ -53,7 +52,6 @@ def rename_collection(old_name):
     form = RenameCollectionForm()
     if form.validate_on_submit():
         if Collections.rename_collection(current_user.uid,old_name,form.collection_name.data):
-            print(form.collection_name.data)
             return redirect(url_for('collection.get_collection_papers',collection_name=form.collection_name.data))
     return render_template('renamecollection.html', title='renameCollections', form=form,old_name=old_name)
 
@@ -64,14 +62,12 @@ def get_collection_papers(collection_name):
     # the function returns a list of tuples
     # (collection_name, numbers of papers)
     paper_list=Collections.get_papers(current_user.uid,collection_name)
-    print("paper_list:",paper_list)
     #for the remove function
     form = RemovePapersForm()
     if form.validate_on_submit():
         pidString=request.form.getlist("remove")
         pids=tuple(int(pid) for pid in pidString)
         if Collections.remove_paper_all(current_user.uid,collection_name,pids):
-            print("You removed papers")
             return redirect(url_for('collection.get_collection_papers',collection_name=collection_name))    
     return render_template('collectedpaper.html', title='Collectedpaper', paper_list=paper_list,collection_name=collection_name,form=form)
 
@@ -88,18 +84,8 @@ def remove_paper(collection_name,pid):
     if not current_user.is_authenticated:
         return redirect(url_for('users.login'))
     if Collections.remove_paper_from_collection(current_user.uid,collection_name,pid):
-        print("You removed a paper")
+        flash("You removed a paper")
     return redirect(url_for('collection.get_collection_papers',collection_name=collection_name))
 
-# @bp.route('/remove_papers/<collection_name>', methods=['GET', 'POST'])
-# def remove_papers(collection_name):
-#     if not current_user.is_authenticated:
-#         return redirect(url_for('users.login'))
-#     form = RemovePapersForm()
-#     if form.validate_on_submit():
-#         pids=request.form.getlist("remove")
-#         if Collections.remove_paper_all(current_user.uid,collection_name,pids):
-#             print("You deleted papers")
-#     return redirect(url_for('collection.get_collection_papers',collection_name=collection_name))
     
     

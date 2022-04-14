@@ -41,7 +41,6 @@ def get_paper_info():
     
     pid = int(pid)
     paper = Paper.get_by_pid(pid)
-    print("profile: paper --> ", paper)
     abstract = Abstract.get_by_pid(pid)
     authors = Authors.get_by_pid(pid)
     citing_papers = Paper.get_citing_papers_by_pid(pid)
@@ -55,7 +54,6 @@ def get_paper_info():
     collect_form = CollectPaper()
     if collect_form.validate_on_submit():
         collection_name_selected= request.form.get("Collection")
-        print("value:",collection_name_selected)
         if Collections.check_paper_in_collection(current_user.uid,collection_name_selected,pid):
             flash("Collected already! ")
         else:
@@ -70,7 +68,6 @@ def get_paper_info():
     for com in comments:
         not_upvoted_by.append(not (Helpful.check_if_upvoted(com.pid,com.uid,current_user.uid)))
         username.append(Users.get_profile(com.uid).nickname)
-    print(not_upvoted_by)
     return render_template('paperinfopage.html', 
                             paper=paper, 
                             abstract=abstract, 
@@ -120,11 +117,10 @@ def submit_message(pid):
     comment_sum = request.form.get("comment_summary")
     comment = request.form.get("comment")
     star = int(request.form.get("star"))
-    print("star:",star,type(star))
     uid = current_user.uid
     if not Comment.check_if_commented_by_pid_uid(pid,uid): 
         if Comment.add_comment(pid,uid,star,comment_sum,comment,0):
-            print("Comment added successfully")
+            flash("Comment added successfully")
         else: flash("Something went wrong!Please re-submit your comment") #This should never happen
     return redirect(url_for('paperinfo.get_paper_info',pid=pid))
 

@@ -161,7 +161,6 @@ def word_cloud():
 
         return json.dumps(words_json)
     except Exception as e:
-        print(e)
         return '[]'
 
 @bp.route('/register', methods=['GET', 'POST'])

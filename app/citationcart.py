@@ -37,7 +37,6 @@ def citationcart():
 
     if len(pids) > 0:
         CitationCart.remove_paper_from_cart_in_batch(current_user.uid, pids)
-        print(currAction)
         if currAction=="Checkout paper for citation":
             ordernum = datetime.now()
             Usercitation.add_to_usercitation(current_user.uid, ordernum, pids)
@@ -60,5 +59,5 @@ def remove_paper_from_citationcart(pid):
     if not current_user.is_authenticated:
         return redirect(url_for('users.login'))
     if CitationCart.remove_paper_from_cart(current_user.uid, pid):
-        print("you removed a paper from cart")
+        flash("you removed a paper from cart")
     return redirect(url_for('citationcart.citationcart')) 
