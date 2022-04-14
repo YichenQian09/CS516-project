@@ -4,11 +4,6 @@
 
 <br><br>
 <h2>{{current_user.firstname}}'s Citation History</h2>
-<form method="post">
-    <label for="pagesize">current page size: </label>  <input name="pagesize" type="text" id="updated_pagesize" value="{{pagesize}}">
-    <label for="pagenum">current page num: </label> <input name="pagenum" type="text" id="updated_pagenum" value="{{pagenum}}">
-    <input type="submit" value="Apply">
-</form>
 <div style="background-color: rgb(219, 212, 212);">
     <div style="text-align: right">
         <a href="{{ url_for('searchbycategory.search_by_category') }}" type="button" class="btn btn-dark">Go to Search By Category</a>

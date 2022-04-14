@@ -258,7 +258,7 @@ def profile():
     recommended_pid = Comment.recommend_by_keyword(k1,k2,k3)
     recommended_paper = []
     for pid in recommended_pid:
-        recommended_paper.append(Paper.get_by_pid(pid))
+        recommended_paper.append(Paper.get_by_pid(pid)[0])
     return render_template('profile.html', title='profile',profile=user_profile, email=email,recommended_paper=recommended_paper)
 
 @bp.route('/update_nickname/<old_name>', methods=['GET', 'POST'])
@@ -272,12 +272,18 @@ def update_nickname(old_name):
             return redirect(url_for('users.profile'))
     return render_template('updatenickname.html', title='updateNickname',form=form, old_name=old_name)
 
-@bp.route('/view_comment',methods=('GET','POST'))
-def view_comment():
+@bp.route('/view_comment/<int:pagenum>',methods=('GET','POST'))
+def view_comment(pagenum):
     if not current_user.is_authenticated:
         return redirect(url_for('users.login'))
-    comments = Comment.fetch_comment_by_uid(current_user.uid)
-    return render_template('view_comment.html',comments = comments)
+    if request.method == 'POST':
+        pagenum = int(request.form['pagenum'])
+        if not pagenum:
+            pagenum = 0
+
+    comments, total_num = Comment.fetch_comment_by_uid(current_user.uid,pagenum)
+    total_num = int(total_num/10)
+    return render_template('view_comment.html',comments = comments,pagenum=pagenum, total_num = total_num)
 
 @bp.route('/edit_comment/<pid>',methods=('GET','POST'))
 def edit_comment(pid):

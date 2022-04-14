@@ -4,13 +4,15 @@ from flask import render_template, request
 from flask_login import current_user
 import datetime
 
-from .models.purchase import Purchase
-from .models.paper import Paper
+
+from .models.paper import Statistic
 
 from flask import Blueprint
 bp = Blueprint('index', __name__)
 
 @bp.route('/', methods=('GET', 'POST'))
 def index():
-    return render_template('home.html')
+    author_sta = Statistic.get_author_statistic()
+    year_sta = Statistic.get_year_statistic()
+    return render_template('home.html',author_sta=author_sta, year_sta=year_sta)
 #################################

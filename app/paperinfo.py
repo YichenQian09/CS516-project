@@ -54,7 +54,6 @@ def get_paper_info():
     collect_form = CollectPaper()
     if collect_form.validate_on_submit():
         collection_name_selected= request.form.get("Collection")
-        print("value:",collection_name_selected)
         if Collections.check_paper_in_collection(current_user.uid,collection_name_selected,pid):
             flash("Collected already! ")
         else:
@@ -66,10 +65,11 @@ def get_paper_info():
     sum_score, num_score = Comment.get_average_star(pid)
     not_upvoted_by=[]
     username = []
+    comment_num = 0 
     for com in comments:
         not_upvoted_by.append(not (Helpful.check_if_upvoted(com.pid,com.uid,current_user.uid)))
         username.append(Users.get_profile(com.uid).nickname)
-    print(not_upvoted_by)
+        if com.comment_sum!="":comment_num+=1  
     return render_template('paperinfopage.html', 
                             paper=paper[0], 
                             abstract=abstract, 
@@ -79,7 +79,8 @@ def get_paper_info():
                             collection_choices = choices,
                             collect_form = collect_form,
                             comments = comments,
-                            comment_num = len(comments),
+                            rating_num = len(comments),
+                            comment_num = comment_num,
                             comment_exist = comment_exist,
                             sum_score = sum_score,
                             num_score = num_score,
@@ -96,7 +97,7 @@ def like_paper(pid):
         Collections.add_paper_in_collection(current_user.uid,'Liked',pid)
         flash("You added a paper to Liked! ")
         
-    full_url = url_for('paperinfo.get_paper_info')+"?pid="+str(pid)
+    full_url = url_for('paperinfo.get_paper_info',pid=pid)
     return redirect(full_url)
 
 @bp.route('/paperinfo/cite/<pid>',methods=('GET', 'POST'))
@@ -119,7 +120,6 @@ def submit_message(pid):
     comment_sum = request.form.get("comment_summary")
     comment = request.form.get("comment")
     star = int(request.form.get("star"))
-    print("star:",star,type(star))
     uid = current_user.uid
     if not Comment.check_if_commented_by_pid_uid(pid,uid): 
         if Comment.add_comment(pid,uid,star,comment_sum,comment,0):

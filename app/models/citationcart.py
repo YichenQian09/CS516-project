@@ -69,3 +69,59 @@ class CitationCart:
             WHERE uid = :uid AND cite_pid in :pids
             ''', uid=uid, pids=pids)
         # return rows[0][0]
+
+    @staticmethod
+    def empty_cart(uid):
+        rows = app.db.execute(
+            '''
+            DELETE FROM User_cart
+            WHERE uid = :uid 
+            ''', uid=uid)
+        # return rows[0][0]
+
+def name_preprocess(names):
+    if names!="":
+        names = names.split("$")
+        p_names = []
+        last_names = []
+        for name in names:
+            name_split = name.split(" ")
+            if len(name_split)==2:
+                fn = (name_split[0][0]).upper()
+                name = name_split[1]+", "+fn+"."
+            elif len(name_split)>2:
+                fn = (name_split[0][0]).upper()
+                name = name_split[-1]+", "+fn+"."
+            else: 
+                pass
+            last_names.append(name_split[-1])
+            p_names.append(name)
+
+        return ", ".join(p_names), last_names[0]
+    else:
+        return "",""
+
+
+class PaperFull:
+    def __init__(self, pid, title, year, conference, authors):
+        self.pid = pid
+        self.title = title
+        self.year= year
+        self.conference = conference
+        self.authors, self.first_ln = name_preprocess(authors)
+
+    def __lt__(self, other):
+        return self.first_ln < other.first_ln
+
+    @staticmethod
+    def get_full_info_by_pid(pid):
+        rows = app.db.execute(
+            '''
+           SELECT p.pid, p.title, p.year, p.conference, string_agg(a.author, '$')
+           FROM Papers as p
+           LEFT JOIN Authorship as a ON p.pid = a.pid
+           WHERE p.pid = :pid
+           GROUP BY p.pid
+            ''',pid=pid)
+        return PaperFull(*rows[0])
+    

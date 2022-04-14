@@ -163,13 +163,18 @@ class Paper:
             FROM papers 
             WHERE pid = :pid
             ''', pid=pid)
-        return Paper(*rows[0])
+        return [Paper(*rows[0])]
     
     @staticmethod
-    def get_by_title(title_input):
+    def get_by_title(title_input,pagenum):
+        pagenum = int(pagenum)
         sql_str = "SELECT papers.pid, title, year, conference FROM papers WHERE title LIKE '%"+title_input+"%' ORDER BY pid"
         rows = app.db.execute(sql_str)
-        return [Paper(*row) for row in rows]
+        total_num = len(rows)
+        if (pagenum+1)*10>total_num: 
+            rows = rows[(pagenum*10):-1]
+        rows = rows[(pagenum*10):((pagenum+1)*10)]
+        return [Paper(*row) for row in rows], total_num
 
 
     @staticmethod
@@ -184,6 +189,36 @@ class Paper:
             ORDER BY pid
             ''',pid=pid)
         return [Paper(*row) for row in rows]
+    
+class Statistic:
+    def __init__(self, category, count):
+        self.category = category
+        self.count = count 
+
+    @staticmethod 
+    def get_year_statistic():
+        rows = app.db.execute(
+        '''
+        SELECT year, count(*) as cnt
+        FROM papers
+        GROUP BY year
+        ORDER BY cnt DESC
+        LIMIT 5
+        ''')
+        return [Statistic(*row) for row in rows]
+
+    @staticmethod 
+    def get_author_statistic():
+        rows = app.db.execute(
+        '''
+        SELECT a.author , count(*) as cnt
+        FROM papers as p, authorship as a 
+        WHERE p.pid = a.pid and a.author!='Staff'
+        GROUP BY a. author
+        ORDER BY cnt DESC
+        LIMIT 5 
+        ''')
+        return [Statistic(*row) for row in rows]
 
 
 class Authors:

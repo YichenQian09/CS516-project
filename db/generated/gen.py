@@ -4,7 +4,7 @@ from faker import Faker
 import random
 import numpy as np 
 
-num_users = 10
+num_users = 100
 cs_research_field =['Artificial Intelligence (AI)'
                     ,'Computer Architecture & Engineering (ARC)'
                     ,'Biosystems & Computational Biology (BIO)'
@@ -53,7 +53,7 @@ def get_csv_writer(f):
 # generate fake dataset for authentification 
 # table Auth
 def gen_auth(num_users):
-    with open('db/generated/Auth.csv', 'w') as f:
+    with open('db/data/Auth.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Auth...', end=' ', flush=True)
         for uid in range(num_users):
@@ -74,7 +74,7 @@ def gen_auth(num_users):
 # generate fake dataset for user, each matched with previous AUTH dataset
 # table Users
 def gen_user(num_users,num_cite):
-    with open('db/generated/Users.csv',"w") as f:
+    with open('db/data/Users.csv',"w") as f:
         writer = get_csv_writer(f)
         print('User...', end=' ', flush=True)
         research_ind = list(fake.random_int(min=0,max=12) for i in range(num_users))
@@ -95,7 +95,7 @@ def gen_user_browse(num_users, num_papers=629814):
     user_browse_history =dict()
     user_browse = np.random.choice([True,False],num_users, p=[0.95,0.05])
     num_browsed = list(fake.random_int(min=10,max=40) for i in range(num_users))
-    with open('db/generated/User_browse.csv',"w") as f:
+    with open('db/data/User_browse.csv',"w") as f:
         writer = get_csv_writer(f)
         print('User_browse...', end=' ', flush=True)
         for uid in range(num_users):
@@ -104,7 +104,7 @@ def gen_user_browse(num_users, num_papers=629814):
                 #min pid 0, max pid 629813
                 browsed_list = np.random.choice(num_papers, size=num_browsed[uid])
                 for browsed_pid in browsed_list:
-                    time_browsed= fake.date_time()
+                    time_browsed= fake.date_time_this_year()
                     writer.writerow([uid,browsed_pid,time_browsed])
                     one_browse_history.update({browsed_pid:time_browsed})
             user_browse_history.update({uid:one_browse_history})
@@ -116,7 +116,7 @@ def gen_user_browse(num_users, num_papers=629814):
 def gen_user_cart(num_users, browse_history, user_browse, num_browsed):
     user_has_cart = np.random.choice([True,False],num_users, p=[0.7,0.3])
     num_citation = list(fake.random_int(min=1,max=num_browsed[i]) for i in range(num_users))
-    with open('db/generated/User_cart.csv',"w") as f:
+    with open('db/data/User_cart.csv',"w") as f:
         writer = get_csv_writer(f)
         print('User_cart...', end=' ', flush=True)
         for uid in range(num_users):
@@ -134,7 +134,7 @@ def gen_user_cart(num_users, browse_history, user_browse, num_browsed):
 def gen_user_cite_history(num_users,num_papers=629814):
     num_order = list(fake.random_int(min=0, max=3) for i in range(num_users))
     num_cite = []
-    with open('db/generated/User_cite_history.csv',"w") as f:
+    with open('db/data/User_cite_history.csv',"w") as f:
         writer = get_csv_writer(f)
         print('User_cite_history...', end=' ', flush=True)
         for uid in range(num_users):
@@ -142,7 +142,7 @@ def gen_user_cite_history(num_users,num_papers=629814):
             for order in range(num_order[uid]):
                 cited_paper_list = np.random.choice(num_papers, size=fake.random_int(min=1,max=30))
                 u_counter+=len(cited_paper_list)
-                order = fake.date_time().strftime("%m/%d/%Y, %H:%M:%S") + "/" + str(uid)
+                order = fake.date_time_this_year()
                 for cite_pid in cited_paper_list:
                     writer.writerow([uid,order,cite_pid])     
             num_cite.append(u_counter)
@@ -155,7 +155,7 @@ def gen_user_cite_history(num_users,num_papers=629814):
 def gen_collections(num_users,num_papers=629814):
     user_has_collection= np.random.choice([True,False],num_users, p=[0.8,0.2])
     num_collection = list(fake.random_int(min=1,max=5) for i in range(num_users))
-    with open('db/generated/Collections.csv',"w") as f:
+    with open('db/data/Collections.csv',"w") as f:
         writer = get_csv_writer(f)
         print('Collections...', end=' ', flush=True)
         for uid in range(num_users):
@@ -179,16 +179,22 @@ def gen_collections(num_users,num_papers=629814):
     return 
 
 def gen_comments(num_users,num_papers=629814):
-    with open('db/generated/Comment.csv',"w") as f:
+    with open('db/data/Comment.csv',"w") as f:
         writer = get_csv_writer(f)
         print('Comment...', end=' ', flush=True)
-        paper_has_comment= np.random.choice([True,False],num_papers, p=[0.6,0.4])
+        paper_has_comment= np.random.choice([True,False],num_papers, p=[0.3,0.7])
+        paper_has_filled_comment= np.random.choice([True,False],num_papers, p=[0.1,0.9])
         commented_by_who = list(fake.random_int(min=0,max=num_users-1) for i in range(num_papers))
         commented_star = list(fake.random_int(min=1,max=5) for i in range(num_papers))
         for pid in range(num_papers):
             if paper_has_comment[pid]:
-                time_commented= fake.date_time()
-                writer.writerow([pid,commented_by_who[pid],commented_star[pid],"","",time_commented,0])
+                time_commented= fake.date_time_this_year()
+                if paper_has_filled_comment[pid]:
+                    content_sum =  fake.sentence(nb_words=5)
+                    content_text = fake.sentence(nb_words=10)
+                    writer.writerow([pid,commented_by_who[pid],commented_star[pid],content_sum ,content_text,time_commented,0])
+                else: 
+                    writer.writerow([pid,commented_by_who[pid],commented_star[pid],"","",time_commented,0])
         print(f'{num_users} generated')
     return 
 

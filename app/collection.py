@@ -32,7 +32,6 @@ def collections():
     # the function returns a list of tuples
     # (collection_name, numbers of papers)
     collection_list=Collections.get_each_collection(current_user.uid)
-    print("collection_list:",collection_list)
     return render_template('collections.html', title='Collections', collection_list=collection_list)
 
 @bp.route('/add_collection', methods=['GET', 'POST'])
@@ -53,7 +52,6 @@ def rename_collection(old_name):
     form = RenameCollectionForm()
     if form.validate_on_submit():
         if Collections.rename_collection(current_user.uid,old_name,form.collection_name.data):
-            print(form.collection_name.data)
             return redirect(url_for('collection.get_collection_papers',collection_name=form.collection_name.data))
     return render_template('renamecollection.html', title='renameCollections', form=form,old_name=old_name)
 
@@ -64,7 +62,6 @@ def get_collection_papers(collection_name):
     # the function returns a list of tuples
     # (collection_name, numbers of papers)
     paper_list=Collections.get_papers(current_user.uid,collection_name)
-    print("paper_list:",paper_list)
     #for the remove function
     form = RemovePapersForm()
     if form.validate_on_submit():

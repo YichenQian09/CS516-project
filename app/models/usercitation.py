@@ -15,7 +15,6 @@ class Usercitation:
         #     INSERT INTO Users_cite_history (uid, order_num, cite_pid)
         #     VALUES :citation_records
         #     ''', citation_records = citation_records)
-        # print(rows)
         for cite_pid in cite_pids:
             app.db.execute(
                 '''

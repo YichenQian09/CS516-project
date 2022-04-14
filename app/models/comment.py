@@ -28,7 +28,6 @@ class Comment:
             VALUES(:pid,:uid,:star,:comment_sum,:comment_text, now()::timestamp(0),:helpful_vote)
             ''', pid=pid,uid=uid,star=star,comment_sum=comment_sum,comment_text=comment_text,
                 helpful_vote=helpful_vote)
-        print("add_comment: ",rows)
         #return the pid of the added 
         return rows==1
 
@@ -45,16 +44,25 @@ class Comment:
         return [Comment(*row) for row in rows]
 
     @staticmethod
-    def fetch_comment_by_uid(uid):
+    def fetch_comment_by_uid(uid,pagenum):
+        total = app.db.execute(
+            '''
+            SELECT *
+            FROM Comment
+            WHERE uid = :uid
+            '''
+        ,uid= uid)
+        total_num = len(total)
         rows = app.db.execute(
             '''
             SELECT *
             FROM Comment
             WHERE uid = :uid
             ORDER BY helpful_vote DESC, time_submitted DESC
+            LIMIT 10 OFFSET :offset
             '''
-        ,uid= uid)
-        return [Comment(*row) for row in rows]
+        ,uid= uid,offset=10*pagenum)
+        return [Comment(*row) for row in rows],total_num
 
     @staticmethod
     def fetch_comment_by_pid_uid(uid,pid):
@@ -75,7 +83,6 @@ class Comment:
             WHERE pid = :pid AND uid = :uid;
             '''
         ,pid= pid,uid=uid)
-        print("delete_comment:", rows)
         assert rows==1
 
     @staticmethod
@@ -87,7 +94,6 @@ class Comment:
             WHERE pid = :pid AND uid = :uid
             '''
         ,pid= pid,uid=uid)
-        print("check:", rows)
         return len(rows)>0
 
     @staticmethod
@@ -115,7 +121,6 @@ class Comment:
             '''
         ,pid= pid)
         row_unwind = [item for sublist in rows for item in sublist]
-        print(row_unwind)
         return sum(row_unwind), len(row_unwind)
 
     @staticmethod
@@ -127,7 +132,6 @@ class Comment:
             WHERE pid = :pid AND uid=:uid
             '''
         ,pid= pid,uid=uid)
-        print(rows)
         assert rows== 1
       
     
@@ -140,23 +144,21 @@ class Comment:
             WHERE pid = :pid AND uid=:uid
             '''
         ,pid= pid,uid=uid)
-        print(rows)
         assert rows == 1
 
     @staticmethod
     def recommend_by_keyword(k1,k2,k3):
         sql_str = '''WITH temp as (SELECT p.pid FROM Papers as p WHERE 
            (p.title LIKE '%'''+k1+"%') OR (p.title LIKE '%"+k1+"%') OR (p.title LIKE '%"+k3+'''%'))
-           SELECT c.pid
-           FROM Comment as c, temp
-           WHERE c.pid = temp.pid 
-           GROUP BY c.pid
-           ORDER BY avg(c.star) DESC 
+           SELECT temp.pid, avg(c.star)
+           FROM temp
+           LEFT JOIN Comment as c ON temp.pid =c.pid 
+           GROUP BY temp.pid
+           ORDER BY avg(c.star) DESC NULLS LAST
            LIMIT 5
            '''
         rows = app.db.execute(sql_str)
         rows = [r[0] for r in rows]
-        print(rows)
         return rows
 
 
@@ -172,7 +174,6 @@ class Helpful:
             INSERT INTO Helpful(pid,uid,upvote_by_uid)
             VALUES(:pid,:uid,:upvote_by_uid)
             ''', pid=pid,uid=uid,upvote_by_uid=upvote_by_uid)
-        print("add_comment: ",rows)
         assert rows==1
 
     @staticmethod
@@ -184,7 +185,6 @@ class Helpful:
             WHERE pid = :pid AND uid = :uid AND upvote_by_uid = :upvote_by_uid;
             '''
         ,pid= pid,uid=uid,upvote_by_uid=upvote_by_uid)
-        print("check:", rows)
         return len(rows)>0
 
     def cancel_upvote(pid,uid,upvote_by_uid):
@@ -194,7 +194,6 @@ class Helpful:
             WHERE pid = :pid AND uid = :uid AND upvote_by_uid = :upvote_by_uid;
             '''
         ,pid= pid,uid=uid,upvote_by_uid=upvote_by_uid)
-        print("delete_comment:", rows)
         assert rows==1
 
         
