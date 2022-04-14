@@ -55,7 +55,6 @@ VALUES(:uid, :collection_name, :pid)
 RETURNING pid
 ''',
                               uid=uid,collection_name=collection_name,pid=pid)
-        print(rows)
         return rows[0][0] if rows is not None else None
 
     @staticmethod
@@ -85,7 +84,6 @@ FROM Collections
 WHERE collection_name =:collection_name
 ''',
                             collection_name=collection_name)
-        print("same name:",rows)
         return True if rows is not None and rows[0][0]>0 else False
     
     # if create an empty collection, we insert a row that pid==-1
@@ -96,8 +94,6 @@ INSERT INTO Collections(uid, collection_name, pid)
 VALUES(:uid, :collection_name, -1)
         ''',
         uid=uid,collection_name=collection_name)
-        print("rows:",rows)
-        print(collection_name)
         # a number of inserted tuples
         return rows if rows is not None else None
     
@@ -118,7 +114,6 @@ delete from Collections
 where uid= :uid and collection_name =:collection_name
 ''',
                             uid=uid, collection_name=collection_name)
-        print("delete rows:",rows)
         # the return value is the number of rows that deleted
         return rows-1 if rows is not None else None
     

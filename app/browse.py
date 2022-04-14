@@ -27,5 +27,4 @@ def record_browse():
     # the function returns a list of tuples
     # (collection_name, numbers of papers)
     record=Browses.record_browse(current_user.uid,45)
-    print("record:",record)  
     return redirect(url_for('index.index'))

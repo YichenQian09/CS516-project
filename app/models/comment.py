@@ -28,7 +28,6 @@ class Comment:
             VALUES(:pid,:uid,:star,:comment_sum,:comment_text, now()::timestamp(0),:helpful_vote)
             ''', pid=pid,uid=uid,star=star,comment_sum=comment_sum,comment_text=comment_text,
                 helpful_vote=helpful_vote)
-        print("add_comment: ",rows)
         #return the pid of the added 
         return rows==1
 
@@ -75,7 +74,6 @@ class Comment:
             WHERE pid = :pid AND uid = :uid;
             '''
         ,pid= pid,uid=uid)
-        print("delete_comment:", rows)
         assert rows==1
 
     @staticmethod
@@ -87,7 +85,6 @@ class Comment:
             WHERE pid = :pid AND uid = :uid
             '''
         ,pid= pid,uid=uid)
-        print("check:", rows)
         return len(rows)>0
 
     @staticmethod
@@ -115,7 +112,6 @@ class Comment:
             '''
         ,pid= pid)
         row_unwind = [item for sublist in rows for item in sublist]
-        print(row_unwind)
         return sum(row_unwind), len(row_unwind)
 
     @staticmethod
@@ -127,7 +123,6 @@ class Comment:
             WHERE pid = :pid AND uid=:uid
             '''
         ,pid= pid,uid=uid)
-        print(rows)
         assert rows== 1
       
     
@@ -140,7 +135,6 @@ class Comment:
             WHERE pid = :pid AND uid=:uid
             '''
         ,pid= pid,uid=uid)
-        print(rows)
         assert rows == 1
 
     @staticmethod
@@ -156,7 +150,6 @@ class Comment:
            '''
         rows = app.db.execute(sql_str)
         rows = [r[0] for r in rows]
-        print(rows)
         return rows
 
 
@@ -172,7 +165,6 @@ class Helpful:
             INSERT INTO Helpful(pid,uid,upvote_by_uid)
             VALUES(:pid,:uid,:upvote_by_uid)
             ''', pid=pid,uid=uid,upvote_by_uid=upvote_by_uid)
-        print("add_comment: ",rows)
         assert rows==1
 
     @staticmethod
@@ -184,7 +176,6 @@ class Helpful:
             WHERE pid = :pid AND uid = :uid AND upvote_by_uid = :upvote_by_uid;
             '''
         ,pid= pid,uid=uid,upvote_by_uid=upvote_by_uid)
-        print("check:", rows)
         return len(rows)>0
 
     def cancel_upvote(pid,uid,upvote_by_uid):
@@ -194,7 +185,6 @@ class Helpful:
             WHERE pid = :pid AND uid = :uid AND upvote_by_uid = :upvote_by_uid;
             '''
         ,pid= pid,uid=uid,upvote_by_uid=upvote_by_uid)
-        print("delete_comment:", rows)
         assert rows==1
 
         

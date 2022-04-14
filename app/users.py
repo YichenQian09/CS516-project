@@ -141,7 +141,7 @@ def get_word_by_freq(uid):
     # Instantiate a count vectorizer
     vectorizer = CountVectorizer(stop_words=stop_words)
     X = vectorizer.fit_transform(words)
-    term = vectorizer.get_feature_names_out()
+    term = vectorizer.get_feature_names()
     freq = (X.toarray()[0]).tolist()
     sorted_term = [x for _,x in sorted(zip(freq,term),reverse=True)]
     sorted_freq = [y for y,_ in sorted(zip(freq,term),reverse=True)]
@@ -161,7 +161,6 @@ def word_cloud():
 
         return json.dumps(words_json)
     except Exception as e:
-        print(e)
         return '[]'
 
 @bp.route('/register', methods=['GET', 'POST'])

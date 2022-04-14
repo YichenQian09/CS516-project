@@ -15,13 +15,10 @@ class Users(UserMixin):
     @staticmethod
     def get_profile(uid):
         rows = app.db.execute("""
-SELECT uid, nickname, citenum, research_interest
-FROM Users
-WHERE uid = :uid
-""",
-                              uid=uid)
-        print("profile:",rows)
-
+            SELECT uid, nickname, citenum, research_interest
+            FROM Users
+            WHERE uid = :uid
+            """, uid=uid)
         if not rows:  # user not found
             return None
         else:
@@ -30,11 +27,10 @@ WHERE uid = :uid
     @staticmethod
     def update_nickname(uid,nickname):
         rows = app.db.execute("""
-UPDATE users
-SET nickname =:nickname
-WHERE uid = :uid
-""",
-                              uid=uid,nickname=nickname)
+            UPDATE users
+            SET nickname =:nickname
+            WHERE uid = :uid
+            """, uid=uid,nickname=nickname)
         return rows if rows is not None else None
 
     #set basic info when register
@@ -42,10 +38,9 @@ WHERE uid = :uid
     def set_basic_info(uid,nickname,chosenInterests):
         interests=','.join(chosenInterests)
         rows = app.db.execute("""
-insert into users(uid,nickname,citenum,research_interest)
-values (:uid,:nickname,0,:interests)
-""",
-                              uid=uid,nickname=nickname,interests=interests)
+            insert into users(uid,nickname,citenum,research_interest)
+            values (:uid,:nickname,0,:interests)
+            """, uid=uid,nickname=nickname,interests=interests)
         return rows if rows is not None else None
 
     # if the user register, then check if there is an existing email; 
@@ -53,12 +48,11 @@ values (:uid,:nickname,0,:interests)
     @staticmethod
     def nickname_exists(nickname, uid=-1):
         rows = app.db.execute("""
-SELECT nickname
-FROM users
-WHERE nickname = :nickname
-AND uid <> :uid
-""",
-                              nickname=nickname,uid=uid)
+            SELECT nickname
+            FROM users
+            WHERE nickname = :nickname
+            AND uid <> :uid
+            """,nickname=nickname,uid=uid)
         return len(rows) > 0
     
     #update nickname and research_interests
@@ -66,22 +60,20 @@ AND uid <> :uid
     def update_info(uid,nickname,chosenInterests):
         interests=','.join(chosenInterests)
         rows = app.db.execute("""
-update users
-set nickname =:nickname,
-research_interest = :interests
-WHERE uid = :uid
-""",
-                              uid=uid,nickname=nickname,interests=interests)
+            update users
+            set nickname =:nickname,
+            research_interest = :interests
+            WHERE uid = :uid
+            """, uid=uid,nickname=nickname,interests=interests)
         return rows if rows is not None else None
     
     @staticmethod
     def get_info(uid):
         rows = app.db.execute("""
-select nickname,research_interest
-from users
-WHERE uid = :uid
-""",
-                              uid=uid)
+            select nickname,research_interest
+            from users
+            WHERE uid = :uid
+            """, uid=uid)
         if not rows[0]:
             return None
         interests_list=[]
