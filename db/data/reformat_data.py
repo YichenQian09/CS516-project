@@ -52,17 +52,18 @@ class Data_Reformat:
         assert self.papers!=[], f"You forget to run separate_papers(): {self.papers}"        
         assert self.num_paper == len(self.papers)
         for paper in self.papers: 
-            '''
             assert paper[0][0:2]=="#*", f"oh no! title doesn't start with #*: {paper[0][0:2]}"
             assert paper[1][0:2]=="#@", f"on no! author doesn't start with #@:{paper[1][0:2]}"
             assert paper[2][0:2]=="#t"
             assert paper[3][0:2]=="#c"
             assert paper[4][0:6]=="#index"
-            '''
             title = paper[0][2:]
             author_list = paper[1][2:].split(",")
             author_list = [x.strip() for x in author_list]
             author_list_filtered = filter(lambda x: x != "", author_list)
+            author_list_filtered = filter(lambda x: x != "Jr.", author_list_filtered)
+            author_list_filtered = filter(lambda x: x != "III", author_list_filtered)
+            author_list_filtered = filter(lambda x: x != "II", author_list_filtered)
             year = int(paper[2][2:])
             conference = paper[3][2:] #might be empty string ""
             index = int(paper[4][6:])

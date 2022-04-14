@@ -9,4 +9,38 @@
 <a href ="{{  url_for('paperindex.paperindex') }}"><button type="button" class="btn btn-dark"> Go to list of Papers</button></a>
 <a href ="{{  url_for('basicsearch.basic_search') }}"><button type="button" class="btn btn-dark"> Search by ID/title</button></a>
 <a href ="{{  url_for('searchbycategory.search_by_category') }}"><button type="button" class="btn btn-dark"> Advanced search</button></a>
+
+<br>
+<hr>
+<br>
+<h4>Platform Overview</h4>
+<ul>
+    <li>Number of papers we have information on:  629814</li>
+    <li>Written by 1307135 authors.</li>
+    <li>Together, these paper cited 632751 papers.</li>
+    <li>And 281080 of them have an abstract stored in our database</li>
+</ul>
+
+
+<div class="d-flex flex-row container">
+<div class="col-4">
+    <h5>Top 5 Years with the most paper stored </h5>
+    <ul> 
+        {% for sta in year_sta %}
+            <li>Year: {{sta.category}} | Number of paper: {{sta.count}}</li>
+        {% endfor %}
+    </ul>
+</div>
+<div calss ="col-4">
+    <h5>Top 5 authors with the most paper stored</h5>
+    <ol> 
+        {% for sta in author_sta %}
+            <li>Author: {{sta.category}} | Number of paper: {{sta.count}}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+
+</div>
+
 {% endblock %}

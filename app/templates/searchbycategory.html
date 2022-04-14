@@ -10,33 +10,18 @@
     <label for="conference">conference: </label>  <input name="conference" type="text" id="conference">
     <input type="submit" value="Start Search (with at least one keyword)">
 </form>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  {% for message in messages %}
+  {{ message }}
+  {% endfor %}
+{% endif %}
+{% endwith %}
 <div style="background-color: rgb(219, 212, 212);">
     <div style="text-align: right">
       <a href="{{ url_for('basicsearch.basic_search') }}" type="button" class="btn btn-dark">Go to Search by ID or Title</a>
       <a href="{{ url_for('paperindex.paperindex') }}" type="button" class="btn btn-dark">Go to List of All Papers</a>
     </div>
 </div>
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Paper ID</th>
-      <th scope="col">Paper Title</th>
-      <th scope="col">Year</th>
-      <th scope="col">Conference</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for paper in paper_list%}
-      <tr>
-        <th scope="row">{{paper.pid}}</th>
-        <td>
-          <a href="{{ url_for('paperinfo.get_paper_info',pid=paper.pid )}}">{{paper.title}}</a>
-        </td>
-        <td>{{paper.year}}</td>
-        <td>{{paper.conference}}</td>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
 
 {% endblock %}

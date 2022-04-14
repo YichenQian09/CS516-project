@@ -2,7 +2,13 @@
 
 {% block content %}
 
-<br><br>
+<br>
+<div style="text-align: left">
+  <a href="{{ url_for('searchbycategory.search_by_category') }}" type="button" class="btn btn-dark btn-sm"><i class="fa fa-arrow-right" aria-hidden="true" style="color:white;"></i> Search By Category</a>
+  <a href="{{ url_for('basicsearch.basic_search') }}" type="button" class="btn btn-dark btn-sm"><i class="fa fa-arrow-right" aria-hidden="true" style="color:white;"></i> Search By ID or Title</a>
+  <a href="{{ url_for('citation.get_citation_orders') }}" type="button" class="btn btn-info btn-sm"><i class="fa fa-arrow-right" aria-hidden="true" style="color:white;"></i> Citation History</a>
+</div>
+<br>
 <h2>{{current_user.firstname}}'s Citation Cart:</h2>
 <p>
   {% with messages = get_flashed_messages() %}
@@ -16,21 +22,26 @@
 <form method="post">
     <label for="pagesize">current page size: </label>  <input name="pagesize" type="text" id="updated_pagesize" value="{{pagesize}}">
     <label for="pagenum">current page num: </label> <input name="pagenum" type="text" id="updated_pagenum" value="{{pagenum}}">
-    <input type="submit" value="Apply">
+    <input class = "btn btn-secondary" type="submit" value="Apply">
 </form>
-<div style="background-color: rgb(219, 212, 212);">
-    <div style="text-align: right">
-        <a href="{{ url_for('searchbycategory.search_by_category') }}" type="button" class="btn btn-dark">Go to Search By Category</a>
-        <a href="{{ url_for('basicsearch.basic_search') }}" type="button" class="btn btn-dark">Go to Search By ID or Title</a>
-        <a href="{{ url_for('citation.get_citation_orders')}}" type="button" class="btn btn-light">Go to Citation History By Orders</a>
-    </div>
-</div>
-<div>
-  <form action="" method="post">
-    <input id="checkoutButton" type="submit" name="action" value="Checkout paper for citation" style="float:right;margin-bottom:10px;" onclick="checkoutReminder()">
-    <input type="submit" name="action" value="Remove papers in batch" style="float:right;margin-bottom:10px;">
-    <table class='table table-hover table-bordered container' id="citationCart" style="margin-top: 20px;">
-      <thead class="thead-dark">
+<br>
+<form action="" method="post" style="margin-top:-65px;">
+  <input class ="btn btn-warning" id="checkoutAllButton" type = "submit" name = "action" value ="Checkout cart" style="float:right;margin-bottom:10px;margin-left:10px">
+  <input class = "btn btn-secondary"  id="checkoutButton" type="submit" name="action" value="Checkout selected paper" style="float:right;margin-bottom:10px;margin-left:10px">
+  <input class = "btn btn-secondary" type="submit" name="action" value="Remove selected papers" style="float:right;margin-bottom:10px;">
+  <table class='table table-hover table-bordered container' style="width: 90%;">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Checkbox</th>
+        <th scope="col">Paper ID</th>
+        <th scope="col">Paper Title</th>
+        <th scope="col">Year</th>
+        <th scope="col">Conference</th>
+        <th scope="col">Remove</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for paper in paper_list%}
         <tr>
           <th scope="col">Checkbox</th>
           <th scope="col">Paper ID</th>
@@ -67,22 +78,9 @@
   )
   //select checked papers, write their pids(value of the checkbox) to the clipboard
   function copyToClickboard(){
-    var text='Paper ids:';
     if($('.usercartCheckbox:checked').length==0){
       alert('Please choose some papers!')
       return;
-    }
-    $('.usercartCheckbox:checked').each(function(k){
-      if(k==0){
-        text += $(this).val();
-      }else{
-        text += ','+$(this).val();
-      }
-    })
-    const clipboardObj = navigator.clipboard;
-    if(clipboardObj != undefined){
-      clipboardObj.writeText(text);
-      alert('Paper ids are copied to your clipboard!')
     }
   }
 </script>

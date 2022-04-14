@@ -44,16 +44,25 @@ class Comment:
         return [Comment(*row) for row in rows]
 
     @staticmethod
-    def fetch_comment_by_uid(uid):
+    def fetch_comment_by_uid(uid,pagenum):
+        total = app.db.execute(
+            '''
+            SELECT *
+            FROM Comment
+            WHERE uid = :uid
+            '''
+        ,uid= uid)
+        total_num = len(total)
         rows = app.db.execute(
             '''
             SELECT *
             FROM Comment
             WHERE uid = :uid
             ORDER BY helpful_vote DESC, time_submitted DESC
+            LIMIT 10 OFFSET :offset
             '''
-        ,uid= uid)
-        return [Comment(*row) for row in rows]
+        ,uid= uid,offset=10*pagenum)
+        return [Comment(*row) for row in rows],total_num
 
     @staticmethod
     def fetch_comment_by_pid_uid(uid,pid):
@@ -141,11 +150,11 @@ class Comment:
     def recommend_by_keyword(k1,k2,k3):
         sql_str = '''WITH temp as (SELECT p.pid FROM Papers as p WHERE 
            (p.title LIKE '%'''+k1+"%') OR (p.title LIKE '%"+k1+"%') OR (p.title LIKE '%"+k3+'''%'))
-           SELECT c.pid
-           FROM Comment as c, temp
-           WHERE c.pid = temp.pid 
-           GROUP BY c.pid
-           ORDER BY avg(c.star) DESC 
+           SELECT temp.pid, avg(c.star)
+           FROM temp
+           LEFT JOIN Comment as c ON temp.pid =c.pid 
+           GROUP BY temp.pid
+           ORDER BY avg(c.star) DESC NULLS LAST
            LIMIT 5
            '''
         rows = app.db.execute(sql_str)

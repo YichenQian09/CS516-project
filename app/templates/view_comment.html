@@ -6,6 +6,11 @@
 <h2>Your submitted comments</h2>
 
 {% if comments %}
+<form method="post">
+  <label for="pagenum">Current page number: </label> <input name="pagenum" type="text" id="updated_pagenum" value="{{pagenum}}">
+  <input class = "btn btn-secondary btn-sm" type="submit" value="Apply">
+  Showing {{pagenum}}/{{total_num}} pages
+</form>
   <table class='table table-hover table-bordered container center-table'>
       <thead class="thead-dark">
         <tr>

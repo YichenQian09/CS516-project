@@ -9,6 +9,8 @@
       /* height: 550px; */
       background: rgba(100,54,60,0.5);
       margin-left: -10px;
+      padding-left: 15px;
+      padding-right: 15px;
 }
 #profileLinks{
     display: flex;
@@ -27,25 +29,11 @@
     font-size: 22px;
     font-weight: bold;
 }
-#profileLeft>div{
-    margin-bottom: 10px;
-    margin-left:15px;
-}
+
 #profileRight{
     margin-top: 20px;
     margin-left:20px;
     width: 300px;
     flex-grow: 1;
 }
-#keywordImgContain{
-    width: 100%;
-}
-#keywordRecContain{
-    width: 100%;
-}
-#keywordImgContain img{
-    display: block;
-    width:80%;
-    height:300px;
-    margin:10px auto;
-}
+

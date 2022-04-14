@@ -13,6 +13,7 @@ class Orderinfo:
             FROM Users_cite_history
             WHERE uid = :uid
             GROUP BY order_num
+            ORDER BY order_num DESC
             '''
         , uid = uid)
         return [Orderinfo(*row) for row in rows]

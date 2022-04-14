@@ -3,13 +3,13 @@
 {% block content %}
 <div id="profileContainer">
   <div id="profileLeft">
-    <h1>Profile</h1>
+    <h1 style="text-align:center;">Profile</h1>
     <div id="profileLinks">
-      <a class="btn btn-dark" href="{{ url_for('browse.get_browse_papers', timerange='all') }}" role="button">Browse history</a>
-      <a class="btn btn-dark" href="{{ url_for('citation.get_citation_history')}}" role="button">Citatiton history</a>
-      <a class="btn btn-dark" href="{{ url_for('collection.collections') }}" role="button">Collections</a>
-      <a class="btn btn-dark" href="{{ url_for('users.update') }}"  role="button">Update Info</a>
-      <a class="btn btn-dark" href="{{ url_for('users.view_comment') }}"  role="button">Comment history</a>
+      <a class="btn btn-light" href="{{ url_for('browse.get_browse_papers', timerange='all') }}" role="button">Browse history</a>
+      <a class="btn btn-light" href="{{ url_for('citation.get_citation_orders')}}" role="button">Citatiton history</a>
+      <a class="btn btn-light" href="{{ url_for('collection.collections') }}" role="button">Collections</a>
+      <a class="btn btn-light" href="{{ url_for('users.update') }}"  role="button">Update Info</a>
+      <a class="btn btn-light" href="{{ url_for('users.view_comment', pagenum=0) }}"  role="button">Comment history</a>
     </div>
     <div>
         <span>Nickname:</span>
@@ -21,17 +21,17 @@
       <span>{{ email }}</span>
     </div>
     <div>
-        <span>you cited </span>
+      <p>Your research interest:
+      {% if profile.research_interest %}
+      {{ profile.research_interest }}
+      {% else %}
+      No specific interest</p>
+      {% endif  %}
+  </div>
+    <div>
+        <span>You cited </span>
         <span id="citeNum">{{ profile.citenum }}</span>
         <span>papers!</span>
-    </div>
-    <div>
-        <p>your research interest:</p>
-        {% if profile.research_interest %}
-        <p>{{ profile.research_interest }}</p>
-        {% else %}
-        <p>No specific interest</p>
-        {% endif  %}
     </div>
     <p>
         {% with messages = get_flashed_messages() %}
@@ -53,7 +53,7 @@
     </div>
     <div id="keywordRecContain">
       <h4>You might want to check out these papers</h4>
-      <table class='table table-hover table-bordered container'>
+      <table class='table table-hover table-bordered container' style="width:90%;">
         <thead class="thead-dark">
           <tr>
             <th scope="col">Paper ID</th>

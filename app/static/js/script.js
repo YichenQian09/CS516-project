@@ -6,8 +6,8 @@ $(document).ready(function () {
        // we will build a word cloud into our div with id=word_cloud
        // we have to specify width and height of the word
        $('#word_cloud').jQCloud(words_data, {
-           width: 600,
-           height: 300
+           width: 400,
+           height: 200
        });
    }});
 });

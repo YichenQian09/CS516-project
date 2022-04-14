@@ -16,16 +16,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" ></script>
   <script>
-  $(document).ready( function () {
-  $('#basicSearchPaparList').DataTable({"searching": false});
-  } );
-  </script>
-  <script>
-    $(document).ready( function () {
-    $('#citationCart').DataTable({"searching": false});
-    } );
-    </script>
-  <script>
     $(document).ready( function () {
     $('#citingPaper').DataTable({"searching": false});
     } );
@@ -85,8 +75,8 @@
       <div style="color: #232323; text-align: right; margin-bottom: 25px">
         {% if current_user.is_authenticated %}
           Hello {{current_user.firstname}}! 
-          <a href="{{ url_for('collection.collections') }}" type="button" class="btn btn-dark">Collections</a>
           <a href="{{ url_for('index.index') }}" type="button" class="btn btn-dark">Homepage</a>
+          <a href="{{ url_for('collection.collections') }}" type="button" class="btn btn-dark">Collections</a>
           <a href="{{ url_for('citationcart.citationcart') }}" type="button" class="btn btn-dark">Citation Cart</a>
           <a href="{{ url_for('users.profile') }}" type="button" class="btn btn-dark">Profile</a>
           <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-dark">Log out</a>

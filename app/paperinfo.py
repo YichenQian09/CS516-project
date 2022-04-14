@@ -65,9 +65,12 @@ def get_paper_info():
     sum_score, num_score = Comment.get_average_star(pid)
     not_upvoted_by=[]
     username = []
+    comment_num = 0 
     for com in comments:
         not_upvoted_by.append(not (Helpful.check_if_upvoted(com.pid,com.uid,current_user.uid)))
         username.append(Users.get_profile(com.uid).nickname)
+        if com.comment_sum!="":comment_num+=1  
+
     return render_template('paperinfopage.html', 
                             paper=paper, 
                             abstract=abstract, 
@@ -77,7 +80,8 @@ def get_paper_info():
                             collection_choices = choices,
                             collect_form = collect_form,
                             comments = comments,
-                            comment_num = len(comments),
+                            rating_num = len(comments),
+                            comment_num = comment_num,
                             comment_exist = comment_exist,
                             sum_score = sum_score,
                             num_score = num_score,
@@ -94,7 +98,7 @@ def like_paper(pid):
         Collections.add_paper_in_collection(current_user.uid,'Liked',pid)
         flash("You added a paper to Liked! ")
         
-    full_url = url_for('paperinfo.get_paper_info')+"?pid="+str(pid)
+    full_url = url_for('paperinfo.get_paper_info',pid=pid)
     return redirect(full_url)
 
 @bp.route('/paperinfo/cite/<pid>',methods=('GET', 'POST'))

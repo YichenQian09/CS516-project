@@ -127,63 +127,68 @@
                         {% endif %}
                         {{sum_score/num_score}}</h4>
                     </div>
-                    <div class="col"><h4 style="font-weight:bold;">{{comment_num}} Comments</h4></div>
+                    <div class="col"><h4 style="font-weight:bold;">{{rating_num}} Ratings/ {{comment_num}} Comments</h4></div>
                     </div>
                 {% for com in comments %}
-                    <hr>
-                    <div class="rounded border border-secondary one_review">
-                    <div class = "d-flex felx-row">
-                    <div class ="col-1">
-                        <i class="fa fa-user-circle-o fa-2x icon" aria-hidden="true"></i>
-                        {{username[loop.index0]}}
-                    </div>
-                    <div class ="col-8">
-                    <h5 style="font-weight: bold;">{{ com.comment_sum }}</h5>
-                        Score: 
-                            {% if com.star|int == 1  %}
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
-                            {% elif  com.star|int ==2 %}
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
-                            {% elif  com.star|int == 3 %}
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
-                            {% elif com.star|int == 4 %}
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                            {% else %}
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            {% endif %}
-                            {% if not_upvoted_by[loop.index0] %}
-                            <a href="{{ url_for('paperinfo.upvote_comment',pid=paper.pid,uid = com.uid) }}">
-                                <button type="button" class="btn btn-outline-primary btn-sm" style="font-size: 12px;">Helpful {{com.helpful_vote}}</button>
-                            </a>       
-                            {% else %}
-                            <a href="{{ url_for('paperinfo.cancel_upvote',pid=paper.pid,uid=com.uid) }}">
-                                <button type="button" class="btn btn-primary btn-sm" style="font-size: 12px;">Helpful {{com.helpful_vote}}</button>
-                            </a>   
-                            {% endif %}
-                            <div>{{ com.comment_text }}</div>
+                    {% if com.comment_sum!= "" %}
+                        <hr>
+                    
+                        <div class="rounded border border-secondary one_review">
+                        <div class = "d-flex felx-row">
+                        <div class ="col-1" style="text-align: center;">
+                            <i class="fa fa-user-circle-o fa-2x icon" aria-hidden="true"></i>
+                            {{username[loop.index0]}}
                         </div>
-                    </div>
-                    </div>
+                            <div class ="col-8">
+                            <h5 style="font-weight: bold;">{{ com.comment_sum }}</h5>
+                            Score: 
+                                {% if com.star|int == 1  %}
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                {% elif  com.star|int ==2 %}
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                {% elif  com.star|int == 3 %}
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                {% elif com.star|int == 4 %}
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                {% else %}
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                {% endif %}
+                                {% if not_upvoted_by[loop.index0] %}
+                                <a href="{{ url_for('paperinfo.upvote_comment',pid=paper.pid,uid = com.uid) }}">
+                                    <button type="button" class="btn btn-outline-primary btn-sm" style="font-size: 12px;">Helpful {{com.helpful_vote}}</button>
+                                </a>       
+                                {% else %}
+                                <a href="{{ url_for('paperinfo.cancel_upvote',pid=paper.pid,uid=com.uid) }}">
+                                    <button type="button" class="btn btn-primary btn-sm" style="font-size: 12px;">Helpful {{com.helpful_vote}}</button>
+                                </a>   
+                                {% endif %}
+                                <div>{{ com.comment_text }}</div>
+                            </div>
+                        </div>
+                        </div>
+                        {% else %}
+                        Be the first to write a comment! 
+                        {% endif %}
                 {% endfor %}
                 {% else %}
                 Be the first to write a comment! 

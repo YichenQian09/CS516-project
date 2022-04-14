@@ -14,11 +14,12 @@ class Users(UserMixin):
 
     @staticmethod
     def get_profile(uid):
-        rows = app.db.execute("""
-            SELECT uid, nickname, citenum, research_interest
-            FROM Users
-            WHERE uid = :uid
-            """, uid=uid)
+        rows = app.db.execute(
+          """
+          SELECT uid, nickname, citenum, research_interest
+          FROM Users
+          WHERE uid = :uid
+          """, uid=uid)
         if not rows:  # user not found
             return None
         else:

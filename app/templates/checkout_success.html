@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+{% if checkout_paper %}
+<h1>Checkout successfully</h1>
+<p style="font-weight: bold;">Order number: {{ ordernum }}</p>
+<p>The following papers have been checked out successfully: </p>
+  <table class='table table-hover table-bordered container center-table'>
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Paper ID</th>
+          <th scope="col">Title</th>
+          <th scope="col">Year</th>
+          <th scope="col">Conference</th>
+          <th scope="col">Authors</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for paper in checkout_paper %}
+          <tr>
+            <th scope="row"><a href="{{ url_for('paperinfo.get_paper_info',pid=paper.pid )}}">{{paper.pid}}</a></th>
+            <td>{{paper.title}}</td>
+            <td>{{paper.year}}</td>
+            <td>{{paper.conference}}</td>
+            <td>{{paper.authors}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+  </table>
+  <br>
+  <h3>Click to copy to clipboard</h3>
+  <p>Please be sure to use the "localhost:5000" version of the link for "copy to clipboard" to work. Otherwise your browser might block this operation.</p>
+  <textarea style="display: table;height:auto;overflow:hidden" class="center-table" type="text"  id="myInput" col="50" rows="4">{{ ref_str }}</textarea>
+  <div style="display: table;" class = "center-table">
+  <button onclick="myFunction()">Copy to Clipboard</button>
+  </div>
+  <script>
+  function myFunction() {
+    /* https://www.w3schools.com/howto/howto_js_copy_clipboard.asp */
+    var copyText = document.getElementById("myInput");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); 
+    navigator.clipboard.writeText(copyText.value);
+    alert("Copied the text: " + copyText.value);
+  }
+  </script>
+
+
+
+{% else %}
+<div><h2>Something Went WRONG !!! :(</h2></div>
+{% endif %}
+{% endblock %}
