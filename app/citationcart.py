@@ -48,6 +48,7 @@ def citationcart():
         pids=tuple(int(pid) for pid in pid_strings)
         pids_str = "#".join(pid_strings)
 
+
         if len(pids) > 0:
             CitationCart.remove_paper_from_cart_in_batch(current_user.uid, pids)
             if currAction=="Checkout selected paper":
@@ -90,6 +91,5 @@ def remove_paper_from_citationcart(pid):
     if not current_user.is_authenticated:
         return redirect(url_for('users.login'))
     if CitationCart.remove_paper_from_cart(current_user.uid, pid):
-        print("you removed a paper from cart")
+        flash("you removed a paper from cart")
     return redirect(url_for('citationcart.citationcart')) 
-    

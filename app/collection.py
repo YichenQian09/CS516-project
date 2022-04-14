@@ -68,7 +68,6 @@ def get_collection_papers(collection_name):
         pidString=request.form.getlist("remove")
         pids=tuple(int(pid) for pid in pidString)
         if Collections.remove_paper_all(current_user.uid,collection_name,pids):
-            print("You removed papers")
             return redirect(url_for('collection.get_collection_papers',collection_name=collection_name))    
     return render_template('collectedpaper.html', title='Collectedpaper', paper_list=paper_list,collection_name=collection_name,form=form)
 
@@ -85,18 +84,8 @@ def remove_paper(collection_name,pid):
     if not current_user.is_authenticated:
         return redirect(url_for('users.login'))
     if Collections.remove_paper_from_collection(current_user.uid,collection_name,pid):
-        print("You removed a paper")
+        flash("You removed a paper")
     return redirect(url_for('collection.get_collection_papers',collection_name=collection_name))
 
-# @bp.route('/remove_papers/<collection_name>', methods=['GET', 'POST'])
-# def remove_papers(collection_name):
-#     if not current_user.is_authenticated:
-#         return redirect(url_for('users.login'))
-#     form = RemovePapersForm()
-#     if form.validate_on_submit():
-#         pids=request.form.getlist("remove")
-#         if Collections.remove_paper_all(current_user.uid,collection_name,pids):
-#             print("You deleted papers")
-#     return redirect(url_for('collection.get_collection_papers',collection_name=collection_name))
     
     
