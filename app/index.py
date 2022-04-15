@@ -12,7 +12,7 @@ bp = Blueprint('index', __name__)
 
 @bp.route('/', methods=('GET', 'POST'))
 def index():
-    author_sta = Statistic.get_author_statistic()
-    year_sta = Statistic.get_year_statistic()
-    return render_template('home.html',author_sta=author_sta, year_sta=year_sta)
+    #author_sta = Statistic.get_author_statistic()
+    #year_sta = Statistic.get_year_statistic()
+    return render_template('home.html')
 #################################
