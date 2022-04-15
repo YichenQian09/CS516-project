@@ -105,13 +105,6 @@ CREATE TABLE Helpful (
     PRIMARY KEY (pid, uid, upvote_by_uid)
 );
 
-CREATE TABLE Message (
-    sender_uid INT NOT NULL,
-    receiver_uid INT NOT NULL,
-    message_text TEXT NOT NULL,
-    time_sent timestamp without time zone NOT NULL DEFAULT (now()::timestamp(0)),
-    PRIMARY KEY (sender_uid, receiver_uid, time_sent)
-);
 
 
 
