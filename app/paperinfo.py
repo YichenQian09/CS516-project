@@ -72,7 +72,7 @@ def get_paper_info():
         if com.comment_sum!="":comment_num+=1  
 
     return render_template('paperinfopage.html', 
-                            paper=paper, 
+                            paper=paper[0], 
                             abstract=abstract, 
                             authors = authors, 
                             citing_papers = citing_papers,
@@ -98,7 +98,7 @@ def like_paper(pid):
         Collections.add_paper_in_collection(current_user.uid,'Liked',pid)
         flash("You added a paper to Liked! ")
         
-    full_url = url_for('paperinfo.get_paper_info',pid=pid)
+    full_url = url_for('paperinfo.get_paper_info')+"?pid="+str(pid)
     return redirect(full_url)
 
 @bp.route('/paperinfo/cite/<pid>',methods=('GET', 'POST'))
