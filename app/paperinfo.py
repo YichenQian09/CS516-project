@@ -49,6 +49,7 @@ def get_paper_info():
     # so it will record the browse history when the user click
     record=Browses.record_browse(current_user.uid,pid)
     choices = Collections.get_each_collection_name(current_user.uid)
+    print(choices)
     
     # collect paper into collections other than 'Liked'
     collect_form = CollectPaper()

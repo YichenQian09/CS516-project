@@ -160,7 +160,7 @@ def gen_collections(num_users,num_papers=629814):
         print('Collections...', end=' ', flush=True)
         for uid in range(num_users):
             if user_has_collection[uid]:
-                c_names = np.random.choice(collection_name,size=num_collection[uid])
+                c_names = np.random.choice(collection_name,size=num_collection[uid],replace=False)
                 for c_name in c_names:
                     collected_pid = np.random.choice(num_papers,size = fake.random_int(min=1,max=15))
                     writer.writerow([uid,c_name,-1])
