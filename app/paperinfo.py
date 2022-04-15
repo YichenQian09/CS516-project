@@ -70,8 +70,9 @@ def get_paper_info():
         not_upvoted_by.append(not (Helpful.check_if_upvoted(com.pid,com.uid,current_user.uid)))
         username.append(Users.get_profile(com.uid).nickname)
         if com.comment_sum!="":comment_num+=1  
+
     return render_template('paperinfopage.html', 
-                            paper=paper[0], 
+                            paper=paper, 
                             abstract=abstract, 
                             authors = authors, 
                             citing_papers = citing_papers,
@@ -123,7 +124,7 @@ def submit_message(pid):
     uid = current_user.uid
     if not Comment.check_if_commented_by_pid_uid(pid,uid): 
         if Comment.add_comment(pid,uid,star,comment_sum,comment,0):
-            print("Comment added successfully")
+            flash("Comment added successfully")
         else: flash("Something went wrong!Please re-submit your comment") #This should never happen
     return redirect(url_for('paperinfo.get_paper_info',pid=pid))
 

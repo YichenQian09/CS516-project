@@ -9,12 +9,6 @@ class Usercitation:
 
     @staticmethod
     def add_to_usercitation(uid, order_num, cite_pids):
-        citation_records = [(uid, order_num, cite_pid) for cite_pid in cite_pids]
-        # rows = app.db.execute(
-        #     '''
-        #     INSERT INTO Users_cite_history (uid, order_num, cite_pid)
-        #     VALUES :citation_records
-        #     ''', citation_records = citation_records)
         for cite_pid in cite_pids:
             app.db.execute(
                 '''

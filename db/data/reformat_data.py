@@ -81,16 +81,10 @@ class Data_Reformat:
                     elif paper[i][0:2]== "#%": #citation 
                         self.citation.append([index,int(paper[i][2:])])
                     else:
-                        print(paper[i])
-
-        print("Number of papers we have information on: ", len(self.paper_info))
-        print("There are in total of %s authors."%str(len(self.authorship)))
-        print("There are in total of %s citations."%str(len(self.citation)))
-        print("There are in total of %s abstract."%str(len(self.abstract)))
-        assert self.authorship != []
-        assert self.citation != []
-        assert self.paper_info != []
-        assert self.abstract !=[]
+                        assert self.authorship != []
+                        assert self.citation != []
+                        assert self.paper_info != []
+                        assert self.abstract !=[]
 
         return self.paper_info, self.authorship, self.citation, self.abstract
 
