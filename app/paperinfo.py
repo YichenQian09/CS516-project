@@ -72,7 +72,7 @@ def get_paper_info():
         if com.comment_sum!="":comment_num+=1  
 
     return render_template('paperinfopage.html', 
-                            paper=paper, 
+                            paper=paper[0], 
                             abstract=abstract, 
                             authors = authors, 
                             citing_papers = citing_papers,
