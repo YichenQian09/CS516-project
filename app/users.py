@@ -299,7 +299,7 @@ def update_comment(pid):
     comment = request.form.get("comment")
     star = int(request.form.get("star"))
     Comment.edit_comment_by_pid_uid(pid,current_user.uid,star,comment_sum,comment)
-    return redirect(url_for('users.view_comment'))
+    return redirect(url_for('users.view_comment',pagenum=0))
 
 
 @bp.route('/delete_comment/<pid>',methods=('GET','POST'))
@@ -307,7 +307,7 @@ def delete_comment(pid):
     if not current_user.is_authenticated:
         return redirect(url_for('users.login'))
     Comment.delete_comment_by_pid_uid(pid,current_user.uid)
-    return redirect(url_for('users.view_comment'))
+    return redirect(url_for('users.view_comment', pagenum= 0))
 
 
 

@@ -24,6 +24,7 @@
       <a href="{{ url_for('paperindex.paperindex') }}" type="button" class="btn btn-dark">Go to List of All Papers</a>
     </div>
 </div>
+{% if paper_list|length!= 0 %}
 {% if (pagenum <= total_num) and (paper_list|length!=0) %}
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
@@ -49,5 +50,8 @@
 </table>
 {% else %}
 Page number entered exceeds maximum page number. Please enter a page number less than or equal to {{total_num}}.
+{% endif %}
+{% else %}
+No matching result.
 {% endif %}
 {% endblock %}
