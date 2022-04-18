@@ -81,6 +81,7 @@ $ source env/bin/activate
 
 6. Run flask app
 $ flask run
+For the 'copy to clipboard' function to run properly, please use the localhost:5000 version of the link. Otherwise your browser might block this operation and please copy manually in this case.
 
 PS: possible troubleshooting on mac
 1. If sklearn package or json package installation failed when running ./install.sh
