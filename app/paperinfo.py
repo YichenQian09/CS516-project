@@ -55,7 +55,9 @@ def get_paper_info():
     collect_form = CollectPaper()
     if collect_form.validate_on_submit():
         collection_name_selected= request.form.get("Collection")
-        if Collections.check_paper_in_collection(current_user.uid,collection_name_selected,pid):
+        if not collection_name_selected:
+            flash("now you have no collection, please to click the right-top 'Collections' button and go to create a collection first")
+        elif Collections.check_paper_in_collection(current_user.uid,collection_name_selected,pid):
             flash("Collected already! ")
         else:
             Collections.add_paper_in_collection(current_user.uid,collection_name_selected,pid)
@@ -99,7 +101,7 @@ def like_paper(pid):
         Collections.add_paper_in_collection(current_user.uid,'Liked',pid)
         flash("You added a paper to Liked! ")
         
-    full_url = url_for('paperinfo.get_paper_info',pid=pid)
+    full_url = url_for('paperinfo.get_paper_info')+"?pid="+str(pid)
     return redirect(full_url)
 
 @bp.route('/paperinfo/cite/<pid>',methods=('GET', 'POST'))
