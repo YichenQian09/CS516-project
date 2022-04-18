@@ -102,7 +102,7 @@ def gen_user_browse(num_users, num_papers=629814):
             one_browse_history=dict()
             if user_browse[uid]:
                 #min pid 0, max pid 629813
-                browsed_list = np.random.choice(num_papers, size=num_browsed[uid])
+                browsed_list = np.random.choice(num_papers, size=num_browsed[uid],replace=False)
                 for browsed_pid in browsed_list:
                     time_browsed= fake.date_time_this_year()
                     writer.writerow([uid,browsed_pid,time_browsed])
@@ -122,7 +122,7 @@ def gen_user_cart(num_users, browse_history, user_browse, num_browsed):
         for uid in range(num_users):
             if user_has_cart[uid] and user_browse[uid]:
                 #min pid 0, max pid 629813
-                citation_list = np.random.choice(list(browse_history[uid].keys()), size=num_citation[uid])
+                citation_list = np.random.choice(list(browse_history[uid].keys()), size=num_citation[uid],replace=False)
                 for cite_pid in citation_list:
                     time_cited = fake.date_time_between(start_date=browse_history[uid][cite_pid])
                     writer.writerow([uid,cite_pid,time_cited])     
@@ -140,7 +140,7 @@ def gen_user_cite_history(num_users,num_papers=629814):
         for uid in range(num_users):
             u_counter = 0 
             for order in range(num_order[uid]):
-                cited_paper_list = np.random.choice(num_papers, size=fake.random_int(min=1,max=30))
+                cited_paper_list = np.random.choice(num_papers, size=fake.random_int(min=1,max=30),replace=False)
                 u_counter+=len(cited_paper_list)
                 order = fake.date_time_this_year()
                 for cite_pid in cited_paper_list:
