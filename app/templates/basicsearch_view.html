@@ -4,24 +4,6 @@
 
 <br><br>
 <h2>Basic Paper Search by pid or title</h2>
-{% if not search_pid %}
-<h4>Showing search result for title contains "{{search_title}}"</h4>
-<form method="post">
-  <label for="pagenum">Current page number: </label> <input name="pagenum" type="text" id="updated_pagenum" value="{{pagenum}}">
-  <input class = "btn btn-secondary btn-sm" type="submit" value="Apply">
-  {{pagenum}}/{{total_num}} pages
-</form>
-{% else %}
-<h4>Showing search result for pid={{search_pid}}</h4>
-{% endif %}
-
-<div style="background-color: rgb(219, 212, 212);">
-    <div style="text-align: right">
-      <a href="{{ url_for('basicsearch.basic_search') }}" type="button" class="btn btn-dark">Back to search by ID/title</a>
-      <a href="{{ url_for('searchbycategory.search_by_category') }}" type="button" class="btn btn-dark">Go to Advanced search</a>
-      <a href="{{ url_for('paperindex.paperindex') }}" type="button" class="btn btn-dark">Go to List of All Papers</a>
-    </div>
-</div>
 {% with messages = get_flashed_messages() %}
 {% if messages %}
   {% for message in messages %}
@@ -29,8 +11,23 @@
   {% endfor %}
 {% endif %}
 {% endwith %}
-
-{% if paper_list|length != 0 %}
+<div style="background-color: rgb(219, 212, 212);">
+  <div style="text-align: right">
+    <a href="{{ url_for('basicsearch.basic_search') }}" type="button" class="btn btn-dark">Back to search by ID/title</a>
+    <a href="{{ url_for('searchbycategory.search_by_category') }}" type="button" class="btn btn-dark">Go to Advanced search</a>
+    <a href="{{ url_for('paperindex.paperindex') }}" type="button" class="btn btn-dark">Go to List of All Papers</a>
+  </div>
+</div>
+{% if not search_pid %}
+<h4>Showing search result for title contains "{{search_title}}"</h4>
+{% if (paper_list|length == 0) and (pagenum==0)%}
+No matching result.
+{% else %}
+<form method="post">
+  <label for="pagenum">Current page number: </label> <input name="pagenum" type="text" id="updated_pagenum" value="{{pagenum}}">
+  <input class = "btn btn-secondary btn-sm" type="submit" value="Apply">
+  {{pagenum}}/{{total_num}} pages
+</form>
 {% if (pagenum <= total_num) and (paper_list|length!=0) %}
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
@@ -57,7 +54,31 @@
 {% else %}
 Page number entered exceeds maximum page number. Please enter a page number less than or equal to {{total_num}}.
 {% endif %}
-{% else %}
-No matching result.
 {% endif %}
+{% else %}
+<h4>Showing search result for pid={{search_pid}}</h4>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Paper ID</th>
+      <th scope="col">Paper Title</th>
+      <th scope="col">Year</th>
+      <th scope="col">Conference</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for paper in paper_list%}
+      <tr>
+        <th scope="row">{{paper.pid}}</th>
+        <td>
+          <a href="{{ url_for('paperinfo.get_paper_info',pid=paper.pid )}}">{{paper.title}}</a>
+        </td>
+        <td>{{paper.year}}</td>
+        <td>{{paper.conference}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
 {% endblock %}

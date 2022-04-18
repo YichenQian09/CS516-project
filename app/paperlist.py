@@ -1,4 +1,4 @@
-from flask import render_template, request, Blueprint
+from flask import render_template, request, Blueprint, flash
 from .models.paper import Paper
 bp = Blueprint('paperindex', __name__)
 
@@ -7,9 +7,11 @@ bp = Blueprint('paperindex', __name__)
 @bp.route('/<int:pagesize>/<int:pagenum>/papers', methods=('GET', 'POST'))
 def paperindex(pagesize = 10, pagenum = 0):
     if request.method == 'POST':
-        pagesize = int(request.form['pagesize'])
-        pagenum = int(request.form['pagenum'])
-        
+        try:
+            pagesize = int(request.form['pagesize'])
+            pagenum = int(request.form['pagenum'])
+        except: 
+            flash("Page size and Page number input must be valid integers")
         if not pagesize:
             pagesize = 10
         if not pagenum:

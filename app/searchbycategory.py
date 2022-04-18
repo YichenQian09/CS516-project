@@ -95,14 +95,16 @@ def search_by_category_view(search_string,pagenum):
             if not pagenum:
                 pagenum = 0
         total_num =len(papers)
-        if pagenum*10<total_num:
-            if (pagenum+1)*10>total_num:
-                    papers = papers[(pagenum*10):-1]
+        if (pagenum+1)*10>total_num:
+            papers = papers[(pagenum*10):-1]
+        else:
             papers= papers[(pagenum*10):(pagenum+1)*10]
-        else: papers = []
-        total_num = int(total_num/10)
+
+        if ((total_num/10)-int(total_num/10))<0.0000001:
+            total_page= int(total_num/10)-1
+        else: total_page = int(total_num/10)
         return render_template('searchbycategory_view.html', 
                             paper_list=papers,pagenum=pagenum,
-                            total_num=total_num,
+                            total_num=total_page,
                             show_string= show_string)
     

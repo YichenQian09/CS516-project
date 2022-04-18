@@ -173,7 +173,8 @@ class Paper:
         total_num = len(rows)
         if (pagenum+1)*10>total_num: 
             rows = rows[(pagenum*10):-1]
-        rows = rows[(pagenum*10):((pagenum+1)*10)]
+        else:
+            rows = rows[(pagenum*10):((pagenum+1)*10)]
         return [Paper(*row) for row in rows], total_num
 
 

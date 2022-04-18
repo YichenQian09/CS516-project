@@ -30,14 +30,20 @@ def basic_search():
         
         if pid is not None and title is None:
             if not isinstance(pid, int):
-                flash("pid entered must be integers")
+                flash("Paper ID entered must be integers")
+                return redirect(url_for("basicsearch.basic_search"))
+            if isinstance(pid, int) and pid>=629814:
+                flash("Paper ID greater than 629814 not in database storage")
                 return redirect(url_for("basicsearch.basic_search"))
             return redirect(url_for("basicsearch.basic_search_view_pid", pid = pid, pagenum=0))
         elif pid is None and title is not None:
             return redirect(url_for("basicsearch.basic_search_view_title",title=title,pagenum=0))
         else: 
             if not isinstance(pid, int):
-                flash("pid entered must be integers")
+                flash("Paper ID entered must be integers")
+                return redirect(url_for("basicsearch.basic_search"))
+            if isinstance(pid, int) and pid>=629814:
+                flash("Paper ID greater than 629814 not in database storage")
                 return redirect(url_for("basicsearch.basic_search"))
             flash("Using paper id as the primary identifier")
             return redirect(url_for("basicsearch.basic_search_view_pid", pid = pid, pagenum=0))
@@ -61,11 +67,13 @@ def basic_search_view_title(title,pagenum):
         if not pagenum:
             pagenum = 0
     papers,total_num = Paper.get_by_title(title,pagenum)
-    total_num = int(total_num/10)
+    if ((total_num/10)-int(total_num/10))<0.0001:
+        total_page= int(total_num/10)-1
+    else: total_page = int(total_num/10)
     return render_template('basicsearch_view.html', 
                         paper_list=papers, 
                         pagenum=pagenum, 
-                        total_num=total_num, 
+                        total_num=total_page, 
                         search_pid=None, 
                         search_title=title)
 
