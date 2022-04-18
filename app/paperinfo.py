@@ -70,7 +70,7 @@ def get_paper_info():
     for com in comments:
         not_upvoted_by.append(not (Helpful.check_if_upvoted(com.pid,com.uid,current_user.uid)))
         username.append(Users.get_profile(com.uid).nickname)
-        if com.comment_sum!="":comment_num+=1  
+        if not ((com.comment_sum=="") and (com.comment_text=="")):comment_num+=1  
 
     return render_template('paperinfopage.html', 
                             paper=paper[0], 

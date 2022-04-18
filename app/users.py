@@ -132,23 +132,26 @@ def get_word_by_freq(uid):
         words = words +" "+t
         if a is not None:
             words = words +" "+a.abstract
-    words = [words]
-    new_stop_words = ["using", "used", "use", "iii", "given", "requires",
-                "require", "required"]
+    if words !="":
+        words = [words]
+        new_stop_words = ["using", "used", "use", "iii", "given", "requires",
+                    "require", "required"]
 
-    stop_words = text.ENGLISH_STOP_WORDS.union(new_stop_words)
+        stop_words = text.ENGLISH_STOP_WORDS.union(new_stop_words)
 
-    # Instantiate a count vectorizer
-    vectorizer = CountVectorizer(stop_words=stop_words)
-    X = vectorizer.fit_transform(words)
-    term = vectorizer.get_feature_names()
-    freq = (X.toarray()[0]).tolist()
-    sorted_term = [x for _,x in sorted(zip(freq,term),reverse=True)]
-    sorted_freq = [y for y,_ in sorted(zip(freq,term),reverse=True)]
+        # Instantiate a count vectorizer
+        vectorizer = CountVectorizer(stop_words=stop_words)
+        X = vectorizer.fit_transform(words)
+        term = vectorizer.get_feature_names()
+        freq = (X.toarray()[0]).tolist()
+        sorted_term = [x for _,x in sorted(zip(freq,term),reverse=True)]
+        sorted_freq = [y for y,_ in sorted(zip(freq,term),reverse=True)]
 
-    first_term = sorted_term[0:20]
-    first_freq = sorted_freq[0:20]
-    return first_term, first_freq
+        first_term = sorted_term[0:20]
+        first_freq = sorted_freq[0:20]
+        return first_term, first_freq
+    else: 
+        return [],[]
 
 @bp.route('/word_cloud', methods=['GET'])
 def word_cloud():
@@ -156,10 +159,12 @@ def word_cloud():
         return redirect(url_for('users.login'))
     try:
         first_term, first_freq = get_word_by_freq(current_user.uid)
-        # modifed based on https://github.com/prateekkrjain/newsapi_word_cloud/blob/master/news_word_cloud.py
-        words_json = [{'text': word, 'weight': count} for word, count in zip(first_term,first_freq)]
-
-        return json.dumps(words_json)
+        if len(first_term)>0:
+            # modifed based on https://github.com/prateekkrjain/newsapi_word_cloud/blob/master/news_word_cloud.py
+            words_json = [{'text': word, 'weight': count} for word, count in zip(first_term,first_freq)]
+            return json.dumps(words_json)
+        else:
+            return '[]'
     except Exception as e:
         return '[]'
 
@@ -251,13 +256,15 @@ def profile():
         flash('Something wrong with your account, please login again!')
         return redirect(url_for('users.login'))
     first_term, first_freq = get_word_by_freq(current_user.uid)
-    k1 = first_term[0]
-    k2 = first_term[1]
-    k3 = first_term[2]
-    recommended_pid = Comment.recommend_by_keyword(k1,k2,k3)
-    recommended_paper = []
-    for pid in recommended_pid:
-        recommended_paper.append(Paper.get_by_pid(pid)[0])
+    if len(first_term)>3:
+        k1 = first_term[0]
+        k2 = first_term[1]
+        k3 = first_term[2]
+        recommended_pid = Comment.recommend_by_keyword(k1,k2,k3)
+        recommended_paper = []
+        for pid in recommended_pid:
+            recommended_paper.append(Paper.get_by_pid(pid)[0])
+    else: recommended_paper=[]
     return render_template('profile.html', title='profile',profile=user_profile, email=email,recommended_paper=recommended_paper)
 
 @bp.route('/update_nickname/<old_name>', methods=['GET', 'POST'])
@@ -276,10 +283,13 @@ def view_comment(pagenum):
     if not current_user.is_authenticated:
         return redirect(url_for('users.login'))
     if request.method == 'POST':
-        pagenum = int(request.form['pagenum'])
-        if not pagenum:
-            pagenum = 0
-
+        try:
+            pagenum = int(request.form['pagenum'])
+            if not pagenum:
+                pagenum = 0
+        except:
+            pagenum=0
+            flash("Page number entered must be a valid integer")
     comments, total_num = Comment.fetch_comment_by_uid(current_user.uid,pagenum)
     if ((total_num/10)-int(total_num/10))<0.0000001:
         total_page= int(total_num/10)-1

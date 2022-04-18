@@ -134,7 +134,7 @@
                     <div class="col"><h4 style="font-weight:bold;">{{rating_num}} Ratings/ {{comment_num}} Comments</h4></div>
                     </div>
                 {% for com in comments %}
-                    {% if com.comment_sum!= "" %}
+                    {% if not ((com.comment_sum== "") and (com.comment_text==""))%}
                         <hr>
                     
                         <div class="rounded border border-secondary one_review">
@@ -220,10 +220,10 @@
                 <div class="d-flex flex-row">
                     <div class = "col-2">Review headline: </div>  
                     <div class ="col"> 
-                    <textarea style="width: 100%;" placeholder ="Enter your comment summary here" name="comment_summary" rows="1"  required></textarea>
+                    <textarea style="width: 100%;" placeholder ="Enter your comment summary here" name="comment_summary" rows="1" ></textarea>
                     </div>
                 </div>  
-                <textarea style ="width: 100%;" placeholder="Enter your comment here" name="comment" cols="50" rows="4"  required></textarea>
+                <textarea style ="width: 100%;" placeholder="Enter your comment here" name="comment" cols="50" rows="4"></textarea>
                 <input type="submit" value="Submit">
             </form>
             {% endif %}
