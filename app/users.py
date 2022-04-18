@@ -281,8 +281,10 @@ def view_comment(pagenum):
             pagenum = 0
 
     comments, total_num = Comment.fetch_comment_by_uid(current_user.uid,pagenum)
-    total_num = int(total_num/10)
-    return render_template('view_comment.html',comments = comments,pagenum=pagenum, total_num = total_num)
+    if ((total_num/10)-int(total_num/10))<0.0000001:
+        total_page= int(total_num/10)-1
+    else: total_page = int(total_num/10)
+    return render_template('view_comment.html',comments = comments,pagenum=pagenum, total_num = total_page)
 
 @bp.route('/edit_comment/<pid>',methods=('GET','POST'))
 def edit_comment(pid):

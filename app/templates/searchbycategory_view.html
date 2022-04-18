@@ -4,12 +4,6 @@
 
 <br><br>
 <h2>Advanced Paper Search Results</h2>
-<h4>Showing search result for {{show_string}}</h4>
-<form method="post">
-  <label for="pagenum">Current page number: </label> <input name="pagenum" type="text" id="updated_pagenum" value="{{pagenum}}">
-  <input class = "btn btn-secondary btn-sm" type="submit" value="Apply">
-  {{pagenum}}/{{total_num}} pages
-</form>
 {% with messages = get_flashed_messages() %}
 {% if messages %}
   {% for message in messages %}
@@ -18,13 +12,22 @@
 {% endif %}
 {% endwith %}
 <div style="background-color: rgb(219, 212, 212);">
-    <div style="text-align: right">
-      <a href="{{ url_for('searchbycategory.search_by_category') }}" type="button" class="btn btn-dark">Back to Advanced Search</a>
-      <a href="{{ url_for('basicsearch.basic_search') }}" type="button" class="btn btn-dark">Go to Search by ID or Title</a>
-      <a href="{{ url_for('paperindex.paperindex') }}" type="button" class="btn btn-dark">Go to List of All Papers</a>
-    </div>
+  <div style="text-align: right">
+    <a href="{{ url_for('searchbycategory.search_by_category') }}" type="button" class="btn btn-dark">Back to Advanced Search</a>
+    <a href="{{ url_for('basicsearch.basic_search') }}" type="button" class="btn btn-dark">Go to Search by ID or Title</a>
+    <a href="{{ url_for('paperindex.paperindex') }}" type="button" class="btn btn-dark">Go to List of All Papers</a>
+  </div>
 </div>
-{% if paper_list|length!= 0 %}
+<h4>Showing search result for {{show_string}}</h4>
+
+{% if (paper_list|length==0) and (pagenum==0) %}
+No matching result.
+{% else %}
+<form method="post">
+  <label for="pagenum">Current page number: </label> <input name="pagenum" type="text" id="updated_pagenum" value="{{pagenum}}">
+  <input class = "btn btn-secondary btn-sm" type="submit" value="Apply">
+  {{pagenum}}/{{total_num}} pages
+</form>
 {% if (pagenum <= total_num) and (paper_list|length!=0) %}
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
@@ -51,7 +54,5 @@
 {% else %}
 Page number entered exceeds maximum page number. Please enter a page number less than or equal to {{total_num}}.
 {% endif %}
-{% else %}
-No matching result.
 {% endif %}
 {% endblock %}
