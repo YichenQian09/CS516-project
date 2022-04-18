@@ -5,12 +5,22 @@
 <br><br>
 <h2>Your submitted comments</h2>
 
-{% if comments %}
+{% if (comments|length==0) and (pagenum==0) %}
+<div><em>You haven't submitted any comments yet!</em></div>
+{% else %}
 <form method="post">
   <label for="pagenum">Current page number: </label> <input name="pagenum" type="text" id="updated_pagenum" value="{{pagenum}}">
   <input class = "btn btn-secondary btn-sm" type="submit" value="Apply">
   Showing {{pagenum}}/{{total_num}} pages
 </form>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  {% for message in messages %}
+  {{ message }}
+  {% endfor %}
+{% endif %}
+{% endwith %}
+{% if (pagenum <= total_num) and (comments|length!=0) %}
   <table class='table table-hover table-bordered container center-table'>
       <thead class="thead-dark">
         <tr>
@@ -34,6 +44,7 @@
       </tbody>
   </table>
 {% else %}
-<div><em>You haven't submitted any comments yet!</em></div>
+Page number entered exceeds maximum page number. Please enter a page number less than or equal to {{total_num}}.
+{% endif %}
 {% endif %}
 {% endblock %}

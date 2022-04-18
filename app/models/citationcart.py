@@ -80,7 +80,7 @@ class CitationCart:
         # return rows[0][0]
 
 def name_preprocess(names):
-    if names!="":
+    if names!="" and names is not None:
         names = names.split("$")
         p_names = []
         last_names = []

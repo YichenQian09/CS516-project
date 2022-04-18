@@ -48,6 +48,7 @@
 
 
   <div id="profileRight">
+    {% if recommended_paper|length > 0 %}
     <h4>Keywords generated based on your collection, citation and browse history:</h4>
     <div id="word_cloud" style="outline: double; margin:auto;">
     </div>
@@ -76,6 +77,9 @@
         </tbody>
       </table>
     </div>
+    {% else %}
+    <h4>We don't have enough history records to guess your interests yet. Go check out more papers!</h4>
+    {% endif %}
   </div>
 </div>
 

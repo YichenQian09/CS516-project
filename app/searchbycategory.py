@@ -49,4 +49,3 @@ def search_by_category():
             papers = Paper.get_by_conference(conference)
 
         return render_template('searchbycategory.html', paper_list=papers)
-    

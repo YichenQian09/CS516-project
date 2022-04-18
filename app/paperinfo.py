@@ -49,6 +49,7 @@ def get_paper_info():
     # so it will record the browse history when the user click
     record=Browses.record_browse(current_user.uid,pid)
     choices = Collections.get_each_collection_name(current_user.uid)
+    print(choices)
     
     # collect paper into collections other than 'Liked'
     collect_form = CollectPaper()
@@ -71,7 +72,7 @@ def get_paper_info():
     for com in comments:
         not_upvoted_by.append(not (Helpful.check_if_upvoted(com.pid,com.uid,current_user.uid)))
         username.append(Users.get_profile(com.uid).nickname)
-        if com.comment_sum!="":comment_num+=1  
+        if not ((com.comment_sum=="") and (com.comment_text=="")):comment_num+=1  
 
     return render_template('paperinfopage.html', 
                             paper=paper[0], 

@@ -30,8 +30,13 @@ def citationcart():
         pagenum = request.form.get('pagenum')
         pid_strings = request.form.getlist('remove[]')
         
-        pagesize = 10 if not pagesize else int(pagesize)
-        pagenum = 0 if not pagenum else int(pagenum)
+        try: 
+            pagesize = 10 if not pagesize else int(pagesize)
+            pagenum = 0 if not pagenum else int(pagenum)
+        except:
+            pagesize = 10 
+            pagenum = 0
+            flash("Page size and Page number input must be valid integers")
 
     if currAction =="Checkout cart":
         cited_papers = CitationCart.get_all_citations_of_a_citation_cart(current_user.uid)
