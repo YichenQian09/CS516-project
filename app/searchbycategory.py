@@ -91,8 +91,12 @@ def search_by_category_view(search_string,pagenum):
         else:
             papers = Paper.get_by_conference(conference)
         if request.method == 'POST':
-            pagenum = int(request.form['pagenum'])
-            if not pagenum:
+            try:
+                pagenum = int(request.form['pagenum'])
+                if not pagenum:
+                    pagenum = 0
+            except:
+                flash("Page number entered must be a valid integer.")
                 pagenum = 0
         total_num =len(papers)
         if (pagenum+1)*10>total_num:
