@@ -16,10 +16,14 @@ Github repository: https://github.com/halfmoontonight/CS516-project
 
 
 ## To run the project:
-0. Download and unzip the file downloaded from https://lfs.aminer.cn/lab-datasets/citation/citation-network1.zip to get outputacm.txt. Go to folder db/data and run reformat_data.py to produce papers.csv, authorship.csv, citation.csv and abstract.csv. Make sure your reformat_data.py and outputacm.txt are in the same folder.
+0. 
+ - Method 1: Download and unzip the file downloaded from 
+https://lfs.aminer.cn/lab-datasets/citation/citation-network1.zip to get outputacm.txt. Go to folder db/data and run reformat_data.py to produce papers.csv, authorship.csv, citation.csv and abstract.csv. Make sure your reformat_data.py and outputacm.txt are in the same folder.
+Note: because these csv files are too large, we restrict uploading it to github.
 
-Note: because these csv files are too large, we restrict uploading it to github. If you want to change them, it's better to change the reformat_data.py. 
-
+- Method 2: Alternatively, you can go to our Google drive and downloaded the processed csv files in .7z zipped format.
+Google drive link: https://drive.google.com/drive/folders/1urSbgX54K9G9jF7Q9EzEXvPL9gbXis4n?usp=sharing
+Sign-in required 
 1. If you are using MacOS, switch your shell to bash ($chsh -s /bin/bash)
 
 2. Make sure you have installed python3, pip3, psql
@@ -82,6 +86,7 @@ $ source env/bin/activate
 ```
 $ flask run
 ```
+For the 'copy to clipboard' function to run properly, please use the localhost:5000 version of the link. Otherwise your browser might block this operation and please copy manually in this case. 
 
 ## Environment setup 
 1. set up Ubuntu enviroment locally 
