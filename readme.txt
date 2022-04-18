@@ -15,10 +15,17 @@ Team name: Crouching Tiger Hidden Dragons
 Github repository: https://github.com/halfmoontonight/CS516-project
 
 
-To run the project:
-0. download "citation-network1.zip" from https://lfs.aminer.cn/lab-datasets/citation/citation-network1.zip and put the "citation-network1.zip" under \db\data directory. Unzip the zip file, you will get a "outputacm.txt" file. Make sure you have "outputacm.txt" and "reformat_data.py" under \db\data directory; then execute command $python reformat_data.py in your terminal; you will get four .csv file: abstract.csv, authorship.csv, citation.csv, papers.csv 
 
-1. If you are using MacOS, switch your shell to bash ($chsh -s /bin/bash)
+To run the project:
+0. Method 1: Download and unzip the file downloaded from 
+https://lfs.aminer.cn/lab-datasets/citation/citation-network1.zip to get outputacm.txt. Go to folder db/data and run reformat_data.py to produce papers.csv, authorship.csv, citation.csv and abstract.csv. Make sure your reformat_data.py and outputacm.txt are in the same folder.
+Note: because these csv files are too large, we restrict uploading it to github.
+
+0. Method 2: Alternatively, you can go to our Google drive and downloaded the processed csv files in .7z zipped format.
+Google drive link: https://drive.google.com/drive/folders/1urSbgX54K9G9jF7Q9EzEXvPL9gbXis4n?usp=sharing
+Sign-in required 
+
+1. If you are using MacOS, switch your shell to bash ($chsh -s /bin/bash) and then relaunch your terminal to do the following steps.
 
 2. Make sure you have installed python3, pip3, psql
 
@@ -36,7 +43,7 @@ $ sudo -u postgres psql -c "ALTER ROLE <<username>> WITH PASSWORD '<<password>>'
 4. Run install.sh
 If you are using windows, install WSL and execute $./install.sh
 
-If you are using MacOs, tweak your install.sh as follows and then execute $./install.sh
+If you are using MacOs, connect to a linux server, tweak your install.sh as follows and then execute $./install.sh
 ===============================================================
 #!/bin/bash
  
@@ -69,11 +76,17 @@ pip3 install -r requirements.txt
 chmod +x db/setup.sh
 db/setup.sh
 ===============================================================
-
-If show "-bash: ./install.sh: Permission denied", then try command "chmod +x ./install.sh"
-
 5. Activate and enter virtual env
 $ source env/bin/activate
 
 6. Run flask app
 $ flask run
+
+PS: possible troubleshooting on mac
+1. If sklearn package or json package installation failed when running ./install.sh
+2. Please wait after ./install.sh to completed
+3. json package install failure does no harm, just ignore it; but sklearn package is a necessity.
+4. If sklearn package install failed, please enter the virtual environment and pip install it manually in your terminal in the virtual environment, by using the following two commands
+$ pip install --upgrade cython
+$ pip install scikit_learn==0.22.2.post1
+After solving the package installation problem, run ‘flask run’, it should work.
